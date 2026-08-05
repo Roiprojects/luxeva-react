@@ -20,6 +20,7 @@ import { Logo } from "./Logo";
 import { Button } from "@/components/ui/Button";
 import { nav } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { getContactDetails } from "@/lib/content";
 
 type ServiceLink = { slug: string; title: string; category: string };
 
@@ -35,6 +36,7 @@ const CATEGORY_META: { name: string; icon: typeof Home }[] = [
 
 export function Header({ services }: { services: ServiceLink[] }) {
   const pathname = usePathname();
+  const contact = getContactDetails();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -77,10 +79,10 @@ export function Header({ services }: { services: ServiceLink[] }) {
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 nav-shell">
-      {/* Announcement strip — hides on scroll */}
+      {/* Announcement strip — desktop only */}
       <div
         className={cn(
-          "overflow-hidden bg-brand text-white transition-all duration-500",
+          "hidden sm:block overflow-hidden bg-brand text-white transition-all duration-500",
           scrolled ? "max-h-0 opacity-0" : "max-h-12 opacity-100",
         )}
       >
@@ -91,7 +93,38 @@ export function Header({ services }: { services: ServiceLink[] }) {
         </div>
       </div>
 
-      <div className={cn("container-lux transition-all duration-500", scrolled ? "pt-2 md:pt-3" : "pt-3 md:pt-4")}>
+      {/* ── Mobile app bar ─────────────────────────────────────────────── */}
+      <div
+        className={cn(
+          "lg:hidden flex items-center justify-between px-4 border-b border-line transition-all duration-300",
+          scrolled
+            ? "h-14 bg-paper/95 backdrop-blur-xl shadow-[0_2px_12px_rgba(20,35,60,0.08)]"
+            : "h-14 bg-paper/90 backdrop-blur-md",
+        )}
+        style={{ paddingTop: "env(safe-area-inset-top)" }}
+      >
+        <Logo />
+        {contact.phone ? (
+          <a
+            href={`tel:${contact.phone}`}
+            aria-label="Call us"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-brand/8 text-brand"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.8 19.8 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.2a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17.7z"></path></svg>
+          </a>
+        ) : (
+          <Link
+            href="/contact"
+            aria-label="Contact us"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-brand/8 text-brand"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.8 19.8 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.2a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17.7z"></path></svg>
+          </Link>
+        )}
+      </div>
+
+      {/* ── Desktop pill nav ────────────────────────────────────────────── */}
+      <div className={cn("hidden lg:block container-lux transition-all duration-500", scrolled ? "pt-2 md:pt-3" : "pt-3 md:pt-4")}>
         <div
           className={cn(
             "nav-pill relative flex items-center justify-between gap-4 rounded-full border pl-5 pr-3 md:pl-6 md:pr-4",
@@ -219,47 +252,7 @@ export function Header({ services }: { services: ServiceLink[] }) {
             </Button>
           </div>
 
-          {/* Mobile toggle */}
-          <button
-            type="button"
-            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full text-ink hover:bg-ink/5 transition-colors"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen((v) => !v)}
-          >
-            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
         </div>
-      </div>
-
-      {/* Mobile drawer */}
-      <div
-        className={cn(
-          "lg:hidden fixed inset-0 z-40 bg-ivory/98 backdrop-blur-xl transition-all duration-400",
-          mobileOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none",
-        )}
-      >
-        <nav aria-label="Mobile" className="container-lux pt-28 pb-10 flex flex-col gap-1 h-full overflow-y-auto">
-          {nav.map((item, i) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "py-4 text-2xl font-[family-name:var(--font-display)] border-b border-border transition-all duration-500",
-                mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4",
-                isActive(item.href) ? "text-ink" : "text-ink-soft",
-              )}
-              style={{ transitionDelay: mobileOpen ? `${100 + i * 60}ms` : "0ms" }}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <div className="mt-6">
-            <Button href="/contact" className="w-full" size="lg">
-              Get Free Quote
-            </Button>
-          </div>
-        </nav>
       </div>
     </header>
   );

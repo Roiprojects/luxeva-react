@@ -20,7 +20,7 @@ export function PageHero({
       <div aria-hidden className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-gold/12 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute -bottom-20 left-[-4rem] h-64 w-64 rounded-full bg-brand/10 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute inset-0 text-brand/[0.05] pattern-dots [mask-image:radial-gradient(55%_60%_at_85%_10%,#000,transparent)]" />
-      <Container className="relative pt-32 pb-12 md:pt-40 md:pb-16">
+      <Container className="relative pt-20 pb-12 md:pt-40 md:pb-16">
         {crumbs && crumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-5">
             <ol className="flex flex-wrap items-center gap-1 text-sm text-taupe-dark">

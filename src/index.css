@@ -87,9 +87,20 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
+  * {
+    border-color: var(--color-border);
+    /* Remove blue flash on tap (Android) */
+    -webkit-tap-highlight-color: transparent;
+    /* Treat all elements as touch-optimized */
+    touch-action: manipulation;
+  }
 
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    /* Prevent overscroll bounce (app-like) */
+    overscroll-behavior: none;
+  }
 
   body {
     background-color: var(--color-background);
@@ -99,6 +110,8 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     line-height: 1.6;
+    /* Prevent pull-to-refresh on mobile */
+    overscroll-behavior-y: none;
   }
 
   h1, h2, h3, h4 {

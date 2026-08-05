@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { MobileActionBar } from "@/components/layout/MobileActionBar";
+import { BottomNav } from "@/components/layout/BottomNav";
 import { FloatingContact } from "@/components/layout/FloatingContact";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
@@ -59,10 +59,11 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
-      <MobileActionBar />
+      <BottomNav />
       <FloatingContact />
       <ScrollToTop />
-      <div aria-hidden className="lg:hidden h-16" />
+      {/* Safe-area + bottom-nav spacer on mobile */}
+      <div aria-hidden className="lg:hidden" style={{ height: "calc(58px + env(safe-area-inset-bottom))" }} />
     </BrowserRouter>
   );
 }

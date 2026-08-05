@@ -42,7 +42,7 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
 
       {/* ============ HERO ============ */}
-      <section className="relative bg-mist px-3 sm:px-4 md:px-6 pt-24 md:pt-28 pb-4">
+      <section className="relative bg-mist px-3 sm:px-4 md:px-6 pt-16 md:pt-28 pb-4">
         <div className="relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] min-h-[86vh] flex items-center shadow-lift">
           {/* Full-bleed background slideshow */}
           <HeroSlideshow images={home.hero.images} />
