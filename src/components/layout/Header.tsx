@@ -201,7 +201,7 @@ export function Header({ services }: { services: ServiceLink[] }) {
                         {/* Featured panel */}
                         <div className="relative flex flex-col justify-end p-6 text-soft-white">
                           <Image
-                            src="/assets/stock/img-34.jpg"
+                            src="/assets/stock/living-dr-1.jpg"
                             alt=""
                             aria-hidden
                             fill

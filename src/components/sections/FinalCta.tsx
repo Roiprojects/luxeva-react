@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 export function FinalCta({
   title = "Ready to design your dream home?",
   body = "Book a consultation with Luxeva Care and let’s create a space that reflects your lifestyle.",
-  image = "/assets/stock/img-27.jpg",
+  image = "/assets/stock/living-dr-7.jpg",
 }: {
   title?: string;
   body?: string;

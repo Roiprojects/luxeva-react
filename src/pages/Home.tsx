@@ -42,37 +42,37 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
 
       {/* ============ HERO ============ */}
-      <section className="relative bg-mist px-3 sm:px-4 md:px-6 pt-16 md:pt-28 pb-4">
-        <div className="relative overflow-hidden rounded-[1.5rem] md:rounded-[2.5rem] min-h-[86vh] flex items-center shadow-lift">
+      <section className="relative bg-mist px-2 sm:px-4 md:px-6 pt-14 md:pt-28 pb-3 md:pb-4">
+        <div className="relative overflow-hidden rounded-2xl md:rounded-[2.5rem] min-h-[78vh] md:min-h-[86vh] flex items-center shadow-lift">
           {/* Full-bleed background slideshow */}
           <HeroSlideshow images={home.hero.images} />
           {/* Scrims for legibility */}
-          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/45 to-ink/30" />
-          <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-ink/75 via-ink/25 to-transparent" />
-          <div aria-hidden className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[1.5rem] md:rounded-[2.5rem]" />
+          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/50 to-ink/20" />
+          <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/20 to-transparent" />
+          <div aria-hidden className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl md:rounded-[2.5rem]" />
 
-          {/* Rating badge */}
-          <div className="absolute top-5 right-5 hidden sm:flex items-center gap-2 rounded-full bg-paper/90 backdrop-blur px-4 py-2 shadow-card ring-1 ring-gold/25 animate-float-slow">
-            <span className="flex gap-0.5 text-gold"><Star size={14} className="fill-gold" /><Star size={14} className="fill-gold" /><Star size={14} className="fill-gold" /></span>
-            <span className="text-xs font-semibold text-ink">Premium finishing</span>
+          {/* Premium badge — visible on all screens */}
+          <div className="absolute top-4 right-4 sm:top-5 sm:right-5 flex items-center gap-2 rounded-full bg-paper/90 backdrop-blur px-3 py-1.5 sm:px-4 sm:py-2 shadow-card ring-1 ring-gold/25 animate-float-slow">
+            <span className="flex gap-0.5 text-gold"><Star size={13} className="fill-gold" /><Star size={13} className="fill-gold" /><Star size={13} className="fill-gold" /></span>
+            <span className="text-[11px] sm:text-xs font-semibold text-ink">Premium finishing</span>
           </div>
 
           {/* Overlaid content */}
           <div className="relative w-full">
-            <div className="container-lux grid lg:grid-cols-[1.25fr_0.75fr] gap-10 items-center py-14 md:py-20">
+            <div className="container-lux grid lg:grid-cols-[1.25fr_0.75fr] gap-10 items-center py-10 md:py-20">
               <div className="max-w-2xl">
-                <p className="eyebrow text-gold-2 mb-5 animate-rise" style={{ animationDelay: "40ms" }}>{home.hero.eyebrow}</p>
-                <h1 className="text-white text-[2.7rem] sm:text-6xl lg:text-[4.2rem] font-semibold leading-[1.03] animate-rise [text-wrap:balance] drop-shadow-sm" style={{ animationDelay: "120ms" }} dangerouslySetInnerHTML={{ __html: home.hero.heading }} />
-                <p className="mt-6 max-w-xl text-lg text-white/85 leading-relaxed animate-rise" style={{ animationDelay: "240ms" }}>{home.hero.subheading}</p>
-                <div className="mt-8 flex flex-wrap gap-3 animate-rise" style={{ animationDelay: "340ms" }}>
-                  <Button href="/contact" size="lg">Book Free Consultation</Button>
-                  <Button href="#rooms" variant="on-dark" size="lg">Explore Designs <ArrowRight size={18} /></Button>
+                <p className="eyebrow text-gold-2 mb-4 animate-rise" style={{ animationDelay: "40ms" }}>{home.hero.eyebrow}</p>
+                <h1 className="text-white text-[2rem] sm:text-5xl lg:text-[4.2rem] font-semibold leading-[1.08] sm:leading-[1.03] animate-rise [text-wrap:balance] drop-shadow-sm" style={{ animationDelay: "120ms" }} dangerouslySetInnerHTML={{ __html: home.hero.heading }} />
+                <p className="mt-4 md:mt-6 max-w-xl text-base md:text-lg text-white/85 leading-relaxed animate-rise" style={{ animationDelay: "240ms" }}>{home.hero.subheading}</p>
+                <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 animate-rise" style={{ animationDelay: "340ms" }}>
+                  <Button href="/contact" size="lg" className="w-full sm:w-auto justify-center">Book Free Consultation</Button>
+                  <Button href="#rooms" variant="on-dark" size="lg" className="w-full sm:w-auto justify-center">Explore Designs <ArrowRight size={18} /></Button>
                 </div>
-                <div className="mt-9 flex flex-wrap items-center gap-x-8 gap-y-4 animate-rise" style={{ animationDelay: "440ms" }}>
+                <div className="mt-7 md:mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 animate-rise" style={{ animationDelay: "440ms" }}>
                   {home.hero.stats.map((s) => (
-                    <div key={s.label} className="flex flex-col border-l border-white/25 pl-4">
+                    <div key={s.label} className="flex flex-col border-l border-white/25 pl-3 md:pl-4">
                       <span className="text-sm font-semibold text-white">{s.value}</span>
-                      <span className="text-xs text-white/65">{s.label}</span>
+                      <span className="text-[11px] text-white/65">{s.label}</span>
                     </div>
                   ))}
                 </div>
@@ -126,7 +126,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ ROOM CATEGORIES ============ */}
-      <section id="rooms" className="scroll-mt-24 py-20 md:py-28 relative overflow-hidden">
+      <section id="rooms" className="scroll-mt-14 py-14 md:py-28 relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute -top-24 right-[-6rem] h-80 w-80 rounded-full bg-gold/10 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute bottom-0 left-[-5rem] h-72 w-72 rounded-full bg-brand/10 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute inset-0 text-brand/[0.06] pattern-dots [mask-image:radial-gradient(70%_45%_at_50%_0%,#000,transparent)]" />
@@ -150,7 +150,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ FEATURED SERVICES ============ */}
-      <section className="py-20 md:py-24 bg-mist relative overflow-hidden">
+      <section className="py-14 md:py-24 bg-mist relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute top-10 left-[-5rem] h-72 w-72 rounded-full bg-gold/10 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 w-1/2 text-ink/[0.05] pattern-grid [mask-image:linear-gradient(to_left,#000,transparent)]" />
         <Container className="relative">
@@ -167,7 +167,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ FULL HOME / WHY CHOOSE ============ */}
-      <section className="py-20 md:py-28">
+      <section className="py-14 md:py-28">
         <Container className="grid lg:grid-cols-2 gap-12 items-center">
           <Reveal variant="left" className="relative order-2 lg:order-1">
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-card">
@@ -203,11 +203,11 @@ export default function HomePage() {
           <div className="mt-12">
             <Carousel
               slides={[
-                { image: "/assets/stock/indian-living.jpg", title: "Contemporary Living", caption: "Layered lighting, custom joinery and a calm material palette." },
-                { image: "/assets/stock/kitchen-open.jpg", title: "Modular Kitchens", caption: "Function meets finish — smart storage, durable surfaces and flow." },
-                { image: "/assets/stock/img-27.jpg", title: "Full-Home Villa Interiors", caption: "Designed and delivered end-to-end by a single team." },
-                { image: "/assets/stock/indian-bedroom.jpg", title: "Restful Bedrooms", caption: "Custom beds, wardrobes and warm, dimmable lighting." },
-                { image: "/assets/stock/img-20.jpg", title: "Smart, Modern Homes", caption: "Home automation designed into the interior from day one." },
+                { image: "/assets/stock/living-dr-1.jpg", title: "Contemporary Living", caption: "Layered lighting, custom joinery and a calm material palette." },
+                { image: "/assets/stock/kitchen-dr-1.jpg", title: "Modular Kitchens", caption: "Function meets finish — smart storage, durable surfaces and flow." },
+                { image: "/assets/stock/wardrobe-1.jpg", title: "Custom Wardrobes", caption: "Designed and built to measure — tailored to your bedroom." },
+                { image: "/assets/stock/bedroom-dr-1.jpg", title: "Restful Bedrooms", caption: "Custom beds, wardrobes and warm, dimmable lighting." },
+                { image: "/assets/stock/ent-unit-1.jpg", title: "Entertainment Units", caption: "Premium media walls with LED accents and integrated storage." },
               ]}
             />
           </div>
@@ -215,7 +215,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ PROCESS ============ */}
-      <section className="py-20 md:py-28 bg-navy text-white overflow-hidden relative">
+      <section className="py-14 md:py-28 bg-navy text-white overflow-hidden relative">
         <div aria-hidden className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-gold/15 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute inset-0 text-white/[0.045] pattern-grid [mask-image:radial-gradient(80%_60%_at_50%_40%,#000,transparent)]" />
         <div aria-hidden className="pointer-events-none absolute inset-0 spotlight" />
@@ -236,7 +236,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ WHY-CHOOSE ICON GRID ============ */}
-      <section className="py-20 md:py-24 relative overflow-hidden">
+      <section className="py-14 md:py-24 relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute top-0 right-[-6rem] h-80 w-80 rounded-full bg-brand/10 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute -bottom-16 left-[-4rem] h-72 w-72 rounded-full bg-gold/10 blur-3xl" />
         <Container className="relative">
@@ -261,7 +261,7 @@ export default function HomePage() {
 
       {/* ============ PORTFOLIO PREVIEW ============ */}
       {projects.length > 0 && (
-        <section className="py-20 md:py-24 bg-mist">
+        <section className="py-14 md:py-24 bg-mist">
           <Container>
             <div className="flex flex-wrap items-end justify-between gap-4">
               <SectionHeading align="left" eyebrow="Our work" title="Recent projects & designs" />
@@ -315,7 +315,7 @@ export default function HomePage() {
       )}
 
       {/* ============ FAQ ============ */}
-      <section className="py-20 md:py-24 bg-mist relative overflow-hidden">
+      <section className="py-14 md:py-24 bg-mist relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute -top-16 right-[-5rem] h-72 w-72 rounded-full bg-gold/10 blur-3xl" />
         <div aria-hidden className="pointer-events-none absolute inset-0 text-ink/[0.04] pattern-dots [mask-image:radial-gradient(60%_60%_at_85%_100%,#000,transparent)]" />
         <Container className="relative max-w-3xl">

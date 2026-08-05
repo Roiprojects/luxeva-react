@@ -25,7 +25,7 @@ export default function AboutPage() {
         <Container className="grid lg:grid-cols-2 gap-12 items-center">
           <Reveal className="relative">
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-card">
-              <Image src="/assets/stock/img-11.jpg" alt="Luxeva Care residential interior" fill sizes="(max-width:1024px) 100vw, 48vw" className="object-cover" />
+              <Image src="/assets/stock/living-dr-2.jpg" alt="Luxeva Care residential interior" fill sizes="(max-width:1024px) 100vw, 48vw" className="object-cover" />
             </div>
           </Reveal>
           <div>

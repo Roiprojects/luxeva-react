@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 /**
- * Floating Call + WhatsApp buttons on the left edge (desktop).
- * Uses tel:/wa.me when the client has supplied numbers, otherwise routes to /contact.
- * Mobile already has the sticky bottom action bar, so this is lg-only.
+ * Floating WhatsApp + Call buttons.
+ * Desktop: left edge column.
+ * Mobile: single WhatsApp button above the bottom nav bar (right side).
  */
 export function FloatingContact() {
   const c = getContactDetails();
@@ -17,20 +17,36 @@ export function FloatingContact() {
   const wa = whatsappHref(c.whatsapp, "Hello Luxeva Care, I'd like to enquire about interior services.");
 
   return (
-    <div className="hidden lg:flex fixed left-5 bottom-6 z-40 flex-col gap-3">
-      <FloatBtn
-        href={wa ?? "/contact"}
-        external={!!wa}
-        label="Chat on WhatsApp"
-        className="bg-[#25D366] hover:bg-[#1ebe5b]"
-        ringClassName="bg-[#25D366]"
-      >
-        <WhatsAppIcon size={24} />
-      </FloatBtn>
-      <FloatBtn href={tel ?? "/contact"} label="Call us" className="bg-brand hover:bg-brand-dark">
-        <Phone size={20} />
-      </FloatBtn>
-    </div>
+    <>
+      {/* Desktop: left column with both buttons */}
+      <div className="hidden lg:flex fixed left-5 bottom-6 z-40 flex-col gap-3">
+        <FloatBtn
+          href={wa ?? "/contact"}
+          external={!!wa}
+          label="Chat on WhatsApp"
+          className="bg-[#25D366] hover:bg-[#1ebe5b]"
+          ringClassName="bg-[#25D366]"
+        >
+          <WhatsAppIcon size={24} />
+        </FloatBtn>
+        <FloatBtn href={tel ?? "/contact"} label="Call us" className="bg-brand hover:bg-brand-dark">
+          <Phone size={20} />
+        </FloatBtn>
+      </div>
+
+      {/* Mobile: WhatsApp button above the bottom nav */}
+      <div className="lg:hidden fixed right-4 z-40" style={{ bottom: "calc(66px + env(safe-area-inset-bottom))" }}>
+        <FloatBtn
+          href={wa ?? "/contact"}
+          external={!!wa}
+          label="Chat on WhatsApp"
+          className="bg-[#25D366] hover:bg-[#1ebe5b] w-14 h-14"
+          ringClassName="bg-[#25D366]"
+        >
+          <WhatsAppIcon size={26} />
+        </FloatBtn>
+      </div>
+    </>
   );
 }
 
