@@ -27,7 +27,7 @@ export async function submitEnquiry(
     });
     if (res.ok) return { ok: true };
     const data = (await res.json().catch(() => null)) as EnquiryResult | null;
-    return data ?? { ok: false, error: "Something went wrong. Please try again." };
+    return data ?? { ok: false, error: "Enquiry service is unavailable. Please WhatsApp us instead." };
   } catch {
     // API unreachable — don't block the visitor.
     console.warn("[enquiry] API unreachable; accepted client-side only");
