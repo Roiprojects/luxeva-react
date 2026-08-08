@@ -36,6 +36,7 @@ test("deployment API exposes the enquiry endpoint", () => {
   assert.match(apiEnquirySource, /insert into enquiries/);
   assert.match(apiEnquirySource, /statusCode = 200/);
   assert.match(apiHealthSource, /statusCode = 200/);
+  assert.match(enquirySubmitSource, /Our enquiry service is unavailable\. Please WhatsApp us instead\./);
 });
 
 test("Vercel is configured for the Vite SPA and serverless API functions", () => {
