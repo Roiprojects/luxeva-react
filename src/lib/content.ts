@@ -26,9 +26,9 @@ const IMG = "/assets/stock";
 
 /* Contact — ALL NULL until verified (MISSING_CLIENT_INPUTS §A). */
 const defaultContactDetails: ContactDetails = {
-  phone: null,
-  whatsapp: null,
-  email: null,
+  phone: "+91 9900026502",
+  whatsapp: "+91 9900026502",
+  email: "atul.kumar@luxevacare.com",
   address: null,
   mapsEmbedUrl: null,
   workingHours: null,
@@ -177,12 +177,10 @@ const defaultServices: Service[] = [
     shortDescription: "Electrical planning and execution for interior projects.",
     longDescription: "Electrical planning and execution for interior projects — wiring, switchboard setup, lighting circuits and safe, tidy installations coordinated with the overall interior.",
     benefits: ["Wiring & switchboards", "Lighting circuits", "Concealed, tidy runs", "Coordinated with interiors", "Safe execution"],
-    heroImage: pic("false-ceil-1.jpg", "Layered interior lighting and false ceiling"),
+    heroImage: pic("fabrication-weld.jpg", "Electrical and fabrication work in progress"),
     gallery: [
-      pic("false-ceil-2.jpg", "Warm cove lighting integrated into a living space"),
-      pic("false-ceil-4.jpg", "Linear electrical lighting layout in a modern ceiling"),
-      pic("false-ceil-5.jpg", "Decorative ceiling lighting detail"),
-      pic("false-ceil-6.jpg", "Modern ceiling fixture with concealed lighting"),
+      pic("fabrication-weld.jpg", "Technical fabrication work in progress"),
+      pic("smart-lock.jpg", "Smart electrical lock installation"),
     ],
     published: true,
   },
@@ -205,7 +203,7 @@ const defaultServices: Service[] = [
     shortDescription: "Smart lighting, controls and automation for modern homes.",
     longDescription: "Bring convenience and control to your home with smart lighting, controls and automation, planned into the interior from the start for a clean, integrated result.",
     benefits: ["Smart lighting & scenes", "Centralised controls", "Planned into the interior", "Convenience & efficiency"],
-    heroImage: pic("img-20.jpg", "Smart home television and automation controls"),
+    heroImage: pic("ent-unit-6.jpg", "Smart-ready entertainment wall with integrated lighting and media controls"),
     featured: true,
     published: true,
   },
@@ -303,7 +301,7 @@ const defaultServices: Service[] = [
     heroImage: pic("living-dr-5.jpg", "Elegant sofa and living room interior"),
     gallery: [
       pic("living-dr-7.jpg", "Premium sofa arrangement in a warm living room"),
-      pic("img-13.jpg", "Close-up sofa fabric and seating detail"),
+      pic("living-dr-6.jpg", "Curated living room seating with custom sofa styling"),
       pic("living-dr-3.jpg", "Contemporary sofa-led living space"),
       pic("living-dr-8.jpg", "Compact lounge seating with soft neutral tones"),
     ],
@@ -318,7 +316,7 @@ const defaultServices: Service[] = [
     benefits: ["Custom sizing", "Matched to interior", "Durable materials", "Seating planned around you"],
     heroImage: pic("dining.jpg", "Elegant dining table with place settings"),
     gallery: [
-      pic("img-37.jpg", "Modern dining space with upholstered chairs"),
+      pic("dining.jpg", "Modern dining table setup with coordinated chairs"),
       pic("kitchen-dine.jpg", "Dining area connected to the kitchen"),
       pic("kitchen-open.jpg", "Open-plan kitchen and dining composition"),
     ],
@@ -331,7 +329,7 @@ const defaultServices: Service[] = [
     shortDescription: "UPVC windows and partitions for comfort and efficiency.",
     longDescription: "UPVC windows and partitions that improve insulation, reduce noise and give a clean, low-maintenance finish, installed precisely as part of your interior.",
     benefits: ["Thermal & sound insulation", "Low maintenance", "Precise installation", "Clean modern look"],
-    heroImage: pic("img-02.jpg", "UPVC-style glass partitions and framed window system"),
+    heroImage: pic("facade-windows.jpg", "Large modern window system and partition detailing"),
     published: true,
   },
   {
@@ -353,10 +351,9 @@ const defaultServices: Service[] = [
     shortDescription: "Ergonomic study tables and compact home-office setups.",
     longDescription: "Home-office and study setups for students and professionals — study tables, work desks, wall shelves, storage and ergonomic, well-lit layouts.",
     benefits: ["Study & work desks", "Wall shelves & storage", "Ergonomic layout", "Task lighting"],
-    heroImage: pic("img-06.jpg", "Compact study and home-office setup with desk and seating"),
+    heroImage: pic("office-desk.jpg", "Compact home-office desk setup with storage and task seating"),
     gallery: [
       pic("office-desk.jpg", "Dedicated office desk and workstation"),
-      pic("img-02.jpg", "Office-style partitioned workspace"),
       pic("commercial-office.jpg", "Professional workspace with glass partitions"),
     ],
     published: true,
@@ -370,7 +367,7 @@ const defaultServices: Service[] = [
     benefits: ["Workstations & desks", "Storage & filing units", "Meeting & reception units", "Ergonomic layouts", "Durable commercial finishes"],
     heroImage: pic("office-desk.jpg", "Office desk setup showing the kind of workstation furniture we build"),
     gallery: [
-      pic("img-02.jpg", "Office storage and built-in cabinetry within a workplace"),
+      pic("commercial-office.jpg", "Commercial workspace with fitted office furnishings"),
       pic("commercial-office.jpg", "Glass-partitioned office layout with integrated furnishings"),
       pic("office-desk.jpg", "Executive office desk and workstation furniture"),
     ],
@@ -413,7 +410,7 @@ const defaultServices: Service[] = [
     shortDescription: "Complete showroom and commercial interior design and execution.",
     longDescription: "Complete showroom interior design and execution for retail businesses — layout planning, product display units, billing counters, lighting, branding walls, customer-flow planning and premium finishing.",
     benefits: ["Layout & customer flow", "Display units & counters", "Branding wall", "Lighting & finishing"],
-    heroImage: pic("img-02.jpg", "Modern commercial interior with glass partitions"),
+    heroImage: pic("commercial-office.jpg", "Modern commercial interior with display-ready partitions and circulation"),
     gallery: [
       pic("commercial-office.jpg", "Commercial office and reception circulation"),
       pic("office-desk.jpg", "Showroom or office workstation setup"),
@@ -562,12 +559,39 @@ export function applyContentOverrides(payload: Partial<{
   leadership: Leader[];
 }>) {
   resetContentToDefaults();
-  if (payload.contactDetails) contactDetails = clone(payload.contactDetails);
+  if (payload.contactDetails) {
+    contactDetails = {
+      ...clone(defaultContactDetails),
+      ...clone(payload.contactDetails),
+      phone: payload.contactDetails.phone || defaultContactDetails.phone,
+      whatsapp: payload.contactDetails.whatsapp || defaultContactDetails.whatsapp,
+      email: payload.contactDetails.email || defaultContactDetails.email,
+    };
+  }
   if (payload.home) home = clone(payload.home);
   if (payload.roomCategories) roomCategories = clone(payload.roomCategories);
   if (payload.about) about = clone(payload.about);
-  if (payload.services) services = clone(payload.services);
-  if (payload.projects) projects = clone(payload.projects);
+  if (payload.services) {
+    services = clone(payload.services);
+    const electrical = services.find((s) => s.slug === "electrician-service");
+    if (electrical) {
+      electrical.heroImage = pic("fabrication-weld.jpg", "Electrical and fabrication work in progress");
+      electrical.gallery = [pic("fabrication-weld.jpg", "Technical fabrication work in progress"), pic("smart-lock.jpg", "Smart electrical lock installation")];
+    }
+    const bedrooms = services.find((s) => s.slug === "custom-beds");
+    if (bedrooms) {
+      bedrooms.heroImage = pic("bedroom-dr-1.jpg", "Modern Indian bedroom with LED platform bed and full-height wardrobe");
+      bedrooms.gallery = [pic("bedroom-dr-2.jpg", "Warm bedroom with wood panelling"), pic("bedroom-dr-3.jpg", "Contemporary master bedroom design"), pic("bedroom-dr-4.jpg", "Minimalist bedroom with integrated storage"), pic("bedroom-dr-5.jpg", "Bedroom with accent wall and lighting")];
+    }
+  }
+  if (payload.projects) {
+    projects = clone(payload.projects);
+    const bedroomProject = projects.find((p) => p.slug === "serene-master-bedroom");
+    if (bedroomProject) {
+      bedroomProject.cover = pic("bedroom-dr-1.jpg", "Serene modern master bedroom");
+      bedroomProject.gallery = [pic("bedroom-dr-2.jpg", "Bedroom with wood panelling"), pic("bedroom-dr-3.jpg", "Contemporary bedroom design"), pic("bedroom-dr-4.jpg", "Minimalist bedroom detail")];
+    }
+  }
   if (payload.faqs) faqs = clone(payload.faqs);
   if (payload.testimonials) testimonials = clone(payload.testimonials);
   if (payload.leadership) leadership = clone(payload.leadership);

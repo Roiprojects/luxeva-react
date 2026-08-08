@@ -60,7 +60,7 @@ export function QuickEnquiry() {
           aria-label="Your name"
         />
         <input
-          required type="tel" pattern="[+\d][\d\s-]{6,}"
+          required type="tel" inputMode="tel" maxLength={15} pattern="[+\d][\d\s-]{6,14}"
           value={phone} onChange={(e) => setPhone(e.target.value)}
           placeholder="Phone number"
           className="w-full rounded-xl border border-line bg-mist px-4 py-3 text-sm focus:border-brand focus:bg-paper focus:outline-none transition-colors"

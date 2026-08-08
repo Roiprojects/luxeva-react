@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Phone, CalendarCheck } from "lucide-react";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { getContactDetails } from "@/lib/content";
@@ -22,7 +22,7 @@ export function MobileActionBar() {
             Call
           </a>
         ) : (
-          <Link href="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
+          <Link to="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
             <Phone size={19} className="text-navy" />
             Call
           </Link>
@@ -33,12 +33,12 @@ export function MobileActionBar() {
             WhatsApp
           </a>
         ) : (
-          <Link href="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
+          <Link to="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
             <WhatsAppIcon size={18} className="text-[#25D366]" />
             WhatsApp
           </Link>
         )}
-        <Link href="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-semibold text-ink bg-gold/15">
+        <Link to="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-semibold text-ink bg-gold/15">
           <CalendarCheck size={19} className="text-navy" />
           Enquire
         </Link>

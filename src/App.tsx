@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation, Outlet } from "react-router-
 import { useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { BottomNav } from "@/components/layout/BottomNav";
+import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { FloatingContact } from "@/components/layout/FloatingContact";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
@@ -86,7 +86,7 @@ function AppShell() {
         </Routes>
       </main>
       {!isAdmin && <Footer />}
-      {!isAdmin && <BottomNav />}
+      {!isAdmin && <MobileActionBar />}
       {!isAdmin && <FloatingContact />}
       {!isAdmin && <ScrollToTop />}
       {!isAdmin && <div aria-hidden className="lg:hidden" style={{ height: "calc(58px + env(safe-area-inset-bottom))" }} />}

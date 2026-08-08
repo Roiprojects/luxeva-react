@@ -11,6 +11,7 @@ import {
   PROPERTY_TYPES,
   BUDGET_RANGES,
   TIMELINES,
+  SERVICE_INTERESTS,
 } from "@/lib/validation";
 import { submitEnquiry } from "@/lib/enquiry";
 import { cn } from "@/lib/utils";
@@ -63,6 +64,12 @@ function EnquiryFormInner({ defaultService, compact = false }: EnquiryFormProps)
   useEffect(() => {
     renderedAt.current = Date.now();
   }, []);
+
+  useEffect(() => {
+    if (!success) return;
+    const timer = window.setTimeout(() => setSuccess(false), 4500);
+    return () => window.clearTimeout(timer);
+  }, [success]);
 
   const onSubmit = async (values: EnquiryInput) => {
     setServerError(null);
@@ -157,7 +164,10 @@ function EnquiryFormInner({ defaultService, compact = false }: EnquiryFormProps)
 
         <div>
           <label htmlFor="serviceInterest" className={labelCls}>Service of interest</label>
-          <input id="serviceInterest" className={field} {...register("serviceInterest")} />
+          <select id="serviceInterest" className={field} {...register("serviceInterest")}>
+            <option value="">Select a service</option>
+            {SERVICE_INTERESTS.map((service) => <option key={service} value={service}>{service}</option>)}
+          </select>
         </div>
 
         <div>
