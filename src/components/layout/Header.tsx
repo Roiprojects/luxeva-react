@@ -120,7 +120,7 @@ export function Header({ services }: { services: ServiceLink[] }) {
           )}
           <button
             type="button"
-            aria-label="Open navigation menu"
+            aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-navigation"
             onClick={() => setMobileOpen((open) => !open)}
@@ -132,9 +132,27 @@ export function Header({ services }: { services: ServiceLink[] }) {
       </div>
 
       {mobileOpen && (
-        <div id="mobile-navigation" className="lg:hidden absolute top-full inset-x-0 border-b border-line bg-paper shadow-lift">
-          <nav aria-label="Mobile primary" className="max-h-[calc(100dvh-4rem)] overflow-y-auto p-4">
-            <div className="grid gap-1">
+        <div className="lg:hidden">
+          <button
+            type="button"
+            aria-label="Close navigation menu"
+            className="fixed inset-0 top-14 z-0 bg-ink/35 backdrop-blur-[2px]"
+            onClick={() => setMobileOpen(false)}
+          />
+          <div
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+            className="absolute right-0 top-full z-10 w-[min(92vw,26rem)] border-l border-b border-line bg-paper shadow-lift"
+          >
+            <nav aria-label="Mobile primary" className="max-h-[calc(100dvh-4rem)] overflow-y-auto p-4">
+              <div className="mb-4 rounded-2xl bg-navy px-4 py-4 text-white">
+                <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-gold-2">Luxeva Care</p>
+                <p className="mt-1 font-[family-name:var(--font-display)] text-2xl leading-tight">Spaces made personal.</p>
+                <p className="mt-1 text-xs text-white/65">Design consultation at no cost, no obligation.</p>
+              </div>
+              <div className="grid gap-1">
               {nav.map((item) => item.label === "Services" ? (
                 <div key={item.href}>
                   <button
@@ -162,11 +180,12 @@ export function Header({ services }: { services: ServiceLink[] }) {
                   {item.label}
                 </Link>
               ))}
-            </div>
-            <Link href="/contact" onClick={() => setMobileOpen(false)} className="mt-4 flex items-center justify-center rounded-xl bg-brand px-4 py-3.5 font-semibold text-white shadow-brand">
-              Get Free Quote <ArrowRight size={17} />
-            </Link>
-          </nav>
+              </div>
+              <Link href="/contact" onClick={() => setMobileOpen(false)} className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-brand px-4 py-3.5 font-semibold text-white shadow-brand">
+                Get Free Quote <ArrowRight size={17} />
+              </Link>
+            </nav>
+          </div>
         </div>
       )}
 

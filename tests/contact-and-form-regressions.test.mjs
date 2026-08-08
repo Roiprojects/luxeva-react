@@ -36,7 +36,7 @@ test("deployment API exposes the enquiry endpoint", () => {
 });
 
 test("mobile header exposes an accessible hamburger menu and navigation drawer", () => {
-  assert.match(headerSource, /aria-label="Open navigation menu"/);
+  assert.match(headerSource, /aria-label=\{mobileOpen \? "Close navigation menu" : "Open navigation menu"\}/);
   assert.match(headerSource, /aria-expanded=\{mobileOpen\}/);
   assert.match(headerSource, /mobileOpen &&/);
   assert.match(headerSource, /nav\.map/);

@@ -158,11 +158,12 @@ export default function HomePage() {
             <SectionHeading align="left" eyebrow="What we do" title="Complete interior solutions" intro="From design consultation to furniture, finishing and installation — every detail, one team." />
             <Button href="/services" variant="outline" size="sm">All services <ArrowRight size={16} /></Button>
           </div>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
             {services.map((s, i) => (
-              <Reveal key={s.slug} delay={i * 70} variant="scale"><ServiceCard service={s} /></Reveal>
+              <Reveal key={s.slug} delay={i * 70} variant="scale" className="min-w-[82vw] snap-start sm:min-w-0"><ServiceCard service={s} /></Reveal>
             ))}
           </div>
+          <p className="mt-1 text-center text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/45 sm:hidden">Swipe for more services</p>
         </Container>
       </section>
 

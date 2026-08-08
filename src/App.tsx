@@ -89,7 +89,7 @@ function AppShell() {
       {!isAdmin && <MobileActionBar />}
       {!isAdmin && <FloatingContact />}
       {!isAdmin && <ScrollToTop />}
-      {!isAdmin && <div aria-hidden className="lg:hidden" style={{ height: "calc(58px + env(safe-area-inset-bottom))" }} />}
+      {!isAdmin && <div aria-hidden className="lg:hidden" style={{ height: "calc(88px + env(safe-area-inset-bottom))" }} />}
     </>
   );
 }
