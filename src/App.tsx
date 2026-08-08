@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, Outlet } from "react-router-dom";
 import { useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -20,6 +20,14 @@ import Contact from "@/pages/Contact";
 import Privacy from "@/pages/Privacy";
 import Terms from "@/pages/Terms";
 import NotFound from "@/pages/NotFound";
+import AdminLogin from "@/pages/admin/AdminLogin";
+import AdminLayout from "@/pages/admin/AdminLayout";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminContentEditor from "@/pages/admin/AdminContentEditor";
+import AdminEnquiries from "@/pages/admin/AdminEnquiries";
+import AdminUsers from "@/pages/admin/AdminUsers";
+import AdminSettings from "@/pages/admin/AdminSettings";
+import AdminMediaLibrary from "@/pages/admin/AdminMediaLibrary";
 
 /** Scroll to top on every route change. */
 function ScrollToTopOnNav() {
@@ -30,18 +38,20 @@ function ScrollToTopOnNav() {
   return null;
 }
 
-export default function App() {
+function AppShell() {
   const serviceLinks = getServices().map((s) => ({
     slug: s.slug,
     title: s.title,
     category: s.category,
   }));
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTopOnNav />
-      <ScrollProgress />
-      <Header services={serviceLinks} />
+      {!isAdmin && <ScrollProgress />}
+      {!isAdmin && <Header services={serviceLinks} />}
       <main id="main" className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -55,15 +65,39 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy-policy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="home" element={<AdminContentEditor />} />
+            <Route path="about" element={<AdminContentEditor />} />
+            <Route path="rooms" element={<AdminContentEditor />} />
+            <Route path="services" element={<AdminContentEditor />} />
+            <Route path="portfolio" element={<AdminContentEditor />} />
+            <Route path="faqs" element={<AdminContentEditor />} />
+            <Route path="testimonials" element={<AdminContentEditor />} />
+            <Route path="leadership" element={<AdminContentEditor />} />
+            <Route path="contact-settings" element={<AdminContentEditor />} />
+            <Route path="enquiries" element={<AdminEnquiries />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="settings" element={<AdminSettings />} />
+            <Route path="media" element={<AdminMediaLibrary />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <Footer />
-      <BottomNav />
-      <FloatingContact />
-      <ScrollToTop />
-      {/* Safe-area + bottom-nav spacer on mobile */}
-      <div aria-hidden className="lg:hidden" style={{ height: "calc(58px + env(safe-area-inset-bottom))" }} />
+      {!isAdmin && <Footer />}
+      {!isAdmin && <BottomNav />}
+      {!isAdmin && <FloatingContact />}
+      {!isAdmin && <ScrollToTop />}
+      {!isAdmin && <div aria-hidden className="lg:hidden" style={{ height: "calc(58px + env(safe-area-inset-bottom))" }} />}
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
     </BrowserRouter>
   );
 }

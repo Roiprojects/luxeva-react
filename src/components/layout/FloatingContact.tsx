@@ -34,8 +34,8 @@ export function FloatingContact() {
         </FloatBtn>
       </div>
 
-      {/* Mobile: WhatsApp button above the bottom nav */}
-      <div className="lg:hidden fixed right-4 z-40" style={{ bottom: "calc(66px + env(safe-area-inset-bottom))" }}>
+      {/* Mobile: WhatsApp button left side, above the bottom nav */}
+      <div className="lg:hidden fixed left-4 z-40" style={{ bottom: "calc(70px + env(safe-area-inset-bottom))" }}>
         <FloatBtn
           href={wa ?? "/contact"}
           external={!!wa}

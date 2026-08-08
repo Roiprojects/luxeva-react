@@ -25,7 +25,7 @@ import type {
 const IMG = "/assets/stock";
 
 /* Contact — ALL NULL until verified (MISSING_CLIENT_INPUTS §A). */
-const contactDetails: ContactDetails = {
+const defaultContactDetails: ContactDetails = {
   phone: null,
   whatsapp: null,
   email: null,
@@ -38,17 +38,17 @@ const contactDetails: ContactDetails = {
 /* ------------------------------------------------------------------ */
 /* Home page editable copy                                              */
 /* ------------------------------------------------------------------ */
-export const home = {
+const defaultHome = {
   hero: {
     eyebrow: "Residential & Commercial Interiors",
     heading: 'Crafted luxury interiors,<br/><span class="text-gradient-gold">designed &amp; delivered</span>',
     subheading:
       "From design and modular woodwork to electricals, finishing and handover — Luxeva Care delivers complete, beautiful interiors for homes and commercial spaces.",
-    image: `${IMG}/living-dr-1.jpg`,
+    image: `${IMG}/bedroom-dr-1.jpg`,
     images: [
-      { src: `${IMG}/living-dr-1.jpg`, alt: "Elegant Indian home living room by Luxeva Care" },
-      { src: `${IMG}/kitchen-dr-1.jpg`, alt: "Modern modular kitchen interior" },
       { src: `${IMG}/bedroom-dr-1.jpg`, alt: "Warm Indian bedroom interior" },
+      { src: `${IMG}/living-dr-6.jpg`, alt: "Elegant Indian living room with statement wall design" },
+      { src: `${IMG}/kitchen-dr-1.jpg`, alt: "Modern modular kitchen interior" },
       { src: `${IMG}/false-ceil-1.jpg`, alt: "Stunning false ceiling with integrated LED lighting" },
       { src: `${IMG}/living-dr-5.jpg`, alt: "Spacious Indian living space" },
     ],
@@ -98,7 +98,7 @@ export const home = {
 
 /* Room categories — the "designs for every room" tiles. */
 export type RoomCategory = { title: string; image: string; href: string };
-export const roomCategories: RoomCategory[] = [
+const defaultRoomCategories: RoomCategory[] = [
   { title: "Living Room", image: `${IMG}/living-dr-1.jpg`, href: "/services/residential-home-interior" },
   { title: "Modular Kitchen", image: `${IMG}/kitchen-dr-1.jpg`, href: "/services/kitchen-granite-quartz" },
   { title: "Bedroom", image: `${IMG}/bedroom-dr-1.jpg`, href: "/services/custom-beds" },
@@ -112,7 +112,7 @@ export const roomCategories: RoomCategory[] = [
 /* ------------------------------------------------------------------ */
 /* About page editable copy                                             */
 /* ------------------------------------------------------------------ */
-export const about = {
+const defaultAbout = {
   intro:
     "Luxeva Care Pvt Ltd is an interior design and execution company delivering complete residential home interiors, with dedicated capability for commercial showroom spaces.",
   story:
@@ -132,7 +132,7 @@ export const about = {
 const img = (n: string, alt: string, isRender = false) => ({ src: `${IMG}/img-${n}.jpg`, alt, isRender });
 const pic = (file: string, alt: string, isRender = false) => ({ src: `${IMG}/${file}`, alt, isRender });
 
-const services: Service[] = [
+const defaultServices: Service[] = [
   {
     slug: "residential-home-interior",
     title: "Residential Home Interior",
@@ -141,9 +141,9 @@ const services: Service[] = [
     longDescription:
       "Our flagship service: end-to-end interior design and execution for apartments, villas, independent houses and premium homes. From space planning and custom furniture to lighting, finishing and handover, we manage every detail so your home comes together beautifully and on time.",
     benefits: ["End-to-end design & execution", "Personalised space planning", "Custom furniture & storage", "Coordinated trades under one roof", "Premium finishing"],
-    heroImage: pic("living-dr-1.jpg", "Elegant Indian home living room interior"),
+    heroImage: pic("living-dr-7.jpg", "Warm, complete residential home interior with coordinated living furniture"),
     gallery: [pic("living-dr-2.jpg", "Warm living room with accent wall"), pic("living-dr-3.jpg", "Spacious contemporary living space"), pic("living-dr-4.jpg", "Modern Indian living room"), pic("living-dr-5.jpg", "Open-plan living space with lighting")],
-    process: home.designProcess,
+    process: defaultHome.designProcess,
     featured: true,
     published: true,
   },
@@ -155,7 +155,7 @@ const services: Service[] = [
     longDescription:
       "Professional consultation to plan layouts, furniture placement, storage and lighting so your space works harder and feels calmer. We analyse the site, take measurements and propose a concept and material direction aligned to your budget.",
     benefits: ["Site analysis & measurement", "Layout & furniture planning", "Storage & lighting strategy", "Material & budget guidance", "Design concept direction"],
-    heroImage: pic("living-dr-4.jpg", "Beautifully planned interior living space"),
+    heroImage: pic("living-dr-2.jpg", "Beautifully planned living interior with balanced space planning"),
     featured: true,
     published: true,
   },
@@ -178,6 +178,12 @@ const services: Service[] = [
     longDescription: "Electrical planning and execution for interior projects — wiring, switchboard setup, lighting circuits and safe, tidy installations coordinated with the overall interior.",
     benefits: ["Wiring & switchboards", "Lighting circuits", "Concealed, tidy runs", "Coordinated with interiors", "Safe execution"],
     heroImage: pic("false-ceil-1.jpg", "Layered interior lighting and false ceiling"),
+    gallery: [
+      pic("false-ceil-2.jpg", "Warm cove lighting integrated into a living space"),
+      pic("false-ceil-4.jpg", "Linear electrical lighting layout in a modern ceiling"),
+      pic("false-ceil-5.jpg", "Decorative ceiling lighting detail"),
+      pic("false-ceil-6.jpg", "Modern ceiling fixture with concealed lighting"),
+    ],
     published: true,
   },
   {
@@ -187,8 +193,8 @@ const services: Service[] = [
     shortDescription: "False ceiling and POP work with integrated lighting.",
     longDescription: "False ceiling and POP work that shapes each room and integrates lighting cleanly — from simple cove detailing to statement ceilings for living and dining spaces.",
     benefits: ["Cove & profile ceilings", "Integrated lighting", "Clean, level finishes", "Living & bedroom detailing"],
-    heroImage: pic("false-ceil-1.jpg", "Stunning wavy false ceiling with integrated LED lighting"),
-    gallery: [pic("false-ceil-2.jpg", "Cove ceiling with warm accent lighting"), pic("false-ceil-3.jpg", "Modern POP ceiling design"), pic("false-ceil-4.jpg", "False ceiling with recessed lights"), pic("false-ceil-5.jpg", "Bedroom false ceiling detail")],
+    heroImage: pic("false-ceil-4.jpg", "Modern false ceiling design with geometric integrated lighting"),
+    gallery: [pic("false-ceil-1.jpg", "Curved false ceiling with integrated lighting"), pic("false-ceil-2.jpg", "Cove ceiling with warm accent lighting"), pic("false-ceil-3.jpg", "Modern POP ceiling design"), pic("false-ceil-5.jpg", "Bedroom false ceiling detail")],
     featured: true,
     published: true,
   },
@@ -199,7 +205,7 @@ const services: Service[] = [
     shortDescription: "Smart lighting, controls and automation for modern homes.",
     longDescription: "Bring convenience and control to your home with smart lighting, controls and automation, planned into the interior from the start for a clean, integrated result.",
     benefits: ["Smart lighting & scenes", "Centralised controls", "Planned into the interior", "Convenience & efficiency"],
-    heroImage: pic("ent-unit-1.jpg", "Smart home entertainment unit with integrated lighting"),
+    heroImage: pic("img-20.jpg", "Smart home television and automation controls"),
     featured: true,
     published: true,
   },
@@ -225,7 +231,7 @@ const services: Service[] = [
       pic("kitchen-dr-2.jpg", "White modular kitchen with marble backsplash"),
       pic("kitchen-dr-3.jpg", "Contemporary modular kitchen with island"),
       pic("kitchen-dr-4.jpg", "Sleek kitchen with chimney and quartz countertop"),
-      pic("kitchen-dr-5.jpg", "Open kitchen with wood and white finish"),
+      pic("kitchen-grey.jpg", "Grey modular kitchen with clean countertop lines"),
       pic("kitchen-dr-6.jpg", "Modern kitchen with dark cabinetry"),
       pic("kitchen-dr-7.jpg", "Compact modular kitchen design"),
       pic("kitchen-dr-8.jpg", "L-shaped modular kitchen with backsplash"),
@@ -240,8 +246,8 @@ const services: Service[] = [
     shortDescription: "Kitchen and bathroom tiling, waterproofing and finishing.",
     longDescription: "Expert kitchen and bathroom tile work — floor and wall tiling, backsplashes, shower areas and vanities, with proper waterproofing, level surfaces and clean grout lines for a lasting, premium finish.",
     benefits: ["Kitchen & bathroom tiling", "Wall & floor tiles", "Backsplash & shower areas", "Waterproofing", "Clean grouting & finish"],
-    heroImage: pic("bathroom-1.jpg", "Luxurious modern bathroom with gold fixtures and backlit mirror"),
-    gallery: [pic("bathroom-2.jpg", "Elegant bathroom with marble tiles"), pic("bathroom-3.jpg", "Contemporary bathroom vanity"), pic("bathroom-4.jpg", "Spacious bathroom with walk-in shower"), pic("bathroom-5.jpg", "Modern bathroom tile design")],
+    heroImage: pic("bathroom-5.jpg", "Luxurious modern bathroom with sculpted vanity lighting"),
+    gallery: [pic("bathroom-2.jpg", "Elegant bathroom with marble tiles"), pic("bathroom-3.jpg", "Contemporary bathroom vanity"), pic("bathroom-4.jpg", "Spacious bathroom with walk-in shower"), pic("bathroom-6.jpg", "Minimal bathroom with vanity and wall-mounted fixtures")],
     featured: true,
     published: true,
   },
@@ -295,6 +301,12 @@ const services: Service[] = [
     longDescription: "Custom sofas sized and styled for your living space — comfortable, durable and finished in fabrics that suit your interior and lifestyle.",
     benefits: ["Sized to your space", "Comfort-first build", "Fabric selection", "Durable frames"],
     heroImage: pic("living-dr-5.jpg", "Elegant sofa and living room interior"),
+    gallery: [
+      pic("living-dr-7.jpg", "Premium sofa arrangement in a warm living room"),
+      pic("img-13.jpg", "Close-up sofa fabric and seating detail"),
+      pic("living-dr-3.jpg", "Contemporary sofa-led living space"),
+      pic("living-dr-8.jpg", "Compact lounge seating with soft neutral tones"),
+    ],
     published: true,
   },
   {
@@ -305,6 +317,11 @@ const services: Service[] = [
     longDescription: "Custom dining tables and units designed to seat your family comfortably and complement the surrounding interior.",
     benefits: ["Custom sizing", "Matched to interior", "Durable materials", "Seating planned around you"],
     heroImage: pic("dining.jpg", "Elegant dining table with place settings"),
+    gallery: [
+      pic("img-37.jpg", "Modern dining space with upholstered chairs"),
+      pic("kitchen-dine.jpg", "Dining area connected to the kitchen"),
+      pic("kitchen-open.jpg", "Open-plan kitchen and dining composition"),
+    ],
     published: true,
   },
   {
@@ -314,7 +331,7 @@ const services: Service[] = [
     shortDescription: "UPVC windows and partitions for comfort and efficiency.",
     longDescription: "UPVC windows and partitions that improve insulation, reduce noise and give a clean, low-maintenance finish, installed precisely as part of your interior.",
     benefits: ["Thermal & sound insulation", "Low maintenance", "Precise installation", "Clean modern look"],
-    heroImage: pic("facade-windows.jpg", "Modern building facade with windows and partitions"),
+    heroImage: pic("img-02.jpg", "UPVC-style glass partitions and framed window system"),
     published: true,
   },
   {
@@ -336,7 +353,12 @@ const services: Service[] = [
     shortDescription: "Ergonomic study tables and compact home-office setups.",
     longDescription: "Home-office and study setups for students and professionals — study tables, work desks, wall shelves, storage and ergonomic, well-lit layouts.",
     benefits: ["Study & work desks", "Wall shelves & storage", "Ergonomic layout", "Task lighting"],
-    heroImage: pic("living-dr-8.jpg", "Modern study and home office interior"),
+    heroImage: pic("img-06.jpg", "Compact study and home-office setup with desk and seating"),
+    gallery: [
+      pic("office-desk.jpg", "Dedicated office desk and workstation"),
+      pic("img-02.jpg", "Office-style partitioned workspace"),
+      pic("commercial-office.jpg", "Professional workspace with glass partitions"),
+    ],
     published: true,
   },
   {
@@ -346,7 +368,12 @@ const services: Service[] = [
     shortDescription: "Custom workstations, desks and storage for offices and workspaces.",
     longDescription: "Custom office furniture for homes and commercial workspaces — workstations, executive desks, storage cabinets, meeting tables and reception units, built to fit your space and organised for how your team works.",
     benefits: ["Workstations & desks", "Storage & filing units", "Meeting & reception units", "Ergonomic layouts", "Durable commercial finishes"],
-    heroImage: pic("office-desk.jpg", "Modern office desk and workstation setup"),
+    heroImage: pic("office-desk.jpg", "Office desk setup showing the kind of workstation furniture we build"),
+    gallery: [
+      pic("img-02.jpg", "Office storage and built-in cabinetry within a workplace"),
+      pic("commercial-office.jpg", "Glass-partitioned office layout with integrated furnishings"),
+      pic("office-desk.jpg", "Executive office desk and workstation furniture"),
+    ],
     published: true,
   },
   {
@@ -386,8 +413,11 @@ const services: Service[] = [
     shortDescription: "Complete showroom and commercial interior design and execution.",
     longDescription: "Complete showroom interior design and execution for retail businesses — layout planning, product display units, billing counters, lighting, branding walls, customer-flow planning and premium finishing.",
     benefits: ["Layout & customer flow", "Display units & counters", "Branding wall", "Lighting & finishing"],
-    heroImage: pic("commercial-office.jpg", "Modern commercial office with glass partitions"),
-    gallery: [pic("living-dr-6.jpg", "Modern commercial interior"), pic("kitchen-dr-8.jpg", "Commercial kitchen and showroom"), pic("ent-unit-6.jpg", "Showroom display unit")],
+    heroImage: pic("img-02.jpg", "Modern commercial interior with glass partitions"),
+    gallery: [
+      pic("commercial-office.jpg", "Commercial office and reception circulation"),
+      pic("office-desk.jpg", "Showroom or office workstation setup"),
+    ],
     featured: true,
     published: true,
   },
@@ -397,7 +427,7 @@ const services: Service[] = [
 /* Portfolio — representative interior design projects.                 */
 /* location / completionInfo left undefined (unverified) → hidden.      */
 /* ------------------------------------------------------------------ */
-const projects: Project[] = [
+const defaultProjects: Project[] = [
   {
     slug: "contemporary-apartment-living",
     title: "Contemporary Apartment Living",
@@ -481,7 +511,7 @@ const projects: Project[] = [
 ];
 
 /* FAQ — client's questions with truthful, scope-based answers. */
-const faqs: Faq[] = [
+const defaultFaqs: Faq[] = [
   { question: "How much does a home interior cost?", answer: "Every project is customised, so cost depends on the scope, materials and finishes you choose. Share your requirements and we'll prepare a tailored quote for your space.", category: "Pricing" },
   { question: "Do you provide complete end-to-end service?", answer: "Yes. Luxeva Care handles the complete interior — from design consultation and space planning through carpentry, electrical, plumbing, finishing and final handover.", category: "Services" },
   { question: "Can I book only carpentry, electrical or plumbing work?", answer: "Yes. While we specialise in complete interiors, individual technical services can also be requested. Tell us what you need and we'll advise.", category: "Services" },
@@ -491,8 +521,71 @@ const faqs: Faq[] = [
 ];
 
 /* EMPTY until the client supplies verified data → sections hidden. */
-const testimonials: Testimonial[] = [];
-const leadership: Leader[] = [];
+const defaultTestimonials: Testimonial[] = [];
+const defaultLeadership: Leader[] = [];
+
+export let contactDetails: ContactDetails = structuredClone(defaultContactDetails);
+export let home = structuredClone(defaultHome);
+export let roomCategories: RoomCategory[] = structuredClone(defaultRoomCategories);
+export let about = structuredClone(defaultAbout);
+let services: Service[] = structuredClone(defaultServices);
+let projects: Project[] = structuredClone(defaultProjects);
+let faqs: Faq[] = structuredClone(defaultFaqs);
+let testimonials: Testimonial[] = structuredClone(defaultTestimonials);
+let leadership: Leader[] = structuredClone(defaultLeadership);
+
+function clone<T>(value: T): T {
+  return structuredClone(value);
+}
+
+export function resetContentToDefaults() {
+  contactDetails = clone(defaultContactDetails);
+  home = clone(defaultHome);
+  roomCategories = clone(defaultRoomCategories);
+  about = clone(defaultAbout);
+  services = clone(defaultServices);
+  projects = clone(defaultProjects);
+  faqs = clone(defaultFaqs);
+  testimonials = clone(defaultTestimonials);
+  leadership = clone(defaultLeadership);
+}
+
+export function applyContentOverrides(payload: Partial<{
+  contactDetails: ContactDetails;
+  home: typeof defaultHome;
+  roomCategories: RoomCategory[];
+  about: typeof defaultAbout;
+  services: Service[];
+  projects: Project[];
+  faqs: Faq[];
+  testimonials: Testimonial[];
+  leadership: Leader[];
+}>) {
+  resetContentToDefaults();
+  if (payload.contactDetails) contactDetails = clone(payload.contactDetails);
+  if (payload.home) home = clone(payload.home);
+  if (payload.roomCategories) roomCategories = clone(payload.roomCategories);
+  if (payload.about) about = clone(payload.about);
+  if (payload.services) services = clone(payload.services);
+  if (payload.projects) projects = clone(payload.projects);
+  if (payload.faqs) faqs = clone(payload.faqs);
+  if (payload.testimonials) testimonials = clone(payload.testimonials);
+  if (payload.leadership) leadership = clone(payload.leadership);
+}
+
+export function getContentSnapshot() {
+  return {
+    contactDetails: clone(contactDetails),
+    home: clone(home),
+    roomCategories: clone(roomCategories),
+    about: clone(about),
+    services: clone(services),
+    projects: clone(projects),
+    faqs: clone(faqs),
+    testimonials: clone(testimonials),
+    leadership: clone(leadership),
+  };
+}
 
 /* Accessors */
 export function getContactDetails(): ContactDetails { return contactDetails; }

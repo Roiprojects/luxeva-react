@@ -36,7 +36,7 @@ try {
   await client.connect();
   await client.query(sql);
   const { rows } = await client.query(
-    "select table_name from information_schema.tables where table_schema='public' and table_name in ('enquiries','enquiry_notes') order by table_name",
+    "select table_name from information_schema.tables where table_schema='public' and table_name in ('admin_sessions','admin_users','content_documents','enquiries','enquiry_notes') order by table_name",
   );
   console.log("✔ Schema applied. Tables present:", rows.map((r) => r.table_name).join(", "));
 } catch (err) {
