@@ -6,6 +6,8 @@ const headerSource = readFileSync(new URL("../src/components/layout/Header.tsx",
 const actionBarSource = readFileSync(new URL("../src/components/layout/MobileActionBar.tsx", import.meta.url), "utf8");
 const carouselSource = readFileSync(new URL("../src/components/ui/Carousel.tsx", import.meta.url), "utf8");
 const homeSource = readFileSync(new URL("../src/pages/Home.tsx", import.meta.url), "utf8");
+const indexSource = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const manifest = JSON.parse(readFileSync(new URL("../public/manifest.webmanifest", import.meta.url), "utf8"));
 
 test("mobile navigation is presented as a modal app drawer", () => {
   assert.match(headerSource, /aria-modal="true"/);
@@ -29,4 +31,12 @@ test("featured services become a touch-first rail on small screens", () => {
   assert.match(homeSource, /snap-x snap-mandatory/);
   assert.match(homeSource, /min-w-\[82vw\] snap-start/);
   assert.match(homeSource, /sm:grid-cols-2/);
+});
+
+test("mobile browsers can install Luxeva as a branded app", () => {
+  assert.match(indexSource, /rel="manifest"/);
+  assert.equal(manifest.name, "Luxeva Care");
+  assert.equal(manifest.display, "standalone");
+  assert.equal(manifest.theme_color, "#a3202f");
+  assert.ok(manifest.icons.some((icon) => icon.src === "/favicon.png"));
 });
