@@ -38,5 +38,5 @@ test("mobile browsers can install Luxeva as a branded app", () => {
   assert.equal(manifest.name, "Luxeva Care");
   assert.equal(manifest.display, "standalone");
   assert.equal(manifest.theme_color, "#a3202f");
-  assert.ok(manifest.icons.some((icon) => icon.src === "/favicon.png"));
+  assert.ok(manifest.icons.some((icon) => icon.src === "/favicon.png" && icon.sizes === "512x512"));
 });
