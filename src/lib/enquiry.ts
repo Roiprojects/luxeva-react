@@ -16,12 +16,14 @@ export async function submitEnquiry(
     };
   }
 
+  const phoneDigits = parsed.data.phone.replace(/\D/g, "").slice(-10);
+  const payload = { ...parsed.data, phone: `+91 ${phoneDigits}` };
   const base = import.meta.env.VITE_API_URL ?? "";
   try {
     const res = await fetch(`${base}/api/enquiry`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(parsed.data),
+      body: JSON.stringify(payload),
     });
     if (res.ok) return { ok: true };
     const data = (await res.json().catch(() => null)) as EnquiryResult | null;

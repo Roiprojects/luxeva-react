@@ -137,8 +137,11 @@ function EnquiryFormInner({ defaultService, compact = false }: EnquiryFormProps)
           <label htmlFor="phone" className={labelCls}>
             Phone <span className="text-terracotta">*</span>
           </label>
-          <input id="phone" type="tel" className={field} autoComplete="tel" aria-invalid={!!errors.phone}
-            aria-describedby={errors.phone ? "phone-err" : undefined} {...register("phone")} />
+          <div className="flex">
+            <span className="inline-flex items-center rounded-l-lg border border-r-0 border-border bg-mist px-3 text-sm font-medium text-ink-soft">+91</span>
+            <input id="phone" type="tel" inputMode="numeric" maxLength={10} pattern="[0-9]{10}" className={cn(field, "rounded-l-none")} autoComplete="tel-national" aria-invalid={!!errors.phone}
+              aria-describedby={errors.phone ? "phone-err" : undefined} {...register("phone")} />
+          </div>
           {errors.phone && <p id="phone-err" className={errCls}><AlertCircle size={14} />{errors.phone.message}</p>}
         </div>
 

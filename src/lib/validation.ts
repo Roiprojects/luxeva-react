@@ -48,9 +48,7 @@ export const enquirySchema = z.object({
   phone: z
     .string()
     .trim()
-    .min(7, "Please enter a valid phone number")
-    .max(15, "Please enter a valid phone number")
-    .regex(/^[+\d][\d\s-]{6,}$/, "Please enter a valid phone number"),
+    .regex(/^(?:\+91[\s-]?)?\d{10}$/, "Please enter exactly 10 digits"),
   email: z
     .union([z.string().trim().email("Please enter a valid email"), z.literal("")])
     .optional(),

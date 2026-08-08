@@ -59,13 +59,16 @@ export function QuickEnquiry() {
           className="w-full rounded-xl border border-line bg-mist px-4 py-3 text-sm focus:border-brand focus:bg-paper focus:outline-none transition-colors"
           aria-label="Your name"
         />
-        <input
-          required type="tel" inputMode="tel" maxLength={15} pattern="[+\d][\d\s-]{6,14}"
-          value={phone} onChange={(e) => setPhone(e.target.value)}
-          placeholder="Phone number"
-          className="w-full rounded-xl border border-line bg-mist px-4 py-3 text-sm focus:border-brand focus:bg-paper focus:outline-none transition-colors"
-          aria-label="Phone number"
-        />
+        <div className="flex">
+          <span className="inline-flex items-center rounded-l-xl border border-r-0 border-line bg-mist px-3 text-sm font-medium text-ink-soft">+91</span>
+          <input
+            required type="tel" inputMode="numeric" maxLength={10} pattern="[0-9]{10}"
+            value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+            placeholder="10-digit phone number"
+            className="w-full rounded-r-xl border border-line bg-mist px-4 py-3 text-sm focus:border-brand focus:bg-paper focus:outline-none transition-colors"
+            aria-label="Phone number"
+          />
+        </div>
         <button
           type="submit" disabled={status === "loading"}
           className="btn-sheen inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3.5 text-sm font-semibold text-white shadow-brand hover:bg-brand-dark transition-colors disabled:opacity-60"
