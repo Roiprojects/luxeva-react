@@ -44,13 +44,13 @@ const defaultHome = {
     heading: 'Crafted luxury interiors,<br/><span class="text-gradient-gold">designed &amp; delivered</span>',
     subheading:
       "From design and modular woodwork to electricals, finishing and handover — Luxeva Care delivers complete, beautiful interiors for homes and commercial spaces.",
-    image: `${IMG}/bedroom-dr-1.jpg`,
+    image: `${IMG}/indian-bedroom-2.jpg`,
     images: [
-      { src: `${IMG}/bedroom-dr-1.jpg`, alt: "Warm Indian bedroom interior" },
-      { src: `${IMG}/living-dr-6.jpg`, alt: "Elegant Indian living room with statement wall design" },
-      { src: `${IMG}/kitchen-dr-1.jpg`, alt: "Modern modular kitchen interior" },
+      { src: `${IMG}/indian-bedroom-2.jpg`, alt: "Indian bedroom interior with custom storage" },
+      { src: `${IMG}/indian-living.jpg`, alt: "Indian living room with layered seating and natural light" },
+      { src: `${IMG}/kitchen-green.jpg`, alt: "Indian modular kitchen with practical storage" },
       { src: `${IMG}/false-ceil-1.jpg`, alt: "Stunning false ceiling with integrated LED lighting" },
-      { src: `${IMG}/living-dr-5.jpg`, alt: "Spacious Indian living space" },
+      { src: `${IMG}/indian-living-2.jpg`, alt: "Spacious Indian living space" },
     ],
     stats: [
       { label: "End-to-end", value: "Design → Handover" },
@@ -70,7 +70,7 @@ const defaultHome = {
     eyebrow: "Who we are",
     title: "One accountable partner for your complete interior",
     body: "Luxeva Care Pvt Ltd focuses on premium residential home interiors, with dedicated capability for commercial showroom spaces. Design, skilled trades and execution come together under one roof — so every detail, from space planning to the final finish, is handled with care.",
-    image: `${IMG}/living-dr-2.jpg`,
+    image: `${IMG}/indian-living-2.jpg`,
   },
   whyChoose: <WhyChooseItem[]>[
     { title: "Complete service under one roof", description: "Design, carpentry, electrical, plumbing, finishing and installation — coordinated by a single team." },
@@ -99,10 +99,10 @@ const defaultHome = {
 /* Room categories — the "designs for every room" tiles. */
 export type RoomCategory = { title: string; image: string; href: string };
 const defaultRoomCategories: RoomCategory[] = [
-  { title: "Living Room", image: `${IMG}/living-dr-1.jpg`, href: "/services/residential-home-interior" },
+  { title: "Living Room", image: `${IMG}/indian-living.jpg`, href: "/services/residential-home-interior" },
   { title: "Modular Kitchen", image: `${IMG}/kitchen-dr-1.jpg`, href: "/services/kitchen-granite-quartz" },
-  { title: "Bedroom", image: `${IMG}/bedroom-dr-1.jpg`, href: "/services/custom-beds" },
-  { title: "Wardrobe", image: `${IMG}/wardrobe-1.jpg`, href: "/services/carpenter-service" },
+  { title: "Bedroom", image: `${IMG}/indian-bedroom-2.jpg`, href: "/services/custom-beds" },
+  { title: "Wardrobe", image: `${IMG}/wardrobe.jpg`, href: "/services/carpenter-service" },
   { title: "Bathroom", image: `${IMG}/bathroom-1.jpg`, href: "/services/plumbing-service" },
   { title: "Entertainment", image: `${IMG}/ent-unit-1.jpg`, href: "/services/entertainment-unit" },
   { title: "Temple / Pooja", image: `${IMG}/temple-1.jpg`, href: "/services/temple-unit" },
@@ -400,7 +400,7 @@ const defaultServices: Service[] = [
     shortDescription: "Wall design and wallpaper installation for homes and businesses.",
     longDescription: "Wall design and wallpaper installation for bedrooms, living rooms, kids' rooms and commercial spaces — textured, luxury and custom wall coverings, professionally fitted.",
     benefits: ["Bedroom & living room", "Textured & luxury coverings", "Kids' room designs", "Professional installation"],
-    heroImage: pic("bedroom-dr-4.jpg", "Feature wall with textured finish and accent lighting"),
+    heroImage: pic("living-dr-8.jpg", "Living room feature wall with art and accent lighting"),
     published: true,
   },
   {
@@ -535,6 +535,20 @@ function clone<T>(value: T): T {
   return structuredClone(value);
 }
 
+const repairRoomImages = (rooms: RoomCategory[]) => rooms.map((room) => {
+  const imageByTitle: Record<string, string> = {
+    "Living Room": `${IMG}/indian-living.jpg`,
+    "Modular Kitchen": `${IMG}/kitchen-green.jpg`,
+    Bedroom: `${IMG}/indian-bedroom-2.jpg`,
+    Wardrobe: `${IMG}/wardrobe.jpg`,
+    Bathroom: `${IMG}/bathroom-1.jpg`,
+    Entertainment: `${IMG}/ent-unit-1.jpg`,
+    "Temple / Pooja": `${IMG}/temple-1.jpg`,
+    "Full Home": `${IMG}/indian-living-2.jpg`,
+  };
+  return imageByTitle[room.title] ? { ...room, image: imageByTitle[room.title] } : room;
+});
+
 export function resetContentToDefaults() {
   contactDetails = clone(defaultContactDetails);
   home = clone(defaultHome);
@@ -568,8 +582,19 @@ export function applyContentOverrides(payload: Partial<{
       email: payload.contactDetails.email || defaultContactDetails.email,
     };
   }
-  if (payload.home) home = clone(payload.home);
-  if (payload.roomCategories) roomCategories = clone(payload.roomCategories);
+  if (payload.home) {
+    home = clone(payload.home);
+    home.hero.image = `${IMG}/indian-bedroom-2.jpg`;
+    home.hero.images = [
+      { src: `${IMG}/indian-bedroom-2.jpg`, alt: "Indian bedroom interior with custom storage" },
+      { src: `${IMG}/indian-living.jpg`, alt: "Indian living room with layered seating and natural light" },
+      { src: `${IMG}/kitchen-green.jpg`, alt: "Indian modular kitchen with practical storage" },
+      { src: `${IMG}/false-ceil-1.jpg`, alt: "Stunning false ceiling with integrated LED lighting" },
+      { src: `${IMG}/indian-living-2.jpg`, alt: "Spacious Indian living space" },
+    ];
+    home.aboutPreview.image = `${IMG}/indian-living-2.jpg`;
+  }
+  if (payload.roomCategories) roomCategories = repairRoomImages(clone(payload.roomCategories));
   if (payload.about) about = clone(payload.about);
   if (payload.services) {
     services = clone(payload.services);
@@ -583,6 +608,23 @@ export function applyContentOverrides(payload: Partial<{
       bedrooms.heroImage = pic("bedroom-dr-1.jpg", "Modern Indian bedroom with LED platform bed and full-height wardrobe");
       bedrooms.gallery = [pic("bedroom-dr-2.jpg", "Warm bedroom with wood panelling"), pic("bedroom-dr-3.jpg", "Contemporary master bedroom design"), pic("bedroom-dr-4.jpg", "Minimalist bedroom with integrated storage"), pic("bedroom-dr-5.jpg", "Bedroom with accent wall and lighting")];
     }
+    const kitchen = services.find((s) => s.slug === "kitchen-granite-quartz");
+    if (kitchen) {
+      kitchen.heroImage = pic("kitchen-green.jpg", "Indian modular kitchen with practical storage");
+      kitchen.gallery = [pic("kitchen-green.jpg", "Indian modular kitchen with practical storage"), pic("kitchen-dr-2.jpg", "White modular kitchen with marble backsplash"), pic("kitchen-dr-3.jpg", "Contemporary modular kitchen with island"), pic("kitchen-grey.jpg", "Grey modular kitchen with clean countertop lines")];
+    }
+    const ceiling = services.find((s) => s.slug === "false-ceiling-pop");
+    if (ceiling) {
+      ceiling.heroImage = pic("false-ceil-4.jpg", "Modern false ceiling design with geometric integrated lighting");
+      ceiling.gallery = [pic("false-ceil-1.jpg", "Curved false ceiling with integrated lighting"), pic("false-ceil-2.jpg", "Cove ceiling with warm accent lighting"), pic("false-ceil-3.jpg", "Modern POP ceiling design"), pic("false-ceil-5.jpg", "Bedroom false ceiling detail")];
+    }
+    const wardrobes = services.find((s) => s.slug === "carpenter-service");
+    if (wardrobes) {
+      wardrobes.heroImage = pic("wardrobe.jpg", "Custom wardrobe storage in a bedroom");
+      wardrobes.gallery = [pic("wardrobe.jpg", "Custom wardrobe storage in a bedroom"), pic("wardrobe-2.jpg", "Sliding wardrobe with mirror"), pic("wardrobe-3.jpg", "Walk-in wardrobe with shelving"), pic("wardrobe-4.jpg", "Built-in wardrobe design")];
+    }
+    const wallDesign = services.find((s) => s.slug === "wallpaper");
+    if (wallDesign) wallDesign.heroImage = pic("living-dr-8.jpg", "Living room feature wall with art and accent lighting");
   }
   if (payload.projects) {
     projects = clone(payload.projects);
@@ -590,6 +632,11 @@ export function applyContentOverrides(payload: Partial<{
     if (bedroomProject) {
       bedroomProject.cover = pic("bedroom-dr-1.jpg", "Serene modern master bedroom");
       bedroomProject.gallery = [pic("bedroom-dr-2.jpg", "Bedroom with wood panelling"), pic("bedroom-dr-3.jpg", "Contemporary bedroom design"), pic("bedroom-dr-4.jpg", "Minimalist bedroom detail")];
+    }
+    const smartProject = projects.find((p) => p.slug === "smart-modern-home");
+    if (smartProject) {
+      smartProject.cover = pic("smart-lock.jpg", "Smart home control and digital lock installation");
+      smartProject.gallery = [pic("smart-lock.jpg", "Smart home control and digital lock installation"), pic("ent-unit-2.jpg", "Entertainment unit with LED shelving"), pic("false-ceil-2.jpg", "Smart ceiling lighting")];
     }
   }
   if (payload.faqs) faqs = clone(payload.faqs);

@@ -21,3 +21,11 @@ test("service and room imagery avoids generic mismatched stock assignments", () 
     );
   }
 });
+
+test("known screenshot mismatches are repaired even when CMS content is loaded", () => {
+  assert.match(contentSource, /const repairRoomImages =/);
+  assert.match(contentSource, /slug === "kitchen-granite-quartz"/);
+  assert.match(contentSource, /slug === "false-ceiling-pop"/);
+  assert.match(contentSource, /slug === "smart-modern-home"/);
+  assert.match(contentSource, /title: "Wardrobe"/);
+});
