@@ -104,24 +104,71 @@ export function Header({ services }: { services: ServiceLink[] }) {
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
         <Logo />
-        {contact.phone ? (
-          <a
-            href={`tel:${contact.phone}`}
-            aria-label="Call us"
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-brand/8 text-brand"
+        <div className="flex items-center gap-2">
+          {contact.phone ? (
+            <a
+              href={`tel:${contact.phone}`}
+              aria-label="Call us"
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-brand/8 text-brand"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.8 19.8 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.2a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17.7z"></path></svg>
+            </a>
+          ) : (
+            <Link href="/contact" aria-label="Contact us" className="flex items-center justify-center w-10 h-10 rounded-full bg-brand/8 text-brand">
+              <PhoneIcon />
+            </Link>
+          )}
+          <button
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMobileOpen((open) => !open)}
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-navy text-white shadow-soft"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.8 19.8 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.2a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17.7z"></path></svg>
-          </a>
-        ) : (
-          <Link
-            href="/contact"
-            aria-label="Contact us"
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-brand/8 text-brand"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.8 19.8 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.2a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17.7z"></path></svg>
-          </Link>
-        )}
+            {mobileOpen ? <X size={21} /> : <Menu size={21} />}
+          </button>
+        </div>
       </div>
+
+      {mobileOpen && (
+        <div id="mobile-navigation" className="lg:hidden absolute top-full inset-x-0 border-b border-line bg-paper shadow-lift">
+          <nav aria-label="Mobile primary" className="max-h-[calc(100dvh-4rem)] overflow-y-auto p-4">
+            <div className="grid gap-1">
+              {nav.map((item) => item.label === "Services" ? (
+                <div key={item.href}>
+                  <button
+                    type="button"
+                    aria-expanded={servicesOpen}
+                    onClick={() => setServicesOpen((open) => !open)}
+                    className="flex w-full items-center justify-between rounded-xl px-4 py-3.5 text-left text-base font-semibold text-ink hover:bg-mist"
+                  >
+                    {item.label}
+                    <ChevronDown size={18} className={cn("transition-transform", servicesOpen && "rotate-180")} />
+                  </button>
+                  {servicesOpen && (
+                    <div className="ml-3 grid gap-1 border-l-2 border-brand/20 pl-3 pb-2">
+                      <Link href="/services" onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2 text-sm font-semibold text-brand">All services</Link>
+                      {services.map((service) => (
+                        <Link key={service.slug} href={`/services/${service.slug}`} onClick={() => setMobileOpen(false)} className="rounded-lg px-3 py-2 text-sm text-ink-soft hover:bg-mist hover:text-ink">
+                          {service.title}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={cn("rounded-xl px-4 py-3.5 text-base font-semibold hover:bg-mist", isActive(item.href) ? "bg-brand-soft text-brand" : "text-ink")}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            <Link href="/contact" onClick={() => setMobileOpen(false)} className="mt-4 flex items-center justify-center rounded-xl bg-brand px-4 py-3.5 font-semibold text-white shadow-brand">
+              Get Free Quote <ArrowRight size={17} />
+            </Link>
+          </nav>
+        </div>
+      )}
 
       {/* ── Desktop pill nav ────────────────────────────────────────────── */}
       <div className={cn("hidden lg:block container-lux transition-all duration-500", scrolled ? "pt-2 md:pt-3" : "pt-3 md:pt-4")}>
@@ -256,4 +303,8 @@ export function Header({ services }: { services: ServiceLink[] }) {
       </div>
     </header>
   );
+}
+
+function PhoneIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.8 19.8 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.2a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17.7z" /></svg>;
 }

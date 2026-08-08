@@ -8,6 +8,7 @@ const enquirySource = readFileSync(new URL("../src/components/forms/EnquiryForm.
 const quickEnquirySource = readFileSync(new URL("../src/components/forms/QuickEnquiry.tsx", import.meta.url), "utf8");
 const enquirySubmitSource = readFileSync(new URL("../src/lib/enquiry.ts", import.meta.url), "utf8");
 const apiEnquirySource = readFileSync(new URL("../api/enquiry.mjs", import.meta.url), "utf8");
+const headerSource = readFileSync(new URL("../src/components/layout/Header.tsx", import.meta.url), "utf8");
 
 test("public contact actions use the supplied verified details", () => {
   assert.match(contentSource, /phone: "\+91 9900026502"/);
@@ -32,4 +33,11 @@ test("phone fields use an India prefix and exactly ten local digits", () => {
 test("deployment API exposes the enquiry endpoint", () => {
   assert.match(apiEnquirySource, /insert into enquiries/);
   assert.match(apiEnquirySource, /statusCode = 200/);
+});
+
+test("mobile header exposes an accessible hamburger menu and navigation drawer", () => {
+  assert.match(headerSource, /aria-label="Open navigation menu"/);
+  assert.match(headerSource, /aria-expanded=\{mobileOpen\}/);
+  assert.match(headerSource, /mobileOpen &&/);
+  assert.match(headerSource, /nav\.map/);
 });
