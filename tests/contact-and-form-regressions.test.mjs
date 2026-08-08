@@ -8,7 +8,9 @@ const enquirySource = readFileSync(new URL("../src/components/forms/EnquiryForm.
 const quickEnquirySource = readFileSync(new URL("../src/components/forms/QuickEnquiry.tsx", import.meta.url), "utf8");
 const enquirySubmitSource = readFileSync(new URL("../src/lib/enquiry.ts", import.meta.url), "utf8");
 const apiEnquirySource = readFileSync(new URL("../api/enquiry.mjs", import.meta.url), "utf8");
+const apiHealthSource = readFileSync(new URL("../api/health.mjs", import.meta.url), "utf8");
 const headerSource = readFileSync(new URL("../src/components/layout/Header.tsx", import.meta.url), "utf8");
+const vercelConfig = JSON.parse(readFileSync(new URL("../vercel.json", import.meta.url), "utf8"));
 
 test("public contact actions use the supplied verified details", () => {
   assert.match(contentSource, /phone: "\+91 9900026502"/);
@@ -33,6 +35,14 @@ test("phone fields use an India prefix and exactly ten local digits", () => {
 test("deployment API exposes the enquiry endpoint", () => {
   assert.match(apiEnquirySource, /insert into enquiries/);
   assert.match(apiEnquirySource, /statusCode = 200/);
+  assert.match(apiHealthSource, /statusCode = 200/);
+});
+
+test("Vercel is configured for the Vite SPA and serverless API functions", () => {
+  assert.equal(vercelConfig.framework, "vite");
+  assert.equal(vercelConfig.outputDirectory, "dist");
+  assert.equal(vercelConfig.buildCommand, "npm run build");
+  assert.ok(vercelConfig.rewrites?.some((rule) => rule.destination === "/index.html" && rule.source.includes("api")));
 });
 
 test("mobile header exposes an accessible hamburger menu and navigation drawer", () => {
