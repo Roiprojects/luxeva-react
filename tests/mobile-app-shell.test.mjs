@@ -15,6 +15,9 @@ test("mobile navigation is presented as a modal app drawer", () => {
   assert.match(headerSource, /aria-label="Close navigation menu"/);
   assert.match(headerSource, /fixed inset-0/);
   assert.match(headerSource, /role="dialog"/);
+  assert.match(headerSource, /event\.key === "Escape"/);
+  assert.match(headerSource, /mobile-drawer-enter/);
+  assert.match(headerSource, /mobile-backdrop-enter/);
 });
 
 test("mobile actions account for safe-area insets and retain large tap targets", () => {

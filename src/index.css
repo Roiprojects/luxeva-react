@@ -275,8 +275,11 @@
   .animate-rise { animation: rise 0.9s var(--ease-lux) both; }
   .animate-fade { animation: fadein 1s ease both; }
 
+  .mobile-backdrop-enter { animation: mobile-backdrop-in 220ms ease-out both; }
+  .mobile-drawer-enter { animation: mobile-drawer-in 320ms var(--ease-lux) both; transform-origin: top right; }
+
   @media (prefers-reduced-motion: reduce) {
-    .marquee__track, .animate-float, .animate-float-slow, .kenburns, .animate-rise, .animate-fade { animation: none !important; }
+    .marquee__track, .animate-float, .animate-float-slow, .kenburns, .animate-rise, .animate-fade, .mobile-backdrop-enter, .mobile-drawer-enter { animation: none !important; }
   }
 }
 
@@ -285,6 +288,8 @@
 @keyframes kenburns { from { transform: scale(1.12); } to { transform: scale(1); } }
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mobile-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mobile-drawer-in { from { opacity: 0; transform: translateX(18px) scale(0.98); } to { opacity: 1; transform: translateX(0) scale(1); } }
 
 /* --- Vite/React additions (fonts come from index.html; layout wrapper) --- */
 :root {

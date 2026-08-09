@@ -59,6 +59,15 @@ export function Header({ services }: { services: ServiceLink[] }) {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen]);
+
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -136,7 +145,7 @@ export function Header({ services }: { services: ServiceLink[] }) {
           <button
             type="button"
             aria-label="Close navigation menu"
-            className="fixed inset-0 top-14 z-0 bg-ink/35 backdrop-blur-[2px]"
+            className="mobile-backdrop-enter fixed inset-0 top-14 z-0 bg-ink/35 backdrop-blur-[2px]"
             onClick={() => setMobileOpen(false)}
           />
           <div
@@ -144,7 +153,7 @@ export function Header({ services }: { services: ServiceLink[] }) {
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation"
-            className="absolute right-0 top-full z-10 w-[min(92vw,26rem)] border-l border-b border-line bg-paper shadow-lift"
+            className="mobile-drawer-enter absolute right-0 top-full z-10 w-[min(92vw,26rem)] border-l border-b border-line bg-paper shadow-lift"
           >
             <nav aria-label="Mobile primary" className="max-h-[calc(100dvh-4rem)] overflow-y-auto p-4">
               <div className="mb-4 rounded-2xl bg-navy px-4 py-4 text-white">
