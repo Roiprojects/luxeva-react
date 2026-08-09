@@ -387,5 +387,9 @@ if (existsSync(dist)) {
   app.get("/*splat", (_req, res) => res.sendFile(join(dist, "index.html")));
 }
 
-const port = process.env.PORT || 3001;
-app.listen(port, () => console.log(`Luxeva API on :${port}  (db: ${pool ? "on" : "off"})`));
+export { app };
+
+if (!process.env.VERCEL) {
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => console.log(`Luxeva API on :${port}  (db: ${pool ? "on" : "off"})`));
+}
