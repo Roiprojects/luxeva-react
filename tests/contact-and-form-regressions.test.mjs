@@ -9,6 +9,7 @@ const quickEnquirySource = readFileSync(new URL("../src/components/forms/QuickEn
 const enquirySubmitSource = readFileSync(new URL("../src/lib/enquiry.ts", import.meta.url), "utf8");
 const apiEnquirySource = readFileSync(new URL("../api/enquiry.mjs", import.meta.url), "utf8");
 const apiHealthSource = readFileSync(new URL("../api/health.mjs", import.meta.url), "utf8");
+const apiContentSource = readFileSync(new URL("../api/public/content.mjs", import.meta.url), "utf8");
 const headerSource = readFileSync(new URL("../src/components/layout/Header.tsx", import.meta.url), "utf8");
 const vercelConfig = JSON.parse(readFileSync(new URL("../vercel.json", import.meta.url), "utf8"));
 
@@ -36,6 +37,8 @@ test("deployment API exposes the enquiry endpoint", () => {
   assert.match(apiEnquirySource, /insert into enquiries/);
   assert.match(apiEnquirySource, /statusCode = 200/);
   assert.match(apiHealthSource, /statusCode = 200/);
+  assert.match(apiContentSource, /content_documents/);
+  assert.match(apiContentSource, /documents: Object\.fromEntries/);
   assert.match(enquirySubmitSource, /Our enquiry service is unavailable\. Please WhatsApp us instead\./);
 });
 
