@@ -78,7 +78,7 @@ export function Header({ services }: { services: ServiceLink[] }) {
   };
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 w-screen max-w-[100vw] nav-shell">
+    <header className="fixed top-0 inset-x-0 z-50 nav-shell">
       {/* Announcement strip — desktop only */}
       <div
         className={cn(
