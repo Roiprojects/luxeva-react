@@ -14,8 +14,8 @@ export function MobileActionBar() {
   const wa = whatsappHref(contact.whatsapp, "Hello Luxeva Care, I'd like to enquire about interior services.");
 
   return (
-    <div className="lg:hidden fixed bottom-0 inset-x-0 z-50 border-t border-line bg-paper/75 px-3 pt-2 backdrop-blur-2xl shadow-[0_-12px_35px_rgba(20,35,60,0.12)]" style={{ paddingBottom: "max(0.55rem, env(safe-area-inset-bottom))" }}>
-      <div className="mx-auto grid max-w-md grid-cols-3 gap-1.5 rounded-2xl bg-navy p-1.5 shadow-lift">
+    <div className="lg:hidden fixed bottom-0 inset-x-0 z-50 w-full border-t border-line bg-paper/75 px-2.5 pt-2 backdrop-blur-2xl shadow-[0_-12px_35px_rgba(20,35,60,0.12)]" style={{ paddingBottom: "max(0.55rem, env(safe-area-inset-bottom))" }}>
+      <div className="mx-auto grid w-full max-w-md grid-cols-3 gap-1.5 rounded-2xl bg-navy p-1.5 shadow-lift">
         {tel ? (
           <a href={tel} className="flex min-h-[3.5rem] flex-col items-center justify-center gap-0.5 rounded-xl text-[0.68rem] font-semibold text-white/80 transition-colors hover:bg-white/10 hover:text-white">
             <Phone size={18} className="text-gold-2" />

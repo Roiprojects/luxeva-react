@@ -43,7 +43,7 @@ export default function HomePage() {
 
       {/* ============ HERO ============ */}
       <section className="relative bg-mist px-2 sm:px-4 md:px-6 pt-14 md:pt-28 pb-3 md:pb-4">
-        <div className="relative overflow-hidden rounded-2xl md:rounded-[2.5rem] min-h-[78vh] md:min-h-[86vh] flex items-center shadow-lift">
+        <div className="relative w-full min-w-0 overflow-hidden rounded-2xl md:rounded-[2.5rem] min-h-[78vh] md:min-h-[86vh] flex items-center shadow-lift">
           {/* Full-bleed background slideshow */}
           <HeroSlideshow images={home.hero.images} />
           {/* Scrims for legibility */}
@@ -59,11 +59,11 @@ export default function HomePage() {
 
           {/* Overlaid content */}
           <div className="relative w-full">
-            <div className="container-lux grid lg:grid-cols-[1.25fr_0.75fr] gap-10 items-center py-10 md:py-20">
-              <div className="max-w-2xl">
+            <div className="container-lux grid min-w-0 lg:grid-cols-[1.25fr_0.75fr] gap-10 items-center py-10 md:py-20">
+              <div className="min-w-0 max-w-2xl">
                 <p className="eyebrow text-gold-2 mb-4 animate-rise" style={{ animationDelay: "40ms" }}>{home.hero.eyebrow}</p>
                 <h1 className="font-sans text-white text-[2rem] sm:text-5xl lg:text-[4.2rem] font-semibold tracking-[-0.03em] leading-[1.08] sm:leading-[1.03] animate-rise [text-wrap:balance] drop-shadow-sm" style={{ animationDelay: "120ms" }} dangerouslySetInnerHTML={{ __html: home.hero.heading }} />
-                <p className="mt-4 md:mt-6 max-w-xl text-base md:text-lg text-white/85 leading-relaxed animate-rise" style={{ animationDelay: "240ms" }}>{home.hero.subheading}</p>
+                <p className="mt-4 md:mt-6 min-w-0 max-w-xl text-base md:text-lg text-white/85 leading-relaxed animate-rise" style={{ animationDelay: "240ms" }}>{home.hero.subheading}</p>
                 <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 animate-rise" style={{ animationDelay: "340ms" }}>
                   <Button href="/contact" size="lg" className="w-full sm:w-auto justify-center">Book Free Consultation</Button>
                   <Button href="#rooms" variant="on-dark" size="lg" className="w-full sm:w-auto justify-center">Explore Designs <ArrowRight size={18} /></Button>

@@ -78,7 +78,7 @@ export function Header({ services }: { services: ServiceLink[] }) {
   };
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 nav-shell">
+    <header className="fixed top-0 inset-x-0 z-50 w-screen max-w-[100vw] nav-shell">
       {/* Announcement strip — desktop only */}
       <div
         className={cn(
@@ -96,15 +96,15 @@ export function Header({ services }: { services: ServiceLink[] }) {
       {/* ── Mobile app bar ─────────────────────────────────────────────── */}
       <div
         className={cn(
-          "lg:hidden flex items-center justify-between px-4 border-b border-line transition-all duration-300",
+          "lg:hidden flex w-full min-w-0 items-center justify-between px-3 sm:px-4 border-b border-line transition-all duration-300",
           scrolled
             ? "h-14 bg-paper/95 backdrop-blur-xl shadow-[0_2px_12px_rgba(20,35,60,0.08)]"
             : "h-14 bg-paper/90 backdrop-blur-md",
         )}
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
-        <Logo />
-        <div className="flex items-center gap-2">
+        <Logo className="min-w-0 max-w-[10rem] shrink overflow-hidden" />
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           {contact.phone ? (
             <a
               href={`tel:${contact.phone}`}

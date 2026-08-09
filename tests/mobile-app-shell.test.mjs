@@ -8,6 +8,7 @@ const carouselSource = readFileSync(new URL("../src/components/ui/Carousel.tsx",
 const homeSource = readFileSync(new URL("../src/pages/Home.tsx", import.meta.url), "utf8");
 const indexSource = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const manifest = JSON.parse(readFileSync(new URL("../public/manifest.webmanifest", import.meta.url), "utf8"));
+const stylesSource = readFileSync(new URL("../src/index.css", import.meta.url), "utf8");
 
 test("mobile navigation is presented as a modal app drawer", () => {
   assert.match(headerSource, /aria-modal="true"/);
@@ -39,4 +40,9 @@ test("mobile browsers can install Luxeva as a branded app", () => {
   assert.equal(manifest.display, "standalone");
   assert.equal(manifest.theme_color, "#a3202f");
   assert.ok(manifest.icons.some((icon) => icon.src === "/favicon.png" && icon.sizes === "512x512"));
+});
+
+test("the mobile page shell clips accidental horizontal overflow without disabling inner rails", () => {
+  assert.match(stylesSource, /overflow-x:\s*clip/);
+  assert.match(stylesSource, /max-width:\s*100vw/);
 });
