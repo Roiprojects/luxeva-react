@@ -35,6 +35,22 @@ const PAGE_DESCRIPTIONS: Record<string, string> = {
   contactDetails: "Edit phone, email, address and social media links.",
 };
 
+/* ─── Heading helpers: split the hero HTML heading into two plain-text fields ─── */
+
+function parseHeading(raw: string): { line1: string; line2: string } {
+  const brMatch = raw.match(/^([\s\S]*?)<br\s*\/?>/i);
+  if (!brMatch) return { line1: raw.replace(/&amp;/g, "&"), line2: "" };
+  const line1 = brMatch[1].trim();
+  const spanMatch = raw.match(/<span[^>]*>([\s\S]*?)<\/span>/i);
+  const line2 = spanMatch ? spanMatch[1].replace(/&amp;/g, "&") : "";
+  return { line1, line2 };
+}
+
+function buildHeading(line1: string, line2: string): string {
+  if (!line2.trim()) return line1;
+  return `${line1}<br/><span class="text-gradient-gold">${line2.replace(/&/g, "&amp;")}</span>`;
+}
+
 /* ─── Shared field components ─── */
 
 const fieldCls = "w-full rounded-xl border border-line bg-mist/40 px-4 py-3 text-sm focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/10 transition-all";
@@ -231,13 +247,26 @@ function HomeEditor({ doc, onChange }: { doc: any; onChange: (next: any) => void
     cursor[path[path.length - 1]] = value;
     onChange(next);
   };
+  const { line1: headingLine1, line2: headingLine2 } = parseHeading(doc.hero?.heading ?? "");
+
   return (
     <div className="space-y-4">
       <SectionCard title="Hero Banner">
         <div className="grid md:grid-cols-2 gap-4">
           <Field label="Eyebrow text" value={doc.hero?.eyebrow ?? ""} onChange={(v) => update(["hero", "eyebrow"], v)} placeholder="e.g. Premium Interiors" />
-          <Field label="Main heading" value={doc.hero?.heading ?? ""} onChange={(v) => update(["hero", "heading"], v)} multiline placeholder="e.g. Transform Your Space" />
-          <Field label="Sub-heading" value={doc.hero?.subheading ?? ""} onChange={(v) => update(["hero", "subheading"], v)} multiline placeholder="A brief description…" />
+          <Field
+            label="Heading — first line"
+            value={headingLine1}
+            onChange={(v) => update(["hero", "heading"], buildHeading(v, headingLine2))}
+            placeholder="e.g. Crafted luxury interiors,"
+          />
+          <Field
+            label="Heading — gold highlighted phrase"
+            value={headingLine2}
+            onChange={(v) => update(["hero", "heading"], buildHeading(headingLine1, v))}
+            placeholder="e.g. designed & delivered"
+          />
+          <Field label="Sub-heading (shown below the main heading)" value={doc.hero?.subheading ?? ""} onChange={(v) => update(["hero", "subheading"], v)} multiline placeholder="A brief description of your services…" />
         </div>
         <ImageArrayEditor label="Slideshow images" items={doc.hero?.images ?? []} onChange={(v) => update(["hero", "images"], v)} />
         <StringPairListEditor label="Stats strip (e.g. '500+' / 'Projects')" items={doc.hero?.stats ?? []} firstLabel="Number / Label" secondLabel="Description" onChange={(v) => update(["hero", "stats"], v)} />
@@ -290,6 +319,20 @@ function AboutEditor({ doc, onChange }: { doc: any; onChange: (next: any) => voi
   );
 }
 
+const ROOM_PAGE_OPTIONS = [
+  { label: "Living Room", href: "/services/living-room" },
+  { label: "Bedroom", href: "/services/bedroom" },
+  { label: "Kitchen", href: "/services/kitchen" },
+  { label: "Wardrobe / Storage", href: "/services/wardrobe" },
+  { label: "Bathroom & Tiles", href: "/services/tiles-bathroom-work" },
+  { label: "Plumbing", href: "/services/plumbing-service" },
+  { label: "Electrical Works", href: "/services/electrical-works" },
+  { label: "False Ceiling", href: "/services/false-ceiling" },
+  { label: "Home Office", href: "/services/home-office" },
+  { label: "Kids Room", href: "/services/kids-room" },
+  { label: "All Services", href: "/services" },
+];
+
 function RoomCategoryEditor({ doc, onChange }: { doc: RoomCategory[]; onChange: (next: RoomCategory[]) => void }) {
   const items = doc ?? [];
   const update = (index: number, patch: Partial<RoomCategory>) => {
@@ -309,7 +352,21 @@ function RoomCategoryEditor({ doc, onChange }: { doc: RoomCategory[]; onChange: 
             <div className="p-4 space-y-3">
               <Field label="Category name" value={item.title} onChange={(v) => update(index, { title: v })} placeholder="e.g. Living Room" />
               <AssetPicker label="Photo" value={item.image} onChange={(v) => update(index, { image: v })} />
-              <Field label="Link to page" value={item.href} onChange={(v) => update(index, { href: v })} placeholder="/services/living-room" />
+              <label className="block">
+                <span className={labelCls}>Links to which page?</span>
+                <select
+                  value={item.href}
+                  onChange={(e) => update(index, { href: e.target.value })}
+                  className={fieldCls}
+                >
+                  {ROOM_PAGE_OPTIONS.map((opt) => (
+                    <option key={opt.href} value={opt.href}>{opt.label}</option>
+                  ))}
+                  {!ROOM_PAGE_OPTIONS.find((o) => o.href === item.href) && item.href && (
+                    <option value={item.href}>{item.href}</option>
+                  )}
+                </select>
+              </label>
               <button type="button" onClick={() => onChange(items.filter((_, i) => i !== index))} className="flex items-center gap-1.5 text-xs font-medium text-brand hover:underline">
                 <Trash2 size={12} /> Remove this category
               </button>
@@ -492,7 +549,14 @@ function ProjectEditor({ doc, onChange }: { doc: Project[]; onChange: (next: Pro
       <SectionCard title="Project Details">
         <div className="grid md:grid-cols-2 gap-4">
           <Field label="Project title" value={item.title} onChange={(v) => update({ title: v })} />
-          <Field label="Category" value={item.category} onChange={(v) => update({ category: v as Project["category"] })} />
+          <label className="block">
+            <span className={labelCls}>Category</span>
+            <select value={item.category} onChange={(e) => update({ category: e.target.value as Project["category"] })} className={fieldCls}>
+              {["Living Room", "Bedroom", "Kitchen", "Bathroom", "Office", "Full Home", "Commercial"].map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </label>
           <Field label="Style" value={item.style ?? ""} onChange={(v) => update({ style: v || undefined })} placeholder="e.g. Contemporary" />
           <Field label="Location / City" value={item.location ?? ""} onChange={(v) => update({ location: v || undefined })} />
           <Field label="Completion info" value={item.completionInfo ?? ""} onChange={(v) => update({ completionInfo: v || undefined })} placeholder="e.g. Completed in 45 days" />
@@ -538,7 +602,14 @@ function LeadershipEditor({ doc, onChange }: { doc: Leader[]; onChange: (next: L
           </div>
           <div className="grid md:grid-cols-2 gap-3">
             <Field label="Name" value={item.name} onChange={(v) => update(index, { name: v })} />
-            <Field label="Role / Title" value={item.roleType} onChange={(v) => update(index, { roleType: v as Leader["roleType"] })} placeholder="e.g. Founder" />
+            <label className="block">
+              <span className={labelCls}>Role / Title</span>
+              <select value={item.roleType} onChange={(e) => update(index, { roleType: e.target.value as Leader["roleType"] })} className={fieldCls}>
+                {["Founder", "Co-Founder", "CEO", "Director", "Designer", "Project Manager", "Architect", "Other"].map((r) => (
+                  <option key={r} value={r}>{r}</option>
+                ))}
+              </select>
+            </label>
           </div>
           <Field label="Bio" value={item.bio} onChange={(v) => update(index, { bio: v })} multiline />
           <TextListEditor label="Areas of expertise" values={item.expertise ?? []} onChange={(expertise) => update(index, { expertise })} />

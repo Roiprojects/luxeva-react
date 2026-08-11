@@ -182,28 +182,52 @@ export default function AdminEnquiries() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h2 className="text-xl font-semibold text-ink">{active.name}</h2>
-                  <div className="flex flex-wrap items-center gap-3 mt-1">
+                  <div className="flex flex-wrap items-center gap-2 mt-2">
                     {active.phone && (
-                      <a href={`tel:${active.phone}`} className="flex items-center gap-1 text-sm text-gold hover:underline">
-                        <Phone size={13} /> {active.phone}
+                      <a href={`tel:${active.phone}`} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 transition-colors">
+                        <Phone size={12} /> Call {active.phone}
+                      </a>
+                    )}
+                    {active.phone && (
+                      <a href={`https://wa.me/91${active.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-lg bg-green-50 border border-green-200 px-3 py-1.5 text-xs font-semibold text-green-700 hover:bg-green-100 transition-colors">
+                        WhatsApp
                       </a>
                     )}
                     {active.email && (
-                      <a href={`mailto:${active.email}`} className="flex items-center gap-1 text-sm text-gold hover:underline">
-                        <Mail size={13} /> {active.email}
+                      <a href={`mailto:${active.email}`} className="inline-flex items-center gap-1.5 rounded-lg bg-navy/5 border border-navy/20 px-3 py-1.5 text-xs font-semibold text-navy hover:bg-navy/10 transition-colors">
+                        <Mail size={12} /> {active.email}
                       </a>
                     )}
                   </div>
                 </div>
-                <div className="flex-shrink-0">
-                  <label className="block text-xs font-medium text-ink-soft mb-1.5">Status</label>
-                  <select
-                    value={active.status}
-                    onChange={(e) => updateStatus(active.id, e.target.value)}
-                    className="rounded-xl border border-line px-3 py-2 text-sm font-medium focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/10"
-                  >
-                    {STATUSES.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
-                  </select>
+                <div className="flex-shrink-0 space-y-2">
+                  <div>
+                    <label className="block text-xs font-medium text-ink-soft mb-1">Status</label>
+                    <select
+                      value={active.status}
+                      onChange={(e) => updateStatus(active.id, e.target.value)}
+                      className="rounded-xl border border-line px-3 py-2 text-sm font-medium focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/10"
+                    >
+                      {STATUSES.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-ink-soft mb-1">Follow-up date</label>
+                    <input
+                      type="date"
+                      defaultValue={active.followUpDate?.slice(0, 10) ?? ""}
+                      onBlur={async (e) => {
+                        await fetch(`/api/admin/enquiries/${active.id}`, {
+                          method: "PATCH",
+                          headers: { "Content-Type": "application/json" },
+                          credentials: "same-origin",
+                          body: JSON.stringify({ followUpDate: e.target.value || null }),
+                        });
+                        await load();
+                      }}
+                      className="rounded-xl border border-line px-3 py-2 text-sm focus:border-navy focus:outline-none focus:ring-2 focus:ring-navy/10"
+                    />
+                  </div>
                 </div>
               </div>
 
