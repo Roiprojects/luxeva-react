@@ -143,7 +143,7 @@ const defaultServices: Service[] = [
       "Our flagship service: end-to-end interior design and execution for apartments, villas, independent houses and premium homes. From space planning and custom furniture to lighting, finishing and handover, we manage every detail so your home comes together beautifully and on time.",
     benefits: ["End-to-end design & execution", "Personalised space planning", "Custom furniture & storage", "Coordinated trades under one roof", "Premium finishing"],
     heroImage: pic("living-dr-7.jpg", "Warm, complete residential home interior with coordinated living furniture"),
-    gallery: [pic("living-dr-2.jpg", "Warm living room with accent wall"), pic("living-dr-3.jpg", "Spacious contemporary living space"), pic("living-dr-4.jpg", "Modern Indian living room"), pic("living-dr-5.jpg", "Open-plan living space with lighting")],
+    gallery: [pic("living-dr-4.jpg", "Modern Indian living room"), pic("img-16.jpg", "Stylish residential interior"), pic("img-17.jpg", "Elegant home interior space"), pic("img-18.jpg", "Premium home interior detail")],
     process: defaultHome.designProcess,
     featured: true,
     published: true,
@@ -178,13 +178,12 @@ const defaultServices: Service[] = [
     shortDescription: "Electrical planning and execution for interior projects.",
     longDescription: "Electrical planning and execution for interior projects — wiring, switchboard setup, lighting circuits and safe, tidy installations coordinated with the overall interior.",
     benefits: ["Wiring & switchboards", "Lighting circuits", "Concealed, tidy runs", "Coordinated with interiors", "Safe execution"],
-    heroImage: pic("fabrication-weld.jpg", "Electrical and fabrication work in progress"),
+    heroImage: pic("false-ceil-6.jpg", "Residential electrical lighting and ceiling installation"),
     gallery: [
-      pic("fabrication-weld.jpg", "Technical fabrication work in progress"),
-      pic("smart-lock.jpg", "Smart electrical lock installation"),
-      pic("false-ceil-2.jpg", "Cove ceiling with integrated lighting circuits"),
-      pic("false-ceil-3.jpg", "Modern ceiling lighting design"),
-      pic("false-ceil-5.jpg", "Bedroom concealed lighting installation"),
+      pic("img-00.jpg", "Interior electrical wiring and switchboard setup"),
+      pic("img-01.jpg", "Concealed wiring installation in progress"),
+      pic("img-02.jpg", "Lighting circuit installation work"),
+      pic("img-03.jpg", "Professional electrical switchboard fitting"),
     ],
     published: true,
   },
@@ -218,12 +217,11 @@ const defaultServices: Service[] = [
     shortDescription: "Plumbing coordination for kitchens, bathrooms and utility areas.",
     longDescription: "Reliable plumbing coordination for kitchens, bathrooms and utility areas, aligned with your layout and finishes for a leak-free, well-planned result.",
     benefits: ["Kitchen & bathroom plumbing", "Utility planning", "Coordinated with fit-out", "Reliable execution"],
-    heroImage: pic("bathroom-5.jpg", "Premium bathroom with modern plumbing fixtures and LED lighting"),
+    heroImage: pic("plumbing-tap.jpg", "Modern plumbing fixture installation in a premium bathroom"),
     gallery: [
-      pic("bathroom-6.jpg", "Modern bathroom with marble tiles and glass shower"),
+      pic("bathroom-2.jpg", "Contemporary bathroom shower panel installation"),
       pic("bathroom-3.jpg", "Indian bathroom with premium marble wall shelves"),
       pic("bathroom-4.jpg", "Spacious bathroom with walk-in shower area"),
-      pic("bathroom-2.jpg", "Contemporary bathroom shower panel installation"),
     ],
     published: true,
   },
@@ -257,11 +255,9 @@ const defaultServices: Service[] = [
     heroImage: pic("bathroom-5.jpg", "Luxurious modern bathroom with sculpted vanity lighting"),
     gallery: [
       pic("bathroom-6.jpg", "Modern marble bathroom with round mirror and glass shower"),
-      pic("bathroom-4.jpg", "Dark luxury bathroom with rain shower and LED niches"),
-      pic("bathroom-5.jpg", "Premium bathroom with sculpted vanity and warm LED lighting"),
       pic("bathroom-tiles.jpg", "Bright bathroom with glass shower enclosure and stone vanity"),
-      pic("bathroom-2.jpg", "Contemporary shower panel with stone-effect wall tiles"),
-      pic("bathroom-3.jpg", "Indian bathroom with marble wall shelves and accent lighting"),
+      pic("img-04.jpg", "Premium tile work in a bathroom renovation"),
+      pic("img-05.jpg", "Beautifully finished bathroom tiling and grouting"),
     ],
     featured: true,
     published: true,
@@ -317,10 +313,10 @@ const defaultServices: Service[] = [
     benefits: ["Sized to your space", "Comfort-first build", "Fabric selection", "Durable frames"],
     heroImage: pic("living-dr-5.jpg", "Elegant sofa and living room interior"),
     gallery: [
-      pic("living-dr-7.jpg", "Premium sofa arrangement in a warm living room"),
-      pic("living-dr-6.jpg", "Curated living room seating with custom sofa styling"),
       pic("living-dr-3.jpg", "Contemporary sofa-led living space"),
-      pic("living-dr-8.jpg", "Compact lounge seating with soft neutral tones"),
+      pic("living-dr-6.jpg", "Curated living room seating with custom sofa styling"),
+      pic("img-19.jpg", "Premium custom sofa arrangement"),
+      pic("img-20.jpg", "Stylish living room seating with plush upholstery"),
     ],
     published: true,
   },
@@ -333,9 +329,9 @@ const defaultServices: Service[] = [
     benefits: ["Custom sizing", "Matched to interior", "Durable materials", "Seating planned around you"],
     heroImage: pic("dining.jpg", "Elegant dining table with place settings"),
     gallery: [
-      pic("dining.jpg", "Modern dining table setup with coordinated chairs"),
       pic("kitchen-dine.jpg", "Dining area connected to the kitchen"),
       pic("kitchen-open.jpg", "Open-plan kitchen and dining composition"),
+      pic("img-06.jpg", "Custom dining table in a well-designed space"),
     ],
     published: true,
   },
@@ -368,10 +364,10 @@ const defaultServices: Service[] = [
     shortDescription: "Ergonomic study tables and compact home-office setups.",
     longDescription: "Home-office and study setups for students and professionals — study tables, work desks, wall shelves, storage and ergonomic, well-lit layouts.",
     benefits: ["Study & work desks", "Wall shelves & storage", "Ergonomic layout", "Task lighting"],
-    heroImage: pic("office-desk.jpg", "Compact home-office desk setup with storage and task seating"),
+    heroImage: pic("img-07.jpg", "Compact home-office desk setup with storage and task seating"),
     gallery: [
-      pic("office-desk.jpg", "Dedicated office desk and workstation"),
-      pic("commercial-office.jpg", "Professional workspace with glass partitions"),
+      pic("img-08.jpg", "Dedicated study table and bookshelf setup"),
+      pic("img-09.jpg", "Home-office workstation with ergonomic layout"),
     ],
     published: true,
   },
@@ -384,9 +380,9 @@ const defaultServices: Service[] = [
     benefits: ["Workstations & desks", "Storage & filing units", "Meeting & reception units", "Ergonomic layouts", "Durable commercial finishes"],
     heroImage: pic("office-desk.jpg", "Office desk setup showing the kind of workstation furniture we build"),
     gallery: [
-      pic("commercial-office.jpg", "Commercial workspace with fitted office furnishings"),
-      pic("commercial-office.jpg", "Glass-partitioned office layout with integrated furnishings"),
-      pic("office-desk.jpg", "Executive office desk and workstation furniture"),
+      pic("img-10.jpg", "Custom office workstation with storage units"),
+      pic("img-11.jpg", "Executive desk and meeting table setup"),
+      pic("img-12.jpg", "Fitted office furniture with ergonomic layout"),
     ],
     published: true,
   },
@@ -429,8 +425,8 @@ const defaultServices: Service[] = [
     benefits: ["Layout & customer flow", "Display units & counters", "Branding wall", "Lighting & finishing"],
     heroImage: pic("commercial-office.jpg", "Modern commercial interior with display-ready partitions and circulation"),
     gallery: [
-      pic("commercial-office.jpg", "Commercial office and reception circulation"),
-      pic("office-desk.jpg", "Showroom or office workstation setup"),
+      pic("img-13.jpg", "Showroom display units and product presentation"),
+      pic("img-14.jpg", "Commercial reception and customer flow layout"),
     ],
     featured: true,
     published: true,
@@ -618,8 +614,8 @@ export function applyContentOverrides(payload: Partial<{
     services = clone(payload.services);
     const electrical = services.find((s) => s.slug === "electrician-service");
     if (electrical) {
-      electrical.heroImage = pic("fabrication-weld.jpg", "Electrical and fabrication work in progress");
-      electrical.gallery = [pic("fabrication-weld.jpg", "Technical fabrication work in progress"), pic("smart-lock.jpg", "Smart electrical lock installation")];
+      electrical.heroImage = pic("false-ceil-6.jpg", "Residential electrical lighting and ceiling installation");
+      electrical.gallery = [pic("img-00.jpg", "Interior electrical wiring and switchboard setup"), pic("img-01.jpg", "Concealed wiring installation in progress"), pic("img-02.jpg", "Lighting circuit installation work"), pic("img-03.jpg", "Professional electrical switchboard fitting")];
     }
     const bedrooms = services.find((s) => s.slug === "custom-beds");
     if (bedrooms) {
@@ -629,7 +625,7 @@ export function applyContentOverrides(payload: Partial<{
     const kitchen = services.find((s) => s.slug === "kitchen-granite-quartz");
     if (kitchen) {
       kitchen.heroImage = pic("kitchen-green.jpg", "Indian modular kitchen with practical storage");
-      kitchen.gallery = [pic("kitchen-green.jpg", "Indian modular kitchen with practical storage"), pic("kitchen-dr-2.jpg", "White modular kitchen with marble backsplash"), pic("kitchen-dr-3.jpg", "Contemporary modular kitchen with island"), pic("kitchen-grey.jpg", "Grey modular kitchen with clean countertop lines")];
+      kitchen.gallery = [pic("kitchen-dr-2.jpg", "White modular kitchen with marble backsplash"), pic("kitchen-dr-3.jpg", "Contemporary modular kitchen with island"), pic("kitchen-grey.jpg", "Grey modular kitchen with clean countertop lines"), pic("kitchen-dr-4.jpg", "Sleek kitchen with chimney and quartz countertop")];
     }
     const ceiling = services.find((s) => s.slug === "false-ceiling-pop");
     if (ceiling) {
