@@ -46,9 +46,9 @@ export default function HomePage() {
         <div className="relative w-full min-w-0 overflow-hidden rounded-2xl md:rounded-[2.5rem] min-h-[78vh] md:min-h-[86vh] flex items-center shadow-lift">
           {/* Full-bleed background slideshow */}
           <HeroSlideshow images={home.hero.images} />
-          {/* Scrims for legibility */}
-          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/50 to-ink/20" />
-          <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/20 to-transparent" />
+          {/* Scrims for legibility — lighter on mobile, full on desktop */}
+          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/20 to-transparent md:from-ink/95 md:via-ink/50 md:to-ink/20" />
+          <div aria-hidden className="absolute inset-0 hidden md:block bg-gradient-to-r from-ink/70 via-ink/20 to-transparent" />
           <div aria-hidden className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl md:rounded-[2.5rem]" />
 
           {/* Premium badge — visible on all screens */}
