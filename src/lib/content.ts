@@ -44,13 +44,13 @@ const defaultHome = {
     heading: 'Crafted luxury interiors,<br/><span class="text-gradient-gold">designed &amp; delivered</span>',
     subheading:
       "From design and modular woodwork to electricals, finishing and handover — Luxeva Care delivers complete, beautiful interiors for homes and commercial spaces.",
-    image: `${IMG}/indian-bedroom-2.jpg`,
+    image: `${IMG}/living-dr-2.jpg`,
     images: [
-      { src: `${IMG}/indian-bedroom-2.jpg`, alt: "Indian bedroom interior with custom storage" },
-      { src: `${IMG}/indian-living.jpg`, alt: "Indian living room with layered seating and natural light" },
+      { src: `${IMG}/living-dr-2.jpg`, alt: "Modern Indian living room with designer pendant lights" },
+      { src: `${IMG}/indian-living-2.jpg`, alt: "Spacious Indian living room with natural light" },
       { src: `${IMG}/kitchen-green.jpg`, alt: "Indian modular kitchen with practical storage" },
       { src: `${IMG}/false-ceil-1.jpg`, alt: "Stunning false ceiling with integrated LED lighting" },
-      { src: `${IMG}/indian-living-2.jpg`, alt: "Spacious Indian living space" },
+      { src: `${IMG}/indian-bedroom-2.jpg`, alt: "Indian bedroom interior with custom storage" },
     ],
     stats: [
       { label: "End-to-end", value: "Design → Handover" },
@@ -99,11 +99,11 @@ const defaultHome = {
 /* Room categories — the "designs for every room" tiles. */
 export type RoomCategory = { title: string; image: string; href: string };
 const defaultRoomCategories: RoomCategory[] = [
-  { title: "Living Room", image: `${IMG}/indian-living.jpg`, href: "/services/residential-home-interior" },
+  { title: "Living Room", image: `${IMG}/living-dr-2.jpg`, href: "/services/residential-home-interior" },
   { title: "Modular Kitchen", image: `${IMG}/kitchen-dr-1.jpg`, href: "/services/kitchen-granite-quartz" },
   { title: "Bedroom", image: `${IMG}/indian-bedroom-2.jpg`, href: "/services/custom-beds" },
-  { title: "Wardrobe", image: `${IMG}/wardrobe.jpg`, href: "/services/carpenter-service" },
-  { title: "Bathroom", image: `${IMG}/bathroom-1.jpg`, href: "/services/plumbing-service" },
+  { title: "Wardrobe", image: `${IMG}/wardrobe-1.jpg`, href: "/services/carpenter-service" },
+  { title: "Bathroom", image: `${IMG}/bathroom-6.jpg`, href: "/services/tiles-bathroom-work" },
   { title: "Entertainment", image: `${IMG}/ent-unit-1.jpg`, href: "/services/entertainment-unit" },
   { title: "Temple / Pooja", image: `${IMG}/temple-1.jpg`, href: "/services/temple-unit" },
   { title: "Full Home", image: `${IMG}/living-dr-3.jpg`, href: "/services/residential-home-interior" },
@@ -181,6 +181,9 @@ const defaultServices: Service[] = [
     gallery: [
       pic("fabrication-weld.jpg", "Technical fabrication work in progress"),
       pic("smart-lock.jpg", "Smart electrical lock installation"),
+      pic("false-ceil-2.jpg", "Cove ceiling with integrated lighting circuits"),
+      pic("false-ceil-3.jpg", "Modern ceiling lighting design"),
+      pic("false-ceil-5.jpg", "Bedroom concealed lighting installation"),
     ],
     published: true,
   },
@@ -214,7 +217,13 @@ const defaultServices: Service[] = [
     shortDescription: "Plumbing coordination for kitchens, bathrooms and utility areas.",
     longDescription: "Reliable plumbing coordination for kitchens, bathrooms and utility areas, aligned with your layout and finishes for a leak-free, well-planned result.",
     benefits: ["Kitchen & bathroom plumbing", "Utility planning", "Coordinated with fit-out", "Reliable execution"],
-    heroImage: pic("plumbing-tap.jpg", "Chrome tap and plumbing fixture"),
+    heroImage: pic("bathroom-5.jpg", "Premium bathroom with modern plumbing fixtures and LED lighting"),
+    gallery: [
+      pic("bathroom-6.jpg", "Modern bathroom with marble tiles and glass shower"),
+      pic("bathroom-3.jpg", "Indian bathroom with premium marble wall shelves"),
+      pic("bathroom-4.jpg", "Spacious bathroom with walk-in shower area"),
+      pic("bathroom-2.jpg", "Contemporary bathroom shower panel installation"),
+    ],
     published: true,
   },
   {
@@ -537,11 +546,11 @@ function clone<T>(value: T): T {
 
 const repairRoomImages = (rooms: RoomCategory[]) => rooms.map((room) => {
   const imageByTitle: Record<string, string> = {
-    "Living Room": `${IMG}/indian-living.jpg`,
+    "Living Room": `${IMG}/living-dr-2.jpg`,
     "Modular Kitchen": `${IMG}/kitchen-green.jpg`,
     Bedroom: `${IMG}/indian-bedroom-2.jpg`,
-    Wardrobe: `${IMG}/wardrobe.jpg`,
-    Bathroom: `${IMG}/bathroom-1.jpg`,
+    Wardrobe: `${IMG}/wardrobe-1.jpg`,
+    Bathroom: `${IMG}/bathroom-6.jpg`,
     Entertainment: `${IMG}/ent-unit-1.jpg`,
     "Temple / Pooja": `${IMG}/temple-1.jpg`,
     "Full Home": `${IMG}/indian-living-2.jpg`,
@@ -584,13 +593,13 @@ export function applyContentOverrides(payload: Partial<{
   }
   if (payload.home) {
     home = clone(payload.home);
-    home.hero.image = `${IMG}/indian-bedroom-2.jpg`;
+    home.hero.image = `${IMG}/living-dr-2.jpg`;
     home.hero.images = [
-      { src: `${IMG}/indian-bedroom-2.jpg`, alt: "Indian bedroom interior with custom storage" },
-      { src: `${IMG}/indian-living.jpg`, alt: "Indian living room with layered seating and natural light" },
+      { src: `${IMG}/living-dr-2.jpg`, alt: "Modern Indian living room with designer pendant lights" },
+      { src: `${IMG}/indian-living-2.jpg`, alt: "Spacious Indian living room with natural light" },
       { src: `${IMG}/kitchen-green.jpg`, alt: "Indian modular kitchen with practical storage" },
       { src: `${IMG}/false-ceil-1.jpg`, alt: "Stunning false ceiling with integrated LED lighting" },
-      { src: `${IMG}/indian-living-2.jpg`, alt: "Spacious Indian living space" },
+      { src: `${IMG}/indian-bedroom-2.jpg`, alt: "Indian bedroom interior with custom storage" },
     ];
     home.aboutPreview.image = `${IMG}/indian-living-2.jpg`;
   }
@@ -620,7 +629,7 @@ export function applyContentOverrides(payload: Partial<{
     }
     const wardrobes = services.find((s) => s.slug === "carpenter-service");
     if (wardrobes) {
-      wardrobes.heroImage = pic("wardrobe.jpg", "Custom wardrobe storage in a bedroom");
+      wardrobes.heroImage = pic("wardrobe-1.jpg", "Custom built-in wardrobe in a bedroom");
       wardrobes.gallery = [pic("wardrobe.jpg", "Custom wardrobe storage in a bedroom"), pic("wardrobe-2.jpg", "Sliding wardrobe with mirror"), pic("wardrobe-3.jpg", "Walk-in wardrobe with shelving"), pic("wardrobe-4.jpg", "Built-in wardrobe design")];
     }
     const wallDesign = services.find((s) => s.slug === "wallpaper");
