@@ -25,12 +25,15 @@ export default function AdminMediaLibrary() {
 
   useEffect(() => { loadAssets(); }, []);
 
-  const visible = assets.filter((asset) => {
+  // Only show uploaded images — hide built-in stock photos
+  const uploadedAssets = assets.filter((a) => !a.directory.startsWith("stock"));
+
+  const visible = uploadedAssets.filter((asset) => {
     const q = filter.trim().toLowerCase();
     return !q || `${asset.directory}/${asset.name}`.toLowerCase().includes(q);
   });
 
-  const folders = [...new Set(assets.map((a) => a.directory || "root"))];
+  const folders = [...new Set(uploadedAssets.map((a) => a.directory || "root"))];
 
   async function copy(path: string) {
     try {
@@ -104,7 +107,7 @@ export default function AdminMediaLibrary() {
           <p className="eyebrow mb-2">Media</p>
           <h1 className="text-3xl text-ink">Image Library</h1>
           <p className="mt-1 text-sm text-ink-soft">
-            {assets.length} images across {folders.length} folder{folders.length !== 1 ? "s" : ""}
+            {uploadedAssets.length} uploaded image{uploadedAssets.length !== 1 ? "s" : ""} across {folders.length} folder{folders.length !== 1 ? "s" : ""}
           </p>
         </div>
         <button onClick={loadAssets} className="flex items-center gap-2 rounded-xl border border-line px-4 py-2.5 text-sm font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
@@ -163,7 +166,7 @@ export default function AdminMediaLibrary() {
       {visible.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl bg-white border border-line py-16 text-center">
           <ImageIcon size={40} className="text-ink-soft/30 mb-3" />
-          <p className="text-sm text-ink-soft">No images found.</p>
+          <p className="text-sm text-ink-soft">{filter ? "No images match your search." : "No uploaded images yet. Use the upload zone above to add images."}</p>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

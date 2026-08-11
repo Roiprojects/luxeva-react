@@ -1,10 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-
-type AssetInfo = {
-  path: string;
-  name: string;
-  directory: string;
-};
+import { useRef, useState } from "react";
+import { Upload, X, Loader2 } from "lucide-react";
 
 export function AssetPicker({
   label,
@@ -15,73 +10,103 @@ export function AssetPicker({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const [open, setOpen] = useState(false);
-  const [assets, setAssets] = useState<AssetInfo[]>([]);
-  const [filter, setFilter] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (!open || assets.length > 0) return;
-    fetch("/api/admin/assets", { credentials: "same-origin" })
-      .then((r) => r.json())
-      .then((data) => setAssets(data.assets ?? []));
-  }, [open, assets.length]);
-
-  const visible = useMemo(() => {
-    const query = filter.trim().toLowerCase();
-    if (!query) return assets;
-    return assets.filter((asset) => `${asset.directory}/${asset.name}`.toLowerCase().includes(query));
-  }, [assets, filter]);
+  async function handleFile(file: File) {
+    setUploading(true);
+    setError("");
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result ?? ""));
+        reader.onerror = () => reject(new Error("Failed to read file"));
+        reader.readAsDataURL(file);
+      });
+      const base64Data = dataUrl.includes(",") ? dataUrl.split(",")[1] : "";
+      const res = await fetch("/api/admin/assets/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ fileName: file.name, mimeType: file.type, base64Data }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        setError(data.error ?? "Upload failed. Please try again.");
+        return;
+      }
+      onChange(data.asset.path);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  }
 
   return (
-    <div className="space-y-3">
-      <label className="block">
-        <span className="text-sm font-medium text-ink">{label}</span>
-        <input value={value} onChange={(e) => onChange(e.target.value)} className="mt-2 w-full rounded-xl border border-line px-4 py-3" />
-      </label>
+    <div className="space-y-2">
+      {label && <p className="text-sm font-medium text-ink">{label}</p>}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,image/svg+xml"
+        className="hidden"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) handleFile(f);
+          e.target.value = "";
+        }}
+      />
 
       {value ? (
-        <div className="overflow-hidden rounded-xl border border-line bg-mist">
-          <div className="aspect-[16/10] bg-white">
-            <img src={value} alt="" className="h-full w-full object-cover" />
+        <div className="relative rounded-xl overflow-hidden border border-line group">
+          <img src={value} alt="" className="w-full h-36 object-cover" />
+          <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/50 transition-all flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-2 text-xs font-semibold text-ink shadow-md hover:bg-mist transition-colors"
+            >
+              {uploading ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
+              {uploading ? "Uploading…" : "Change"}
+            </button>
+            <button
+              type="button"
+              onClick={() => onChange("")}
+              className="flex items-center gap-1.5 rounded-xl bg-brand px-3 py-2 text-xs font-semibold text-white shadow-md hover:bg-brand-dark transition-colors"
+            >
+              <X size={13} /> Remove
+            </button>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="w-full flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-line bg-mist/40 py-7 text-ink-soft hover:border-navy hover:text-navy hover:bg-navy/5 transition-all disabled:opacity-60"
+        >
+          {uploading ? (
+            <>
+              <Loader2 size={22} className="animate-spin" />
+              <span className="text-sm font-medium">Uploading…</span>
+            </>
+          ) : (
+            <>
+              <Upload size={22} />
+              <span className="text-sm font-medium">Choose image from device</span>
+              <span className="text-xs opacity-60">PNG, JPG, WebP · Max 15 MB</span>
+            </>
+          )}
+        </button>
+      )}
 
-      <button type="button" onClick={() => setOpen((v) => !v)} className="rounded-full border border-line px-4 py-2 text-sm">
-        {open ? "Hide asset library" : "Choose from asset library"}
-      </button>
-
-      {open ? (
-        <div className="rounded-2xl border border-line bg-white p-4 space-y-4">
-          <input
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            placeholder="Search assets"
-            className="w-full rounded-xl border border-line px-4 py-3"
-          />
-          <div className="grid max-h-[24rem] gap-3 overflow-auto sm:grid-cols-2 xl:grid-cols-3">
-            {visible.map((asset) => (
-              <button
-                key={asset.path}
-                type="button"
-                onClick={() => {
-                  onChange(asset.path);
-                  setOpen(false);
-                }}
-                className={`overflow-hidden rounded-xl border text-left ${value === asset.path ? "border-brand" : "border-line"}`}
-              >
-                <div className="aspect-[4/3] bg-mist">
-                  <img src={asset.path} alt={asset.name} className="h-full w-full object-cover" />
-                </div>
-                <div className="p-3">
-                  <p className="text-xs uppercase tracking-wide text-ink-soft">{asset.directory || "root"}</p>
-                  <p className="mt-1 text-sm break-all">{asset.name}</p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : null}
+      {error && (
+        <p className="text-xs text-brand flex items-center gap-1">{error}</p>
+      )}
     </div>
   );
 }
