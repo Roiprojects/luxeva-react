@@ -446,24 +446,29 @@ function AboutEditor({ doc, onChange }: { doc: any; onChange: (next: any) => voi
   );
 }
 
-const ROOM_PAGE_OPTIONS = [
-  { label: "Living Room", href: "/services/living-room" },
-  { label: "Bedroom", href: "/services/bedroom" },
-  { label: "Kitchen", href: "/services/kitchen" },
+const ROOM_CATEGORIES = [
+  { label: "Living Room",        href: "/services/living-room" },
+  { label: "Bedroom",            href: "/services/bedroom" },
+  { label: "Kitchen",            href: "/services/kitchen" },
   { label: "Wardrobe / Storage", href: "/services/wardrobe" },
-  { label: "Bathroom & Tiles", href: "/services/tiles-bathroom-work" },
-  { label: "Plumbing", href: "/services/plumbing-service" },
-  { label: "Electrical Works", href: "/services/electrical-works" },
-  { label: "False Ceiling", href: "/services/false-ceiling" },
-  { label: "Home Office", href: "/services/home-office" },
-  { label: "Kids Room", href: "/services/kids-room" },
-  { label: "All Services", href: "/services" },
+  { label: "Bathroom & Tiles",   href: "/services/tiles-bathroom-work" },
+  { label: "Plumbing",           href: "/services/plumbing-service" },
+  { label: "Electrical Works",   href: "/services/electrical-works" },
+  { label: "False Ceiling",      href: "/services/false-ceiling" },
+  { label: "Home Office",        href: "/services/home-office" },
+  { label: "Kids Room",          href: "/services/kids-room" },
+  { label: "All Services",       href: "/services" },
 ];
+
+function categoryFromHref(href: string) {
+  return ROOM_CATEGORIES.find((c) => c.href === href) ?? ROOM_CATEGORIES[0];
+}
 
 function RoomCategoryEditor({ doc, onChange }: { doc: RoomCategory[]; onChange: (next: RoomCategory[]) => void }) {
   const items = doc ?? [];
   const [addOpen, setAddOpen] = useState(false);
-  const [addForm, setAddForm] = useState<RoomCategory>({ title: "", image: "", href: "/services/living-room" });
+  const [addCategory, setAddCategory] = useState(ROOM_CATEGORIES[0]);
+  const [addImage, setAddImage] = useState("");
 
   const update = (index: number, patch: Partial<RoomCategory>) => {
     const next = structuredClone(items);
@@ -472,9 +477,9 @@ function RoomCategoryEditor({ doc, onChange }: { doc: RoomCategory[]; onChange: 
   };
 
   function handleAdd() {
-    if (!addForm.title) return;
-    onChange([...items, { ...addForm }]);
-    setAddForm({ title: "", image: "", href: "/services/living-room" });
+    onChange([...items, { title: addCategory.label, image: addImage, href: addCategory.href }]);
+    setAddCategory(ROOM_CATEGORIES[0]);
+    setAddImage("");
     setAddOpen(false);
   }
 
@@ -486,44 +491,57 @@ function RoomCategoryEditor({ doc, onChange }: { doc: RoomCategory[]; onChange: 
             <Plus size={15} /> Add room category
           </button>
         </div>
-        <div className="grid sm:grid-cols-2 gap-4">
-          {items.map((item, index) => (
-            <div key={`${item.title}-${index}`} className="rounded-2xl border border-line bg-white overflow-hidden">
-              {item.image && <img src={item.image} alt={item.title} className="h-32 w-full object-cover" />}
-              <div className="p-4 space-y-3">
-                <Field label="Category name" value={item.title} onChange={(v) => update(index, { title: v })} placeholder="e.g. Living Room" />
-                <AssetPicker label="Photo" value={item.image} onChange={(v) => update(index, { image: v })} />
-                <label className="block">
-                  <span className={labelCls}>Links to which page?</span>
-                  <select value={item.href} onChange={(e) => update(index, { href: e.target.value })} className={fieldCls}>
-                    {ROOM_PAGE_OPTIONS.map((opt) => <option key={opt.href} value={opt.href}>{opt.label}</option>)}
-                    {!ROOM_PAGE_OPTIONS.find((o) => o.href === item.href) && item.href && (
-                      <option value={item.href}>{item.href}</option>
-                    )}
-                  </select>
-                </label>
-                <div className="flex justify-end">
-                  <RemoveButton label="room category" onRemove={() => onChange(items.filter((_, i) => i !== index))} />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((item, index) => {
+            const current = categoryFromHref(item.href);
+            return (
+              <div key={`${item.href}-${index}`} className="rounded-2xl border border-line bg-white overflow-hidden">
+                {item.image
+                  ? <img src={item.image} alt={item.title} className="h-36 w-full object-cover" />
+                  : <div className="h-36 w-full bg-mist flex items-center justify-center text-ink-soft/30 text-sm">No photo</div>
+                }
+                <div className="p-4 space-y-3">
+                  {/* Category selector — sets title + link automatically */}
+                  <label className="block">
+                    <span className={labelCls}>Category</span>
+                    <select
+                      value={item.href}
+                      onChange={(e) => {
+                        const cat = ROOM_CATEGORIES.find((c) => c.href === e.target.value) ?? current;
+                        update(index, { title: cat.label, href: cat.href });
+                      }}
+                      className={fieldCls}
+                    >
+                      {ROOM_CATEGORIES.map((c) => <option key={c.href} value={c.href}>{c.label}</option>)}
+                    </select>
+                  </label>
+                  <AssetPicker label="Photo" value={item.image} onChange={(v) => update(index, { image: v })} />
+                  <div className="flex justify-end pt-1">
+                    <RemoveButton label="room category" onRemove={() => onChange(items.filter((_, i) => i !== index))} />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
-      <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Add room category">
+      {/* Add modal — just Category + Photo */}
+      <Modal open={addOpen} onClose={() => { setAddOpen(false); setAddImage(""); }} title="Add room category">
         <div className="space-y-4">
-          <Field label="Category name" value={addForm.title} onChange={(v) => setAddForm((f) => ({ ...f, title: v }))} placeholder="e.g. Living Room" />
-          <AssetPicker label="Photo" value={addForm.image} onChange={(v) => setAddForm((f) => ({ ...f, image: v }))} />
-          {addForm.image && <img src={addForm.image} alt="" className="h-28 w-full object-cover rounded-xl" />}
           <label className="block">
-            <span className={labelCls}>Links to which service page?</span>
-            <select value={addForm.href} onChange={(e) => setAddForm((f) => ({ ...f, href: e.target.value }))} className={fieldCls}>
-              {ROOM_PAGE_OPTIONS.map((opt) => <option key={opt.href} value={opt.href}>{opt.label}</option>)}
+            <span className={labelCls}>Category</span>
+            <select
+              value={addCategory.href}
+              onChange={(e) => setAddCategory(ROOM_CATEGORIES.find((c) => c.href === e.target.value) ?? ROOM_CATEGORIES[0])}
+              className={fieldCls}
+            >
+              {ROOM_CATEGORIES.map((c) => <option key={c.href} value={c.href}>{c.label}</option>)}
             </select>
           </label>
+          <AssetPicker label="Photo" value={addImage} onChange={setAddImage} />
         </div>
-        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} confirmLabel="Add category" disabled={!addForm.title} />
+        <ModalActions onCancel={() => { setAddOpen(false); setAddImage(""); }} onConfirm={handleAdd} confirmLabel="Add category" />
       </Modal>
     </>
   );
