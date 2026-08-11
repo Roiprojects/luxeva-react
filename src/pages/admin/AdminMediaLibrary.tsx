@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Upload, RefreshCw, Search, Copy, Check, Trash2, FolderOpen, Image as ImageIcon } from "lucide-react";
+import { ConfirmDialog } from "@/components/admin/Modal";
 
 type AssetInfo = {
   path: string; name: string; directory: string;
@@ -12,6 +13,7 @@ export default function AdminMediaLibrary() {
   const [uploading, setUploading] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error"; msg: string } | null>(null);
   const [deletingPath, setDeletingPath] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -68,7 +70,6 @@ export default function AdminMediaLibrary() {
   }
 
   async function onDelete(path: string) {
-    if (!confirm("Delete this image? This cannot be undone.")) return;
     setDeletingPath(path);
     setStatus(null);
     try {
@@ -190,7 +191,7 @@ export default function AdminMediaLibrary() {
                   </button>
                   {asset.directory === "uploads" && (
                     <button
-                      onClick={() => onDelete(asset.path)}
+                      onClick={() => setConfirmDelete(asset.path)}
                       disabled={deletingPath === asset.path}
                       className="flex items-center justify-center h-8 w-8 rounded-lg border border-line text-ink-soft hover:border-brand hover:text-brand transition-all disabled:opacity-40"
                       title="Delete image"
@@ -204,6 +205,16 @@ export default function AdminMediaLibrary() {
           ))}
         </div>
       )}
+
+      <ConfirmDialog
+        open={confirmDelete !== null}
+        onClose={() => setConfirmDelete(null)}
+        onConfirm={() => { if (confirmDelete) onDelete(confirmDelete); setConfirmDelete(null); }}
+        title="Delete image"
+        message={`Are you sure you want to permanently delete "${confirmDelete?.split("/").pop()}"? This cannot be undone.`}
+        confirmLabel="Yes, delete"
+        danger
+      />
     </div>
   );
 }

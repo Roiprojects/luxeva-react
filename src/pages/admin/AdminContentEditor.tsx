@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { getContentSnapshot, type RoomCategory } from "@/lib/content";
 import type { ContactDetails, Faq, ImageAsset, Leader, Project, Service, Testimonial } from "@/lib/types";
 import { AssetPicker } from "@/components/admin/AssetPicker";
+import { Modal, ConfirmDialog } from "@/components/admin/Modal";
 import { Save, Plus, Trash2, CheckCircle, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
 
 const routeToKey: Record<string, string> = {
@@ -35,7 +36,7 @@ const PAGE_DESCRIPTIONS: Record<string, string> = {
   contactDetails: "Edit phone, email, address and social media links.",
 };
 
-/* ─── Heading helpers: split the hero HTML heading into two plain-text fields ─── */
+/* ─── Heading helpers ─── */
 
 function parseHeading(raw: string): { line1: string; line2: string } {
   const brMatch = raw.match(/^([\s\S]*?)<br\s*\/?>/i);
@@ -63,7 +64,7 @@ function Field({ label, value, onChange, multiline = false, placeholder = "" }: 
     <label className="block">
       <span className={labelCls}>{label}</span>
       {multiline
-        ? <textarea value={value} onChange={(e) => onChange(e.target.value)} className={`${fieldCls} min-h-[120px] resize-y`} placeholder={placeholder} />
+        ? <textarea value={value} onChange={(e) => onChange(e.target.value)} className={`${fieldCls} min-h-[100px] resize-y`} placeholder={placeholder} />
         : <input value={value} onChange={(e) => onChange(e.target.value)} className={fieldCls} placeholder={placeholder} />
       }
     </label>
@@ -79,17 +80,18 @@ function CheckboxField({ label, checked, onChange }: { label: string; checked: b
   );
 }
 
-function TextListEditor({ label, values, onChange, placeholder = "" }: { label: string; values: string[]; onChange: (next: string[]) => void; placeholder?: string }) {
+function ModalActions({ onCancel, onConfirm, confirmLabel = "Add", disabled = false }: {
+  onCancel: () => void; onConfirm: () => void; confirmLabel?: string; disabled?: boolean;
+}) {
   return (
-    <label className="block">
-      <span className={labelCls}>{label} <span className="text-ink-soft font-normal">(one per line)</span></span>
-      <textarea
-        value={values.join("\n")}
-        onChange={(e) => onChange(e.target.value.split("\n").map((item) => item.trim()).filter(Boolean))}
-        className={`${fieldCls} min-h-[120px] resize-y`}
-        placeholder={placeholder}
-      />
-    </label>
+    <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-line">
+      <button type="button" onClick={onCancel} className="rounded-xl border border-line px-5 py-2.5 text-sm font-medium text-ink-soft hover:bg-mist transition-colors">
+        Cancel
+      </button>
+      <button type="button" onClick={onConfirm} disabled={disabled} className="rounded-xl bg-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy-dark transition-colors disabled:opacity-50">
+        {confirmLabel}
+      </button>
+    </div>
   );
 }
 
@@ -106,6 +108,28 @@ function SectionCard({ title, children }: { title: string; children: ReactNode }
   );
 }
 
+function RemoveButton({ label, onRemove }: { label: string; onRemove: () => void }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)} className="flex items-center gap-1 text-xs text-brand hover:underline">
+        <Trash2 size={12} /> Remove
+      </button>
+      <ConfirmDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        onConfirm={onRemove}
+        title="Confirm removal"
+        message={`Are you sure you want to remove this ${label}? This cannot be undone.`}
+        confirmLabel="Yes, remove"
+        danger
+      />
+    </>
+  );
+}
+
+/* ─── ImageAssetEditor (single image, no add/remove) ─── */
+
 function ImageAssetEditor({ label, asset, onChange }: { label: string; asset: ImageAsset | undefined; onChange: (next: ImageAsset) => void }) {
   const next = asset ?? { src: "", alt: "" };
   return (
@@ -121,119 +145,222 @@ function ImageAssetEditor({ label, asset, onChange }: { label: string; asset: Im
   );
 }
 
+/* ─── ImageArrayEditor — modal to add, confirm to remove ─── */
+
 function ImageArrayEditor({ label, items, onChange }: { label: string; items: ImageAsset[]; onChange: (next: ImageAsset[]) => void }) {
   const safeItems = items ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState<ImageAsset>({ src: "", alt: "", isRender: false });
+
   const update = (index: number, patch: Partial<ImageAsset>) => {
     const next = structuredClone(safeItems);
     next[index] = { ...next[index], ...patch };
     onChange(next);
   };
+
+  function handleAdd() {
+    if (!addForm.src) return;
+    onChange([...safeItems, { ...addForm }]);
+    setAddForm({ src: "", alt: "", isRender: false });
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-ink">{label} <span className="text-ink-soft font-normal">({safeItems.length})</span></p>
-        <button type="button" onClick={() => onChange([...safeItems, { src: "", alt: "" }])} className="flex items-center gap-1.5 rounded-xl border border-line px-3 py-2 text-xs font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-          <Plus size={13} /> Add image
-        </button>
-      </div>
-      <div className="grid sm:grid-cols-2 gap-3">
-        {safeItems.map((item, index) => (
-          <div key={`${item.src}-${index}`} className="space-y-3 rounded-xl border border-line bg-mist/30 p-4">
-            {item.src && <img src={item.src} alt={item.alt || ""} className="h-20 w-full object-cover rounded-lg" />}
-            <AssetPicker label={`Image ${index + 1}`} value={item.src ?? ""} onChange={(src) => update(index, { src })} />
-            <Field label="Alt text" value={item.alt ?? ""} onChange={(alt) => update(index, { alt })} />
-            <div className="flex items-center justify-between">
-              <CheckboxField label="Design render" checked={!!item.isRender} onChange={(isRender) => update(index, { isRender })} />
-              <button type="button" onClick={() => onChange(safeItems.filter((_, i) => i !== index))} className="flex items-center gap-1 text-xs text-brand hover:underline">
-                <Trash2 size={12} /> Remove
-              </button>
+    <>
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-ink">{label} <span className="text-ink-soft font-normal">({safeItems.length})</span></p>
+          <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-1.5 rounded-xl bg-navy/5 border border-navy/20 px-3 py-2 text-xs font-semibold text-navy hover:bg-navy/10 transition-all">
+            <Plus size={13} /> Add image
+          </button>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {safeItems.map((item, index) => (
+            <div key={`${item.src}-${index}`} className="space-y-3 rounded-xl border border-line bg-mist/30 p-4">
+              {item.src && <img src={item.src} alt={item.alt || ""} className="h-20 w-full object-cover rounded-lg" />}
+              <AssetPicker label={`Image ${index + 1}`} value={item.src ?? ""} onChange={(src) => update(index, { src })} />
+              <Field label="Alt text" value={item.alt ?? ""} onChange={(alt) => update(index, { alt })} />
+              <div className="flex items-center justify-between">
+                <CheckboxField label="Design render" checked={!!item.isRender} onChange={(isRender) => update(index, { isRender })} />
+                <RemoveButton label="image" onRemove={() => onChange(safeItems.filter((_, i) => i !== index))} />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title={`Add image to ${label}`}>
+        <div className="space-y-4">
+          <AssetPicker label="Choose image" value={addForm.src ?? ""} onChange={(src) => setAddForm((f) => ({ ...f, src }))} />
+          {addForm.src && <img src={addForm.src} alt="" className="h-32 w-full object-cover rounded-xl" />}
+          <Field label="Alt text (describe what's in the image)" value={addForm.alt ?? ""} onChange={(alt) => setAddForm((f) => ({ ...f, alt }))} placeholder="e.g. Modern living room with designer sofa" />
+          <CheckboxField label="This is a design render / 3D visual" checked={!!addForm.isRender} onChange={(isRender) => setAddForm((f) => ({ ...f, isRender }))} />
+        </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} confirmLabel="Add image" disabled={!addForm.src} />
+      </Modal>
+    </>
   );
 }
 
+/* ─── SimpleImagePathListEditor — modal to add, confirm to remove ─── */
+
 function SimpleImagePathListEditor({ label, items, onChange }: { label: string; items: string[]; onChange: (next: string[]) => void }) {
   const safeItems = items ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addSrc, setAddSrc] = useState("");
+
+  function handleAdd() {
+    if (!addSrc) return;
+    onChange([...safeItems, addSrc]);
+    setAddSrc("");
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-ink">{label}</p>
-        <button type="button" onClick={() => onChange([...safeItems, ""])} className="flex items-center gap-1.5 rounded-xl border border-line px-3 py-2 text-xs font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-          <Plus size={13} /> Add
-        </button>
-      </div>
-      <div className="grid sm:grid-cols-2 gap-3">
-        {safeItems.map((item, index) => (
-          <div key={`${item}-${index}`} className="space-y-2 rounded-xl border border-line bg-mist/30 p-3">
-            {item && <img src={item} alt="" className="h-16 w-full object-cover rounded-lg" />}
-            <div className="flex items-center gap-2">
-              <div className="flex-1"><AssetPicker label="" value={item} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? value : e))} /></div>
-              <button type="button" onClick={() => onChange(safeItems.filter((_, i) => i !== index))} className="text-brand hover:text-brand-dark flex-shrink-0">
-                <Trash2 size={14} />
-              </button>
+    <>
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-ink">{label}</p>
+          <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-1.5 rounded-xl bg-navy/5 border border-navy/20 px-3 py-2 text-xs font-semibold text-navy hover:bg-navy/10 transition-all">
+            <Plus size={13} /> Add image
+          </button>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-3">
+          {safeItems.map((item, index) => (
+            <div key={`${item}-${index}`} className="space-y-2 rounded-xl border border-line bg-mist/30 p-3">
+              {item && <img src={item} alt="" className="h-20 w-full object-cover rounded-lg" />}
+              <div className="flex items-center gap-2">
+                <div className="flex-1">
+                  <AssetPicker label="" value={item} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? value : e))} />
+                </div>
+                <RemoveButton label="image" onRemove={() => onChange(safeItems.filter((_, i) => i !== index))} />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title={`Add image to ${label}`}>
+        <div className="space-y-4">
+          <AssetPicker label="Choose image" value={addSrc} onChange={setAddSrc} />
+          {addSrc && <img src={addSrc} alt="" className="h-32 w-full object-cover rounded-xl" />}
+        </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} confirmLabel="Add image" disabled={!addSrc} />
+      </Modal>
+    </>
   );
 }
+
+/* ─── TitledDescriptionListEditor — modal to add, confirm to remove ─── */
 
 function TitledDescriptionListEditor({ label, items, onChange }: {
   label: string; items: Array<{ title: string; description: string }>;
   onChange: (next: Array<{ title: string; description: string }>) => void;
 }) {
   const safeItems = items ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState({ title: "", description: "" });
+
+  function handleAdd() {
+    if (!addForm.title) return;
+    onChange([...safeItems, { ...addForm }]);
+    setAddForm({ title: "", description: "" });
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-ink">{label}</p>
-        <button type="button" onClick={() => onChange([...safeItems, { title: "", description: "" }])} className="flex items-center gap-1.5 rounded-xl border border-line px-3 py-2 text-xs font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-          <Plus size={13} /> Add item
-        </button>
-      </div>
-      {safeItems.map((item, index) => (
-        <div key={`${item.title}-${index}`} className="rounded-xl border border-line bg-mist/30 p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Item {index + 1}</p>
-            <button type="button" onClick={() => onChange(safeItems.filter((_, i) => i !== index))} className="flex items-center gap-1 text-xs text-brand hover:underline">
-              <Trash2 size={12} /> Remove
-            </button>
-          </div>
-          <Field label="Title" value={item.title} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? { ...e, title: value } : e))} />
-          <Field label="Description" value={item.description} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? { ...e, description: value } : e))} multiline />
+    <>
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-ink">{label}</p>
+          <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-1.5 rounded-xl bg-navy/5 border border-navy/20 px-3 py-2 text-xs font-semibold text-navy hover:bg-navy/10 transition-all">
+            <Plus size={13} /> Add item
+          </button>
         </div>
-      ))}
-    </div>
+        {safeItems.map((item, index) => (
+          <div key={`${item.title}-${index}`} className="rounded-xl border border-line bg-mist/30 p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{item.title || `Item ${index + 1}`}</p>
+              <RemoveButton label="item" onRemove={() => onChange(safeItems.filter((_, i) => i !== index))} />
+            </div>
+            <Field label="Title" value={item.title} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? { ...e, title: value } : e))} />
+            <Field label="Description" value={item.description} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? { ...e, description: value } : e))} multiline />
+          </div>
+        ))}
+      </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title={`Add new ${label.toLowerCase()}`}>
+        <div className="space-y-4">
+          <Field label="Title" value={addForm.title} onChange={(v) => setAddForm((f) => ({ ...f, title: v }))} placeholder="e.g. Quality Materials" />
+          <Field label="Description" value={addForm.description} onChange={(v) => setAddForm((f) => ({ ...f, description: v }))} multiline placeholder="Brief description…" />
+        </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} disabled={!addForm.title} />
+      </Modal>
+    </>
   );
 }
+
+/* ─── StringPairListEditor — modal to add, confirm to remove ─── */
 
 function StringPairListEditor({ label, items, firstLabel, secondLabel, onChange }: {
   label: string; items: Array<{ label: string; value: string }>; firstLabel: string; secondLabel: string;
   onChange: (next: Array<{ label: string; value: string }>) => void;
 }) {
   const safeItems = items ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState({ label: "", value: "" });
+
+  function handleAdd() {
+    if (!addForm.label && !addForm.value) return;
+    onChange([...safeItems, { ...addForm }]);
+    setAddForm({ label: "", value: "" });
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-ink">{label}</p>
-        <button type="button" onClick={() => onChange([...safeItems, { label: "", value: "" }])} className="flex items-center gap-1.5 rounded-xl border border-line px-3 py-2 text-xs font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-          <Plus size={13} /> Add
-        </button>
-      </div>
-      {safeItems.map((item, index) => (
-        <div key={`${item.label}-${index}`} className="grid sm:grid-cols-2 gap-3 rounded-xl border border-line bg-mist/30 p-4">
-          <Field label={firstLabel} value={item.label} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? { ...e, label: value } : e))} />
-          <Field label={secondLabel} value={item.value} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? { ...e, value } : e))} />
-          <button type="button" onClick={() => onChange(safeItems.filter((_, i) => i !== index))} className="flex items-center gap-1 text-xs text-brand hover:underline sm:col-span-2">
-            <Trash2 size={12} /> Remove this item
+    <>
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-ink">{label}</p>
+          <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-1.5 rounded-xl bg-navy/5 border border-navy/20 px-3 py-2 text-xs font-semibold text-navy hover:bg-navy/10 transition-all">
+            <Plus size={13} /> Add
           </button>
         </div>
-      ))}
-    </div>
+        {safeItems.map((item, index) => (
+          <div key={`${item.label}-${index}`} className="grid sm:grid-cols-2 gap-3 rounded-xl border border-line bg-mist/30 p-4">
+            <Field label={firstLabel} value={item.label} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? { ...e, label: value } : e))} />
+            <Field label={secondLabel} value={item.value} onChange={(value) => onChange(safeItems.map((e, i) => i === index ? { ...e, value } : e))} />
+            <div className="sm:col-span-2 flex justify-end">
+              <RemoveButton label="item" onRemove={() => onChange(safeItems.filter((_, i) => i !== index))} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title={`Add to ${label}`}>
+        <div className="space-y-4">
+          <Field label={firstLabel} value={addForm.label} onChange={(v) => setAddForm((f) => ({ ...f, label: v }))} placeholder="e.g. 500+" />
+          <Field label={secondLabel} value={addForm.value} onChange={(v) => setAddForm((f) => ({ ...f, value: v }))} placeholder="e.g. Projects completed" />
+        </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} disabled={!addForm.label && !addForm.value} />
+      </Modal>
+    </>
+  );
+}
+
+/* ─── TextListEditor — stays as textarea but add hint ─── */
+
+function TextListEditor({ label, values, onChange, placeholder = "" }: { label: string; values: string[]; onChange: (next: string[]) => void; placeholder?: string }) {
+  return (
+    <label className="block">
+      <span className={labelCls}>{label} <span className="text-ink-soft font-normal">(one per line)</span></span>
+      <textarea
+        value={values.join("\n")}
+        onChange={(e) => onChange(e.target.value.split("\n").map((item) => item.trim()).filter(Boolean))}
+        className={`${fieldCls} min-h-[100px] resize-y`}
+        placeholder={placeholder}
+      />
+    </label>
   );
 }
 
@@ -266,10 +393,10 @@ function HomeEditor({ doc, onChange }: { doc: any; onChange: (next: any) => void
             onChange={(v) => update(["hero", "heading"], buildHeading(headingLine1, v))}
             placeholder="e.g. designed & delivered"
           />
-          <Field label="Sub-heading (shown below the main heading)" value={doc.hero?.subheading ?? ""} onChange={(v) => update(["hero", "subheading"], v)} multiline placeholder="A brief description of your services…" />
+          <Field label="Sub-heading" value={doc.hero?.subheading ?? ""} onChange={(v) => update(["hero", "subheading"], v)} multiline placeholder="A brief description of your services…" />
         </div>
         <ImageArrayEditor label="Slideshow images" items={doc.hero?.images ?? []} onChange={(v) => update(["hero", "images"], v)} />
-        <StringPairListEditor label="Stats strip (e.g. '500+' / 'Projects')" items={doc.hero?.stats ?? []} firstLabel="Number / Label" secondLabel="Description" onChange={(v) => update(["hero", "stats"], v)} />
+        <StringPairListEditor label="Stats strip" items={doc.hero?.stats ?? []} firstLabel="Number / Label (e.g. 500+)" secondLabel="Description (e.g. Projects)" onChange={(v) => update(["hero", "stats"], v)} />
       </SectionCard>
       <SectionCard title="About Preview">
         <div className="grid md:grid-cols-2 gap-4">
@@ -335,147 +462,245 @@ const ROOM_PAGE_OPTIONS = [
 
 function RoomCategoryEditor({ doc, onChange }: { doc: RoomCategory[]; onChange: (next: RoomCategory[]) => void }) {
   const items = doc ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState<RoomCategory>({ title: "", image: "", href: "/services/living-room" });
+
   const update = (index: number, patch: Partial<RoomCategory>) => {
     const next = structuredClone(items);
     next[index] = { ...next[index], ...patch };
     onChange(next);
   };
+
+  function handleAdd() {
+    if (!addForm.title) return;
+    onChange([...items, { ...addForm }]);
+    setAddForm({ title: "", image: "", href: "/services/living-room" });
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-4">
-      <button type="button" onClick={() => onChange([...items, { title: "", image: "", href: "/services" }])} className="flex items-center gap-2 rounded-xl border border-line px-4 py-2.5 text-sm font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-        <Plus size={15} /> Add room category
-      </button>
-      <div className="grid sm:grid-cols-2 gap-4">
-        {items.map((item, index) => (
-          <div key={`${item.title}-${index}`} className="rounded-2xl border border-line bg-white overflow-hidden">
-            {item.image && <img src={item.image} alt={item.title} className="h-32 w-full object-cover" />}
-            <div className="p-4 space-y-3">
-              <Field label="Category name" value={item.title} onChange={(v) => update(index, { title: v })} placeholder="e.g. Living Room" />
-              <AssetPicker label="Photo" value={item.image} onChange={(v) => update(index, { image: v })} />
-              <label className="block">
-                <span className={labelCls}>Links to which page?</span>
-                <select
-                  value={item.href}
-                  onChange={(e) => update(index, { href: e.target.value })}
-                  className={fieldCls}
-                >
-                  {ROOM_PAGE_OPTIONS.map((opt) => (
-                    <option key={opt.href} value={opt.href}>{opt.label}</option>
-                  ))}
-                  {!ROOM_PAGE_OPTIONS.find((o) => o.href === item.href) && item.href && (
-                    <option value={item.href}>{item.href}</option>
-                  )}
-                </select>
-              </label>
-              <button type="button" onClick={() => onChange(items.filter((_, i) => i !== index))} className="flex items-center gap-1.5 text-xs font-medium text-brand hover:underline">
-                <Trash2 size={12} /> Remove this category
-              </button>
+    <>
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-2 rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-dark transition-all shadow-soft">
+            <Plus size={15} /> Add room category
+          </button>
+        </div>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {items.map((item, index) => (
+            <div key={`${item.title}-${index}`} className="rounded-2xl border border-line bg-white overflow-hidden">
+              {item.image && <img src={item.image} alt={item.title} className="h-32 w-full object-cover" />}
+              <div className="p-4 space-y-3">
+                <Field label="Category name" value={item.title} onChange={(v) => update(index, { title: v })} placeholder="e.g. Living Room" />
+                <AssetPicker label="Photo" value={item.image} onChange={(v) => update(index, { image: v })} />
+                <label className="block">
+                  <span className={labelCls}>Links to which page?</span>
+                  <select value={item.href} onChange={(e) => update(index, { href: e.target.value })} className={fieldCls}>
+                    {ROOM_PAGE_OPTIONS.map((opt) => <option key={opt.href} value={opt.href}>{opt.label}</option>)}
+                    {!ROOM_PAGE_OPTIONS.find((o) => o.href === item.href) && item.href && (
+                      <option value={item.href}>{item.href}</option>
+                    )}
+                  </select>
+                </label>
+                <div className="flex justify-end">
+                  <RemoveButton label="room category" onRemove={() => onChange(items.filter((_, i) => i !== index))} />
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Add room category">
+        <div className="space-y-4">
+          <Field label="Category name" value={addForm.title} onChange={(v) => setAddForm((f) => ({ ...f, title: v }))} placeholder="e.g. Living Room" />
+          <AssetPicker label="Photo" value={addForm.image} onChange={(v) => setAddForm((f) => ({ ...f, image: v }))} />
+          {addForm.image && <img src={addForm.image} alt="" className="h-28 w-full object-cover rounded-xl" />}
+          <label className="block">
+            <span className={labelCls}>Links to which service page?</span>
+            <select value={addForm.href} onChange={(e) => setAddForm((f) => ({ ...f, href: e.target.value }))} className={fieldCls}>
+              {ROOM_PAGE_OPTIONS.map((opt) => <option key={opt.href} value={opt.href}>{opt.label}</option>)}
+            </select>
+          </label>
+        </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} confirmLabel="Add category" disabled={!addForm.title} />
+      </Modal>
+    </>
   );
 }
 
 function ContactEditor({ doc, onChange }: { doc: ContactDetails; onChange: (next: ContactDetails) => void }) {
   const next = structuredClone(doc);
   const socials = doc.socials ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState({ label: "", href: "" });
+
+  function handleAddSocial() {
+    if (!addForm.label || !addForm.href) return;
+    onChange({ ...doc, socials: [...socials, { ...addForm }] });
+    setAddForm({ label: "", href: "" });
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-4">
-      <SectionCard title="Contact Details">
-        <div className="grid md:grid-cols-2 gap-4">
-          <Field label="Phone number" value={doc.phone ?? ""} onChange={(v) => { next.phone = v || null; onChange(structuredClone(next)); }} placeholder="+91 98765 43210" />
-          <Field label="WhatsApp number" value={doc.whatsapp ?? ""} onChange={(v) => { next.whatsapp = v || null; onChange(structuredClone(next)); }} placeholder="+91 98765 43210" />
-          <Field label="Email address" value={doc.email ?? ""} onChange={(v) => { next.email = v || null; onChange(structuredClone(next)); }} placeholder="hello@luxevacare.com" />
-          <Field label="Working hours" value={doc.workingHours ?? ""} onChange={(v) => { next.workingHours = v || null; onChange(structuredClone(next)); }} placeholder="Mon–Sat, 9am–7pm" />
-          <Field label="Office address" value={doc.address ?? ""} onChange={(v) => { next.address = v || null; onChange(structuredClone(next)); }} multiline />
-          <Field label="Google Maps embed URL" value={doc.mapsEmbedUrl ?? ""} onChange={(v) => { next.mapsEmbedUrl = v || null; onChange(structuredClone(next)); }} />
+    <>
+      <div className="space-y-4">
+        <SectionCard title="Contact Details">
+          <div className="grid md:grid-cols-2 gap-4">
+            <Field label="Phone number" value={doc.phone ?? ""} onChange={(v) => { next.phone = v || null; onChange(structuredClone(next)); }} placeholder="+91 98765 43210" />
+            <Field label="WhatsApp number" value={doc.whatsapp ?? ""} onChange={(v) => { next.whatsapp = v || null; onChange(structuredClone(next)); }} placeholder="+91 98765 43210" />
+            <Field label="Email address" value={doc.email ?? ""} onChange={(v) => { next.email = v || null; onChange(structuredClone(next)); }} placeholder="hello@luxevacare.com" />
+            <Field label="Working hours" value={doc.workingHours ?? ""} onChange={(v) => { next.workingHours = v || null; onChange(structuredClone(next)); }} placeholder="Mon–Sat, 9am–7pm" />
+            <Field label="Office address" value={doc.address ?? ""} onChange={(v) => { next.address = v || null; onChange(structuredClone(next)); }} multiline />
+            <Field label="Google Maps embed URL" value={doc.mapsEmbedUrl ?? ""} onChange={(v) => { next.mapsEmbedUrl = v || null; onChange(structuredClone(next)); }} />
+          </div>
+        </SectionCard>
+        <SectionCard title="Social Media Links">
+          <div className="space-y-3">
+            {socials.map((item, index) => (
+              <div key={`${item.label}-${index}`} className="grid sm:grid-cols-[140px_1fr_auto] gap-3 items-end">
+                <Field label="Platform" value={item.label} onChange={(value) => onChange({ ...doc, socials: socials.map((s, i) => i === index ? { ...s, label: value } : s) })} placeholder="Instagram" />
+                <Field label="URL" value={item.href} onChange={(value) => onChange({ ...doc, socials: socials.map((s, i) => i === index ? { ...s, href: value } : s) })} placeholder="https://instagram.com/…" />
+                <div className="pb-0.5">
+                  <RemoveButton label="social link" onRemove={() => onChange({ ...doc, socials: socials.filter((_, i) => i !== index) })} />
+                </div>
+              </div>
+            ))}
+            <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-2 rounded-xl bg-navy/5 border border-navy/20 px-4 py-2.5 text-sm font-semibold text-navy hover:bg-navy/10 transition-all">
+              <Plus size={14} /> Add social link
+            </button>
+          </div>
+        </SectionCard>
+      </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Add social media link">
+        <div className="space-y-4">
+          <Field label="Platform name" value={addForm.label} onChange={(v) => setAddForm((f) => ({ ...f, label: v }))} placeholder="e.g. Instagram" />
+          <Field label="URL" value={addForm.href} onChange={(v) => setAddForm((f) => ({ ...f, href: v }))} placeholder="https://instagram.com/luxevacare" />
         </div>
-      </SectionCard>
-      <SectionCard title="Social Media Links">
-        <div className="space-y-3">
-          {socials.map((item, index) => (
-            <div key={`${item.label}-${index}`} className="grid sm:grid-cols-[120px_1fr_auto] gap-3 items-end">
-              <Field label="Platform" value={item.label} onChange={(value) => onChange({ ...doc, socials: socials.map((s, i) => i === index ? { ...s, label: value } : s) })} placeholder="Instagram" />
-              <Field label="URL" value={item.href} onChange={(value) => onChange({ ...doc, socials: socials.map((s, i) => i === index ? { ...s, href: value } : s) })} placeholder="https://instagram.com/…" />
-              <button type="button" onClick={() => onChange({ ...doc, socials: socials.filter((_, i) => i !== index) })} className="rounded-xl border border-line px-3 py-3 text-ink-soft hover:text-brand hover:border-brand transition-all">
-                <Trash2 size={14} />
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={() => onChange({ ...doc, socials: [...socials, { label: "", href: "" }] })} className="flex items-center gap-2 rounded-xl border border-line px-4 py-2.5 text-sm font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-            <Plus size={14} /> Add social link
-          </button>
-        </div>
-      </SectionCard>
-    </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAddSocial} confirmLabel="Add link" disabled={!addForm.label || !addForm.href} />
+      </Modal>
+    </>
   );
 }
 
 function FaqEditor({ doc, onChange }: { doc: Faq[]; onChange: (next: Faq[]) => void }) {
   const items = doc ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState({ question: "", answer: "", category: "" });
+
   const update = (index: number, patch: Partial<Faq>) => {
     const next = structuredClone(items);
     next[index] = { ...next[index], ...patch };
     onChange(next);
   };
+
+  function handleAdd() {
+    if (!addForm.question || !addForm.answer) return;
+    onChange([...items, { ...addForm }]);
+    setAddForm({ question: "", answer: "", category: "" });
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-3">
-      {items.map((item, index) => (
-        <div key={`${index}-${item.question}`} className="rounded-xl border border-line bg-white p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">FAQ #{index + 1}</p>
-            <button type="button" onClick={() => onChange(items.filter((_, i) => i !== index))} className="flex items-center gap-1 text-xs text-brand hover:underline">
-              <Trash2 size={12} /> Remove
-            </button>
+    <>
+      <div className="space-y-3">
+        {items.map((item, index) => (
+          <div key={`${index}-${item.question}`} className="rounded-xl border border-line bg-white p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">FAQ #{index + 1}</p>
+              <RemoveButton label="FAQ" onRemove={() => onChange(items.filter((_, i) => i !== index))} />
+            </div>
+            <Field label="Question" value={item.question} onChange={(v) => update(index, { question: v })} />
+            <Field label="Answer" value={item.answer} onChange={(v) => update(index, { answer: v })} multiline />
+            <Field label="Category (optional)" value={item.category ?? ""} onChange={(v) => update(index, { category: v })} placeholder="e.g. Pricing" />
           </div>
-          <Field label="Question" value={item.question} onChange={(v) => update(index, { question: v })} />
-          <Field label="Answer" value={item.answer} onChange={(v) => update(index, { answer: v })} multiline />
-          <Field label="Category (optional)" value={item.category ?? ""} onChange={(v) => update(index, { category: v })} placeholder="e.g. Pricing" />
+        ))}
+        <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-2 rounded-xl bg-navy/5 border border-navy/20 px-4 py-2.5 text-sm font-semibold text-navy hover:bg-navy/10 transition-all">
+          <Plus size={14} /> Add FAQ
+        </button>
+      </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Add new FAQ">
+        <div className="space-y-4">
+          <Field label="Question" value={addForm.question} onChange={(v) => setAddForm((f) => ({ ...f, question: v }))} placeholder="e.g. How long does a bedroom makeover take?" />
+          <Field label="Answer" value={addForm.answer} onChange={(v) => setAddForm((f) => ({ ...f, answer: v }))} multiline placeholder="Type your answer here…" />
+          <Field label="Category (optional)" value={addForm.category} onChange={(v) => setAddForm((f) => ({ ...f, category: v }))} placeholder="e.g. Pricing" />
         </div>
-      ))}
-      <button type="button" onClick={() => onChange([...items, { question: "", answer: "", category: "" }])} className="flex items-center gap-2 rounded-xl border border-line px-4 py-2.5 text-sm font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-        <Plus size={14} /> Add FAQ
-      </button>
-    </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} confirmLabel="Add FAQ" disabled={!addForm.question || !addForm.answer} />
+      </Modal>
+    </>
   );
 }
 
 function TestimonialEditor({ doc, onChange }: { doc: Testimonial[]; onChange: (next: Testimonial[]) => void }) {
   const items = doc ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState({ clientName: "", text: "", rating: 5, location: "", serviceType: "" });
+
   const update = (index: number, patch: Partial<Testimonial>) => {
     const next = structuredClone(items);
     next[index] = { ...next[index], ...patch };
     onChange(next);
   };
+
+  function handleAdd() {
+    if (!addForm.clientName || !addForm.text) return;
+    onChange([...items, { ...addForm, published: true }]);
+    setAddForm({ clientName: "", text: "", rating: 5, location: "", serviceType: "" });
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-3">
-      {items.map((item, index) => (
-        <div key={`${index}-${item.clientName}`} className="rounded-xl border border-line bg-white p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">Review #{index + 1}</p>
-            <div className="flex items-center gap-3">
-              <CheckboxField label="Visible on site" checked={item.published} onChange={(published) => update(index, { published })} />
-              <button type="button" onClick={() => onChange(items.filter((_, i) => i !== index))} className="flex items-center gap-1 text-xs text-brand hover:underline">
-                <Trash2 size={12} /> Remove
-              </button>
+    <>
+      <div className="space-y-3">
+        {items.map((item, index) => (
+          <div key={`${index}-${item.clientName}`} className="rounded-xl border border-line bg-white p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold text-ink">{item.clientName || `Review #${index + 1}`}</p>
+              <div className="flex items-center gap-3">
+                <CheckboxField label="Visible on site" checked={item.published} onChange={(published) => update(index, { published })} />
+                <RemoveButton label="testimonial" onRemove={() => onChange(items.filter((_, i) => i !== index))} />
+              </div>
             </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              <Field label="Client name" value={item.clientName} onChange={(v) => update(index, { clientName: v })} />
+              <Field label="Location / City" value={item.location ?? ""} onChange={(v) => update(index, { location: v })} />
+              <Field label="Service type" value={item.serviceType ?? ""} onChange={(v) => update(index, { serviceType: v })} />
+              <label className="block">
+                <span className={labelCls}>Star rating</span>
+                <select value={item.rating ?? 5} onChange={(e) => update(index, { rating: Number(e.target.value) })} className={fieldCls}>
+                  {[5, 4, 3, 2, 1].map((r) => <option key={r} value={r}>{r} star{r !== 1 ? "s" : ""}</option>)}
+                </select>
+              </label>
+            </div>
+            <Field label="Review text" value={item.text} onChange={(v) => update(index, { text: v })} multiline />
+            <ImageAssetEditor label="Client photo (optional)" asset={item.photo} onChange={(photo) => update(index, { photo })} />
           </div>
-          <div className="grid md:grid-cols-2 gap-3">
-            <Field label="Client name" value={item.clientName} onChange={(v) => update(index, { clientName: v })} />
-            <Field label="Location / City" value={item.location ?? ""} onChange={(v) => update(index, { location: v })} />
-            <Field label="Service type" value={item.serviceType ?? ""} onChange={(v) => update(index, { serviceType: v })} />
-            <Field label="Star rating (1–5)" value={String(item.rating ?? 5)} onChange={(v) => update(index, { rating: Math.min(5, Math.max(1, Number(v) || 5)) })} />
+        ))}
+        <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-2 rounded-xl bg-navy/5 border border-navy/20 px-4 py-2.5 text-sm font-semibold text-navy hover:bg-navy/10 transition-all">
+          <Plus size={14} /> Add testimonial
+        </button>
+      </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Add customer review" maxWidth="max-w-xl">
+        <div className="space-y-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Client name" value={addForm.clientName} onChange={(v) => setAddForm((f) => ({ ...f, clientName: v }))} placeholder="e.g. Priya Sharma" />
+            <Field label="Location / City" value={addForm.location} onChange={(v) => setAddForm((f) => ({ ...f, location: v }))} placeholder="e.g. Bengaluru" />
+            <Field label="Service type" value={addForm.serviceType} onChange={(v) => setAddForm((f) => ({ ...f, serviceType: v }))} placeholder="e.g. Full home interior" />
+            <label className="block">
+              <span className={labelCls}>Star rating</span>
+              <select value={addForm.rating} onChange={(e) => setAddForm((f) => ({ ...f, rating: Number(e.target.value) }))} className={fieldCls}>
+                {[5, 4, 3, 2, 1].map((r) => <option key={r} value={r}>{r} star{r !== 1 ? "s" : ""}</option>)}
+              </select>
+            </label>
           </div>
-          <Field label="Review text" value={item.text} onChange={(v) => update(index, { text: v })} multiline />
-          <ImageAssetEditor label="Client photo (optional)" asset={item.photo} onChange={(photo) => update(index, { photo })} />
+          <Field label="Review text" value={addForm.text} onChange={(v) => setAddForm((f) => ({ ...f, text: v }))} multiline placeholder="What the client said about their experience…" />
         </div>
-      ))}
-      <button type="button" onClick={() => onChange([...items, { clientName: "", rating: 5, text: "", published: true }])} className="flex items-center gap-2 rounded-xl border border-line px-4 py-2.5 text-sm font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-        <Plus size={14} /> Add testimonial
-      </button>
-    </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} confirmLabel="Add review" disabled={!addForm.clientName || !addForm.text} />
+      </Modal>
+    </>
   );
 }
 
@@ -582,44 +807,71 @@ function ProjectEditor({ doc, onChange }: { doc: Project[]; onChange: (next: Pro
 
 function LeadershipEditor({ doc, onChange }: { doc: Leader[]; onChange: (next: Leader[]) => void }) {
   const items = doc ?? [];
+  const [addOpen, setAddOpen] = useState(false);
+  const [addForm, setAddForm] = useState({ name: "", roleType: "Founder" as Leader["roleType"], bio: "" });
+
   const update = (index: number, patch: Partial<Leader>) => {
     const next = structuredClone(items);
     next[index] = { ...next[index], ...patch };
     onChange(next);
   };
+
+  function handleAdd() {
+    if (!addForm.name) return;
+    onChange([...items, { ...addForm, published: true }]);
+    setAddForm({ name: "", roleType: "Founder", bio: "" });
+    setAddOpen(false);
+  }
+
   return (
-    <div className="space-y-3">
-      {items.map((item, index) => (
-        <div key={`${item.name}-${index}`} className="rounded-xl border border-line bg-white p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-ink">{item.name || `Team member #${index + 1}`}</p>
-            <div className="flex items-center gap-3">
-              <CheckboxField label="Visible on site" checked={item.published} onChange={(published) => update(index, { published })} />
-              <button type="button" onClick={() => onChange(items.filter((_, i) => i !== index))} className="flex items-center gap-1 text-xs text-brand hover:underline">
-                <Trash2 size={12} /> Remove
-              </button>
+    <>
+      <div className="space-y-3">
+        {items.map((item, index) => (
+          <div key={`${item.name}-${index}`} className="rounded-xl border border-line bg-white p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-semibold text-ink">{item.name || `Team member #${index + 1}`}</p>
+              <div className="flex items-center gap-3">
+                <CheckboxField label="Visible on site" checked={item.published} onChange={(published) => update(index, { published })} />
+                <RemoveButton label="team member" onRemove={() => onChange(items.filter((_, i) => i !== index))} />
+              </div>
             </div>
+            <div className="grid md:grid-cols-2 gap-3">
+              <Field label="Name" value={item.name} onChange={(v) => update(index, { name: v })} />
+              <label className="block">
+                <span className={labelCls}>Role / Title</span>
+                <select value={item.roleType} onChange={(e) => update(index, { roleType: e.target.value as Leader["roleType"] })} className={fieldCls}>
+                  {["Founder", "Co-Founder", "CEO", "Director", "Designer", "Project Manager", "Architect", "Other"].map((r) => (
+                    <option key={r} value={r}>{r}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <Field label="Bio" value={item.bio} onChange={(v) => update(index, { bio: v })} multiline />
+            <TextListEditor label="Areas of expertise" values={item.expertise ?? []} onChange={(expertise) => update(index, { expertise })} />
+            <ImageAssetEditor label="Profile photo" asset={item.photo} onChange={(photo) => update(index, { photo })} />
           </div>
-          <div className="grid md:grid-cols-2 gap-3">
-            <Field label="Name" value={item.name} onChange={(v) => update(index, { name: v })} />
-            <label className="block">
-              <span className={labelCls}>Role / Title</span>
-              <select value={item.roleType} onChange={(e) => update(index, { roleType: e.target.value as Leader["roleType"] })} className={fieldCls}>
-                {["Founder", "Co-Founder", "CEO", "Director", "Designer", "Project Manager", "Architect", "Other"].map((r) => (
-                  <option key={r} value={r}>{r}</option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <Field label="Bio" value={item.bio} onChange={(v) => update(index, { bio: v })} multiline />
-          <TextListEditor label="Areas of expertise" values={item.expertise ?? []} onChange={(expertise) => update(index, { expertise })} />
-          <ImageAssetEditor label="Profile photo" asset={item.photo} onChange={(photo) => update(index, { photo })} />
+        ))}
+        <button type="button" onClick={() => setAddOpen(true)} className="flex items-center gap-2 rounded-xl bg-navy/5 border border-navy/20 px-4 py-2.5 text-sm font-semibold text-navy hover:bg-navy/10 transition-all">
+          <Plus size={14} /> Add team member
+        </button>
+      </div>
+
+      <Modal open={addOpen} onClose={() => setAddOpen(false)} title="Add team member">
+        <div className="space-y-4">
+          <Field label="Full name" value={addForm.name} onChange={(v) => setAddForm((f) => ({ ...f, name: v }))} placeholder="e.g. Priya Sharma" />
+          <label className="block">
+            <span className={labelCls}>Role / Title</span>
+            <select value={addForm.roleType} onChange={(e) => setAddForm((f) => ({ ...f, roleType: e.target.value as Leader["roleType"] }))} className={fieldCls}>
+              {["Founder", "Co-Founder", "CEO", "Director", "Designer", "Project Manager", "Architect", "Other"].map((r) => (
+                <option key={r} value={r}>{r}</option>
+              ))}
+            </select>
+          </label>
+          <Field label="Bio" value={addForm.bio} onChange={(v) => setAddForm((f) => ({ ...f, bio: v }))} multiline placeholder="Brief description of their background and role…" />
         </div>
-      ))}
-      <button type="button" onClick={() => onChange([...items, { name: "", roleType: "Founder", bio: "", published: true }])} className="flex items-center gap-2 rounded-xl border border-line px-4 py-2.5 text-sm font-medium text-ink-soft hover:border-navy hover:text-navy transition-all">
-        <Plus size={14} /> Add team member
-      </button>
-    </div>
+        <ModalActions onCancel={() => setAddOpen(false)} onConfirm={handleAdd} confirmLabel="Add member" disabled={!addForm.name} />
+      </Modal>
+    </>
   );
 }
 
@@ -644,6 +896,7 @@ export default function AdminContentEditor() {
   const [doc, setDoc] = useState<any>(null);
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [statusMsg, setStatusMsg] = useState("");
+  const [saveConfirmOpen, setSaveConfirmOpen] = useState(false);
 
   useEffect(() => {
     setDoc(null);
@@ -671,7 +924,7 @@ export default function AdminContentEditor() {
     const data = await res.json();
     if (data.ok) {
       setStatus("saved");
-      setStatusMsg("Changes saved. The website will update shortly.");
+      setStatusMsg("Changes saved successfully. The website will update shortly.");
       setTimeout(() => setStatus("idle"), 4000);
     } else {
       setStatus("error");
@@ -688,7 +941,7 @@ export default function AdminContentEditor() {
           <p className="mt-1 text-sm text-ink-soft">{PAGE_DESCRIPTIONS[key] ?? ""}</p>
         </div>
         <button
-          onClick={save}
+          onClick={() => setSaveConfirmOpen(true)}
           disabled={!doc || status === "saving"}
           className="flex items-center gap-2 rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white hover:bg-navy-dark transition-colors disabled:opacity-60 shadow-soft flex-shrink-0"
         >
@@ -718,7 +971,7 @@ export default function AdminContentEditor() {
       {doc && (
         <div className="sticky bottom-4 flex justify-end">
           <button
-            onClick={save}
+            onClick={() => setSaveConfirmOpen(true)}
             disabled={status === "saving"}
             className="flex items-center gap-2 rounded-xl bg-navy px-6 py-3.5 text-sm font-semibold text-white hover:bg-navy-dark transition-colors disabled:opacity-60 shadow-lift"
           >
@@ -726,6 +979,15 @@ export default function AdminContentEditor() {
           </button>
         </div>
       )}
+
+      <ConfirmDialog
+        open={saveConfirmOpen}
+        onClose={() => setSaveConfirmOpen(false)}
+        onConfirm={save}
+        title="Save changes to website"
+        message={`This will publish your changes to the live website immediately. Are you sure you want to save the ${PAGE_LABELS[key] ?? "content"}?`}
+        confirmLabel="Yes, save & publish"
+      />
     </div>
   );
 }

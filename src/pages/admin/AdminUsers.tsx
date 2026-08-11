@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { UserPlus, Shield, Users, ToggleLeft, ToggleRight } from "lucide-react";
+import { ConfirmDialog } from "@/components/admin/Modal";
 
 type AdminUser = {
   id: string; email: string; fullName: string; role: string; isActive: boolean;
@@ -29,6 +30,7 @@ export default function AdminUsers() {
   const [status, setStatus] = useState("");
   const [form, setForm] = useState({ fullName: "", email: "", password: "", role: "content_manager" });
   const [showForm, setShowForm] = useState(false);
+  const [toggleConfirm, setToggleConfirm] = useState<AdminUser | null>(null);
 
   async function load() {
     const res = await fetch("/api/admin/users", { credentials: "same-origin" });
@@ -194,7 +196,7 @@ export default function AdminUsers() {
                   {ROLES.map((role) => <option key={role.value} value={role.value}>{role.label}</option>)}
                 </select>
                 <button
-                  onClick={() => updateUser(user, { isActive: !user.isActive })}
+                  onClick={() => setToggleConfirm(user)}
                   className={`transition-colors ${user.isActive ? "text-emerald-500 hover:text-emerald-600" : "text-gray-300 hover:text-gray-400"}`}
                   title={user.isActive ? "Active — click to disable" : "Disabled — click to enable"}
                 >
@@ -207,6 +209,18 @@ export default function AdminUsers() {
       </div>
 
       {!showForm && error && <div className="rounded-xl bg-brand-soft border border-brand/20 px-4 py-3 text-sm text-brand">{error}</div>}
+
+      <ConfirmDialog
+        open={toggleConfirm !== null}
+        onClose={() => setToggleConfirm(null)}
+        onConfirm={() => { if (toggleConfirm) updateUser(toggleConfirm, { isActive: !toggleConfirm.isActive }); }}
+        title={toggleConfirm?.isActive ? "Disable team member" : "Enable team member"}
+        message={toggleConfirm?.isActive
+          ? `This will revoke ${toggleConfirm.fullName}'s access to the admin panel. They won't be able to log in until re-enabled.`
+          : `This will restore ${toggleConfirm?.fullName}'s access to the admin panel.`}
+        confirmLabel={toggleConfirm?.isActive ? "Yes, disable" : "Yes, enable"}
+        danger={toggleConfirm?.isActive}
+      />
     </div>
   );
 }
