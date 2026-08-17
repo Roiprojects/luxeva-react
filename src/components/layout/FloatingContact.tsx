@@ -34,6 +34,18 @@ export function FloatingContact() {
         </FloatBtn>
       </div>
 
+      {/* Mobile: WhatsApp button left side, above the bottom nav */}
+      <div className="lg:hidden fixed left-4 z-40" style={{ bottom: "calc(70px + env(safe-area-inset-bottom))" }}>
+        <FloatBtn
+          href={wa ?? "/contact"}
+          external={!!wa}
+          label="Chat on WhatsApp"
+          className="bg-[#25D366] hover:bg-[#1ebe5b] w-14 h-14"
+          ringClassName="bg-[#25D366]"
+        >
+          <WhatsAppIcon size={26} />
+        </FloatBtn>
+      </div>
     </>
   );
 }

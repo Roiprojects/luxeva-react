@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -54,11 +54,8 @@ export function Button(props: ButtonAsLink | ButtonAsButton) {
         </a>
       );
     }
-    if (props.href.startsWith("#")) {
-      return <a href={props.href} className={classes}>{children}</a>;
-    }
     return (
-      <Link to={props.href} className={classes}>
+      <Link href={props.href} className={classes}>
         {children}
       </Link>
     );

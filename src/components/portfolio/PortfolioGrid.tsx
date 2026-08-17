@@ -9,12 +9,11 @@ type Filter = "all" | "residential" | "commercial";
 
 export function PortfolioGrid({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = useState<Filter>("all");
-  const hasResidential = projects.some((p) => p.category === "residential");
   const hasCommercial = projects.some((p) => p.category === "commercial");
 
   const filters: { key: Filter; label: string }[] = [
     { key: "all", label: "All Projects" },
-    ...(hasResidential && hasCommercial ? [{ key: "residential" as Filter, label: "Residential" }] : []),
+    { key: "residential", label: "Residential" },
     ...(hasCommercial ? [{ key: "commercial" as Filter, label: "Commercial" }] : []),
   ];
 

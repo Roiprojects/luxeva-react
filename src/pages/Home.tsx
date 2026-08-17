@@ -43,12 +43,12 @@ export default function HomePage() {
 
       {/* ============ HERO ============ */}
       <section className="relative bg-mist px-2 sm:px-4 md:px-6 pt-14 md:pt-28 pb-3 md:pb-4">
-        <div className="relative w-full min-w-0 overflow-hidden rounded-2xl md:rounded-[2.5rem] min-h-[78vh] md:min-h-[86vh] flex items-center shadow-lift">
+        <div className="relative overflow-hidden rounded-2xl md:rounded-[2.5rem] min-h-[78vh] md:min-h-[86vh] flex items-center shadow-lift">
           {/* Full-bleed background slideshow */}
           <HeroSlideshow images={home.hero.images} />
-          {/* Scrims for legibility — lighter on mobile, full on desktop */}
-          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/60 via-ink/20 to-transparent md:from-ink/95 md:via-ink/50 md:to-ink/20" />
-          <div aria-hidden className="absolute inset-0 hidden md:block bg-gradient-to-r from-ink/70 via-ink/20 to-transparent" />
+          {/* Scrims for legibility */}
+          <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/50 to-ink/20" />
+          <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/20 to-transparent" />
           <div aria-hidden className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl md:rounded-[2.5rem]" />
 
           {/* Premium badge — visible on all screens */}
@@ -59,11 +59,11 @@ export default function HomePage() {
 
           {/* Overlaid content */}
           <div className="relative w-full">
-            <div className="container-lux grid min-w-0 lg:grid-cols-[1.25fr_0.75fr] gap-10 items-center py-10 md:py-20">
-              <div className="min-w-0 max-w-2xl">
+            <div className="container-lux grid lg:grid-cols-[1.25fr_0.75fr] gap-10 items-center py-10 md:py-20">
+              <div className="max-w-2xl">
                 <p className="eyebrow text-gold-2 mb-4 animate-rise" style={{ animationDelay: "40ms" }}>{home.hero.eyebrow}</p>
-                <h1 className="font-sans text-white text-[2rem] sm:text-5xl lg:text-[4.2rem] font-semibold tracking-[-0.03em] leading-[1.08] sm:leading-[1.03] animate-rise [text-wrap:balance] drop-shadow-sm" style={{ animationDelay: "120ms" }} dangerouslySetInnerHTML={{ __html: home.hero.heading }} />
-                <p className="mt-4 md:mt-6 min-w-0 max-w-xl text-base md:text-lg text-white/85 leading-relaxed animate-rise" style={{ animationDelay: "240ms" }}>{home.hero.subheading}</p>
+                <h1 className="text-white text-[2rem] sm:text-5xl lg:text-[4.2rem] font-semibold leading-[1.08] sm:leading-[1.03] animate-rise [text-wrap:balance] drop-shadow-sm" style={{ animationDelay: "120ms" }} dangerouslySetInnerHTML={{ __html: home.hero.heading }} />
+                <p className="mt-4 md:mt-6 max-w-xl text-base md:text-lg text-white/85 leading-relaxed animate-rise" style={{ animationDelay: "240ms" }}>{home.hero.subheading}</p>
                 <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 animate-rise" style={{ animationDelay: "340ms" }}>
                   <Button href="/contact" size="lg" className="w-full sm:w-auto justify-center">Book Free Consultation</Button>
                   <Button href="#rooms" variant="on-dark" size="lg" className="w-full sm:w-auto justify-center">Explore Designs <ArrowRight size={18} /></Button>
@@ -158,12 +158,11 @@ export default function HomePage() {
             <SectionHeading align="left" eyebrow="What we do" title="Complete interior solutions" intro="From design consultation to furniture, finishing and installation — every detail, one team." />
             <Button href="/services" variant="outline" size="sm">All services <ArrowRight size={16} /></Button>
           </div>
-          <div className="mt-10 -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((s, i) => (
-              <Reveal key={s.slug} delay={i * 70} variant="scale" className="min-w-[82vw] snap-start sm:min-w-0"><ServiceCard service={s} /></Reveal>
+              <Reveal key={s.slug} delay={i * 70} variant="scale"><ServiceCard service={s} /></Reveal>
             ))}
           </div>
-          <p className="mt-1 text-center text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/45 sm:hidden">Swipe for more services</p>
         </Container>
       </section>
 

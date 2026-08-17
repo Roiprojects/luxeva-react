@@ -44,7 +44,6 @@ export function Carousel({ slides, interval = 5000 }: { slides: Slide[]; interva
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
-      aria-live="polite"
     >
       <div
         className="relative overflow-hidden rounded-3xl shadow-card touch-pan-y"
@@ -78,10 +77,6 @@ export function Carousel({ slides, interval = 5000 }: { slides: Slide[]; interva
           ))}
         </div>
       </div>
-
-      <p className="mt-3 text-center text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-ink/45 md:hidden">
-        Swipe to explore
-      </p>
 
       {/* Arrows */}
       <button

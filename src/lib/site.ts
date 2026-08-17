@@ -8,7 +8,7 @@ export const siteConfig = {
    * Update to the production domain when supplied (MISSING_CLIENT_INPUTS H1).
    * Used for canonical URLs, sitemap and Open Graph.
    */
-  url: import.meta.env.VITE_SITE_URL ?? "https://luxevacare.example",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://luxevacare.example",
   description:
     "Luxeva Care Pvt Ltd delivers premium residential and commercial interior design and execution — from consultation and space planning to custom furniture, finishing and handover.",
   locale: "en_IN",

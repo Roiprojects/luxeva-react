@@ -11,7 +11,6 @@ import {
   PROPERTY_TYPES,
   BUDGET_RANGES,
   TIMELINES,
-  SERVICE_INTERESTS,
 } from "@/lib/validation";
 import { submitEnquiry } from "@/lib/enquiry";
 import { cn } from "@/lib/utils";
@@ -64,12 +63,6 @@ function EnquiryFormInner({ defaultService, compact = false }: EnquiryFormProps)
   useEffect(() => {
     renderedAt.current = Date.now();
   }, []);
-
-  useEffect(() => {
-    if (!success) return;
-    const timer = window.setTimeout(() => setSuccess(false), 4500);
-    return () => window.clearTimeout(timer);
-  }, [success]);
 
   const onSubmit = async (values: EnquiryInput) => {
     setServerError(null);
@@ -137,11 +130,8 @@ function EnquiryFormInner({ defaultService, compact = false }: EnquiryFormProps)
           <label htmlFor="phone" className={labelCls}>
             Phone <span className="text-terracotta">*</span>
           </label>
-          <div className="flex">
-            <span className="inline-flex items-center rounded-l-lg border border-r-0 border-border bg-mist px-3 text-sm font-medium text-ink-soft">+91</span>
-            <input id="phone" type="tel" inputMode="numeric" maxLength={10} pattern="[0-9]{10}" className={cn(field, "rounded-l-none")} autoComplete="tel-national" aria-invalid={!!errors.phone}
-              aria-describedby={errors.phone ? "phone-err" : undefined} {...register("phone")} />
-          </div>
+          <input id="phone" type="tel" className={field} autoComplete="tel" aria-invalid={!!errors.phone}
+            aria-describedby={errors.phone ? "phone-err" : undefined} {...register("phone")} />
           {errors.phone && <p id="phone-err" className={errCls}><AlertCircle size={14} />{errors.phone.message}</p>}
         </div>
 
@@ -167,10 +157,7 @@ function EnquiryFormInner({ defaultService, compact = false }: EnquiryFormProps)
 
         <div>
           <label htmlFor="serviceInterest" className={labelCls}>Service of interest</label>
-          <select id="serviceInterest" className={field} {...register("serviceInterest")}>
-            <option value="">Select a service</option>
-            {SERVICE_INTERESTS.map((service) => <option key={service} value={service}>{service}</option>)}
-          </select>
+          <input id="serviceInterest" className={field} {...register("serviceInterest")} />
         </div>
 
         <div>

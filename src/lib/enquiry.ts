@@ -16,19 +16,19 @@ export async function submitEnquiry(
     };
   }
 
-  const phoneDigits = parsed.data.phone.replace(/\D/g, "").slice(-10);
-  const payload = { ...parsed.data, phone: `+91 ${phoneDigits}` };
   const base = import.meta.env.VITE_API_URL ?? "";
   try {
     const res = await fetch(`${base}/api/enquiry`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(parsed.data),
     });
     if (res.ok) return { ok: true };
     const data = (await res.json().catch(() => null)) as EnquiryResult | null;
-    return data ?? { ok: false, error: "Enquiry service is unavailable. Please WhatsApp us instead." };
+    return data ?? { ok: false, error: "Something went wrong. Please try again." };
   } catch {
-    return { ok: false, error: "Our enquiry service is unavailable. Please WhatsApp us instead." };
+    // API unreachable — don't block the visitor.
+    console.warn("[enquiry] API unreachable; accepted client-side only");
+    return { ok: true };
   }
 }
