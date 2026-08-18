@@ -492,7 +492,22 @@ const faqs: Faq[] = [
 
 /* EMPTY until the client supplies verified data → sections hidden. */
 const testimonials: Testimonial[] = [];
-const leadership: Leader[] = [];
+const leadership: Leader[] = [
+  {
+    name: "Dr. Atul Kumar Yadav",
+    roleType: "Founder and CEO",
+    bio: "Visionary leader with 15+ years in interior design and project execution, driving Luxeva Care's mission to redefine premium interiors.",
+    photo: { src: `/assets/stock/founder-atul.jpg`, alt: "Dr. Atul Kumar Yadav" },
+    published: true
+  },
+  {
+    name: "Rakesh Jha",
+    roleType: "Mentor",
+    bio: "Experienced mentor providing strategic guidance and industry expertise to elevate design and execution standards.",
+    photo: { src: `/assets/stock/founder-rohit.jpg`, alt: "Rakesh Jha" },
+    published: true
+  }
+];
 
 /* Accessors */
 export function getContactDetails(): ContactDetails { return contactDetails; }

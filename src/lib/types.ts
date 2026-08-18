@@ -84,7 +84,9 @@ export type LeaderRole =
   | "Co-Founder / Promoter"
   | "Managing Director"
   | "CEO"
-  | "CFO";
+  | "CFO"
+  | "Founder and CEO"
+  | "Mentor";
 
 export type Leader = {
   name: string;
