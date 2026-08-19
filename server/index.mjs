@@ -24,11 +24,53 @@ import {
   createAdminSession, getSessionUser, deleteAdminSession,
   getDashboardMetrics, listAdminUsers, createAdminUser, updateAdminUser, changeAdminPassword,
 } from "./admin-store.mjs";
-import { getContentDocument, saveContentDocument, listPublicAssets as _listPublicAssets, isAssetReferenced } from "./content-store.mjs";
+import { getContentDocument, saveContentDocument, isAssetReferenced } from "./content-store.mjs";
 import { listPublicAssets, uploadPublicAsset, deletePublicAsset } from "./assets-store.mjs";
 
 const app = express();
 const isProd = process.env.NODE_ENV === "production";
+
+// Auto-apply schema on startup so the hosted server works without manual db:init.
+async function migrateDb() {
+  if (!pool) return;
+  try {
+    const schemaPath = join(root, "db", "schema.sql");
+    if (!existsSync(schemaPath)) return;
+    const sql = readFileSync(schemaPath, "utf8");
+    await pool.query(sql);
+    console.log("[db] Schema applied.");
+  } catch (err) {
+    console.error("[db] Migration error:", err.message);
+  }
+}
+migrateDb();
+
+// Seed / ensure default admin credentials on every startup.
+async function seedAdmin() {
+  if (!pool) return;
+  try {
+    const email    = process.env.ADMIN_EMAIL    || "admin@luxeva.com";
+    const password = process.env.ADMIN_PASSWORD || "Admin@123";
+    const fullName = process.env.ADMIN_NAME     || "Luxeva Admin";
+    // Upsert: create if missing, or reset password if already exists.
+    const { hashPassword } = await import("./admin-auth.mjs");
+    const passwordHash = await hashPassword(password);
+    await pool.query(
+      `insert into admin_users (email, password_hash, full_name, role)
+       values ($1, $2, $3, 'super_admin')
+       on conflict (email) do update
+         set password_hash = excluded.password_hash,
+             full_name     = excluded.full_name,
+             is_active     = true`,
+      [email.toLowerCase(), passwordHash, fullName],
+    );
+    console.log(`[admin] Admin account ensured: ${email}`);
+  } catch (err) {
+    console.error("[admin] Seed error:", err.message);
+  }
+}
+// Run after a short delay so migrateDb() finishes first.
+setTimeout(seedAdmin, 1500);
 
 app.use(cors({ credentials: true }));
 app.use(express.json({ limit: "20mb" }));
