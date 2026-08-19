@@ -44,7 +44,7 @@ export const home = {
     heading: 'Crafted luxury interiors,<br/><span class="text-gradient-gold">designed &amp; delivered</span>',
     subheading:
       "From design and modular woodwork to electricals, finishing and handover — Luxeva Care delivers complete, beautiful interiors for homes and commercial spaces.",
-    image: `${IMG}/living-dr-1.jpg`,
+    image: `${IMG}/drive-living/living-3.jpg`,
     images: [
       { src: `${IMG}/drive-false-ceil/false-ceil-4.jpeg`, alt: "Premium false ceiling with integrated LED lighting by Luxeva Care" },
       { src: `${IMG}/drive-kitchen/kitchen-1.jpeg`, alt: "Modern modular kitchen interior" },
@@ -99,7 +99,7 @@ export const home = {
 /* Room categories — the "designs for every room" tiles. */
 export type RoomCategory = { title: string; image: string; href: string };
 export const roomCategories: RoomCategory[] = [
-  { title: "Living Room", image: `${IMG}/living-dr-1.jpg`, href: "/services/residential-home-interior" },
+  { title: "Living Room", image: `${IMG}/drive-living/living-5.jpg`, href: "/services/residential-home-interior" },
   { title: "Modular Kitchen", image: `${IMG}/kitchen-dr-1.jpg`, href: "/services/kitchen-granite-quartz" },
   { title: "Bedroom", image: `${IMG}/bedroom-dr-1.jpg`, href: "/services/custom-beds" },
   { title: "Wardrobe", image: `${IMG}/wardrobe-1.jpg`, href: "/services/carpenter-service" },
@@ -410,7 +410,7 @@ const projects: Project[] = [
     description: "A complete residential living space combining custom joinery, layered lighting and a refined material palette for a calm, premium result.",
     style: "Contemporary",
     scope: ["Space planning", "Custom joinery", "False ceiling & lighting", "Feature walls"],
-    cover: pic("living-dr-1.jpg", "Contemporary Indian apartment living room"),
+    cover: pic("drive-living/living-14.jpg", "Contemporary Indian apartment living room"),
     gallery: [pic("living-dr-2.jpg", "Living room overview"), pic("living-dr-3.jpg", "Open living space"), pic("living-dr-6.jpg", "Living detail"), pic("living-dr-7.jpg", "Open living space")],
     featured: true,
     published: true,

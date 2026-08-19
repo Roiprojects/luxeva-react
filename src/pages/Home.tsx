@@ -203,7 +203,7 @@ export default function HomePage() {
           <div className="mt-12">
             <Carousel
               slides={[
-                { image: "/assets/stock/living-dr-1.jpg", title: "Contemporary Living", caption: "Layered lighting, custom joinery and a calm material palette." },
+                { image: "/assets/stock/drive-living/living-4.jpg", title: "Contemporary Living", caption: "Layered lighting, custom joinery and a calm material palette." },
                 { image: "/assets/stock/kitchen-dr-1.jpg", title: "Modular Kitchens", caption: "Function meets finish — smart storage, durable surfaces and flow." },
                 { image: "/assets/stock/wardrobe-1.jpg", title: "Custom Wardrobes", caption: "Designed and built to measure — tailored to your bedroom." },
                 { image: "/assets/stock/bedroom-dr-1.jpg", title: "Restful Bedrooms", caption: "Custom beds, wardrobes and warm, dimmable lighting." },
