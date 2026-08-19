@@ -92,23 +92,22 @@ export default function AboutPage() {
                 <Reveal key={l.name} variant="scale">
                   <div className="w-72 rounded-2xl overflow-hidden bg-white/[0.06] border border-white/10 shadow-lift hover:bg-white/[0.10] transition-colors">
                     {l.photo ? (
-                      <div className="relative w-full h-80">
+                      <div className="relative w-full" style={{ aspectRatio: "3/4" }}>
                         <Image
                           src={l.photo.src}
                           alt={l.photo.alt}
                           fill
                           sizes="288px"
-                          className="object-cover"
-                          style={{ objectPosition: "center 15%" }}
+                          className="object-cover object-top"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
                       </div>
                     ) : (
-                      <div className="w-full h-80 bg-white/10 flex items-center justify-center">
+                      <div className="w-full bg-white/10 flex items-center justify-center" style={{ aspectRatio: "3/4" }}>
                         <span className="text-6xl font-display text-white/30">{l.name.split(" ").map(w => w[0]).join("").slice(0,2)}</span>
                       </div>
                     )}
-                    <div className="p-6 -mt-14 relative">
+                    <div className="p-6 -mt-16 relative">
                       <h3 className="text-xl font-semibold text-white">{l.name}</h3>
                       <p className="mt-1 text-sm font-medium text-gold-2">{l.roleType}</p>
                       <p className="mt-3 text-sm text-white/65 leading-relaxed">{l.bio}</p>
