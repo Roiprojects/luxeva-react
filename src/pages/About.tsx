@@ -92,16 +92,16 @@ export default function AboutPage() {
                 <Reveal key={l.name} variant="scale">
                   <div className="w-72 rounded-2xl overflow-hidden bg-white/[0.06] border border-white/10 shadow-lift hover:bg-white/[0.10] transition-colors">
                     {l.photo ? (
-                      <div className="relative w-full overflow-hidden" style={{ height: "384px" }}>
+                      <div className="relative w-full">
                         <img
                           src={l.photo.src}
                           alt={l.photo.alt}
-                          className="w-full h-full object-cover object-top"
+                          className="w-full h-auto block"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
                       </div>
                     ) : (
-                      <div className="w-full bg-white/10 flex items-center justify-center" style={{ height: "384px" }}>
+                      <div className="w-full bg-white/10 flex items-center justify-center" style={{ aspectRatio: "3/4" }}>
                         <span className="text-6xl font-display text-white/30">{l.name.split(" ").map(w => w[0]).join("").slice(0,2)}</span>
                       </div>
                     )}
