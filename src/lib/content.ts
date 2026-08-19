@@ -46,7 +46,7 @@ export const home = {
       "From design and modular woodwork to electricals, finishing and handover — Luxeva Care delivers complete, beautiful interiors for homes and commercial spaces.",
     image: `${IMG}/living-dr-1.jpg`,
     images: [
-      { src: `${IMG}/drive-living/living-3.jpg`, alt: "Elegant Indian home living room by Luxeva Care" },
+      { src: `${IMG}/drive-false-ceil/false-ceil-4.jpeg`, alt: "Premium false ceiling with integrated LED lighting by Luxeva Care" },
       { src: `${IMG}/drive-kitchen/kitchen-1.jpeg`, alt: "Modern modular kitchen interior" },
       { src: `${IMG}/drive-bedroom/bedroom-1.jpg`, alt: "Warm Indian bedroom interior" },
       { src: `${IMG}/drive-false-ceil/false-ceil-1.jpeg`, alt: "Stunning false ceiling with integrated LED lighting" },
