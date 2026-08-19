@@ -132,15 +132,15 @@ export default function HomePage() {
         <div aria-hidden className="pointer-events-none absolute inset-0 text-brand/[0.06] pattern-dots [mask-image:radial-gradient(70%_45%_at_50%_0%,#000,transparent)]" />
         <Container className="relative">
           <SectionHeading eyebrow="Designs for every room" title="Beautiful interiors, room by room" intro="Explore our design capability across every space in your home — then let's build yours." />
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {roomCategories.map((room, i) => (
               <Reveal key={room.title} delay={i * 60} variant="scale">
-                <Link href={room.href} className="group relative block aspect-[3/4] overflow-hidden rounded-2xl shadow-soft hover:shadow-lift transition-all duration-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand">
-                  <Image src={room.image} alt={`${room.title} interior design`} fill sizes="(max-width:768px) 45vw, 22vw" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/10 to-transparent" />
-                  <div className="absolute inset-x-0 bottom-0 p-4 md:p-5">
-                    <h3 className="text-lg md:text-xl font-semibold text-white">{room.title}</h3>
-                    <span className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-white/80 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">Explore <ArrowRight size={13} /></span>
+                <Link href={room.href} className="group relative block overflow-hidden rounded-2xl shadow-soft hover:shadow-lift transition-all duration-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand" style={{ aspectRatio: "3/4" }}>
+                  <Image src={room.image} alt={`${room.title} interior design`} fill sizes="(max-width:768px) 45vw, 22vw" className="object-cover object-center transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-3 md:p-5">
+                    <h3 className="text-sm md:text-lg font-semibold text-white leading-tight">{room.title}</h3>
+                    <span className="mt-1 inline-flex items-center gap-1 text-[11px] md:text-xs font-medium text-white/80 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">Explore <ArrowRight size={12} /></span>
                   </div>
                 </Link>
               </Reveal>

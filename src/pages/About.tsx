@@ -82,21 +82,32 @@ export default function AboutPage() {
 
       {/* Leadership — rendered ONLY when verified profiles are supplied (else hidden). */}
       {leaders.length > 0 ? (
-        <section className="py-20 md:py-24 bg-cream/50">
-          <Container>
-            <SectionHeading eyebrow="Leadership" title="The people behind Luxeva Care" />
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="py-20 md:py-24 bg-navy relative overflow-hidden">
+          <div aria-hidden className="pointer-events-none absolute -top-24 right-0 h-96 w-96 rounded-full bg-gold/10 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute inset-0 text-white/[0.03] pattern-grid [mask-image:radial-gradient(70%_60%_at_50%_0%,#000,transparent)]" />
+          <Container className="relative">
+            <SectionHeading tone="light" eyebrow="Leadership" title="The people behind Luxeva Care" />
+            <div className="mt-12 flex flex-wrap justify-center gap-8">
               {leaders.map((l) => (
-                <div key={l.name} className="rounded-xl border border-border bg-soft-white p-6 shadow-soft text-center">
-                  {l.photo && (
-                    <div className="relative mx-auto h-28 w-28 overflow-hidden rounded-full">
-                      <Image src={l.photo.src} alt={l.photo.alt} fill sizes="112px" className="object-cover" />
+                <Reveal key={l.name} variant="scale">
+                  <div className="w-72 rounded-2xl overflow-hidden bg-white/[0.06] border border-white/10 shadow-lift hover:bg-white/[0.10] transition-colors">
+                    {l.photo ? (
+                      <div className="relative w-full" style={{ aspectRatio: "3/4" }}>
+                        <Image src={l.photo.src} alt={l.photo.alt} fill sizes="288px" className="object-cover object-top" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/30 to-transparent" />
+                      </div>
+                    ) : (
+                      <div className="w-full bg-white/10 flex items-center justify-center" style={{ aspectRatio: "3/4" }}>
+                        <span className="text-6xl font-display text-white/30">{l.name.split(" ").map(w => w[0]).join("").slice(0,2)}</span>
+                      </div>
+                    )}
+                    <div className="p-6 -mt-16 relative">
+                      <h3 className="text-xl font-semibold text-white">{l.name}</h3>
+                      <p className="mt-1 text-sm font-medium text-gold-2">{l.roleType}</p>
+                      <p className="mt-3 text-sm text-white/65 leading-relaxed">{l.bio}</p>
                     </div>
-                  )}
-                  <h3 className="mt-4 text-xl">{l.name}</h3>
-                  <p className="text-sm text-gold-dark font-medium">{l.roleType}</p>
-                  <p className="mt-2 text-sm text-ink-soft/80">{l.bio}</p>
-                </div>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </Container>
