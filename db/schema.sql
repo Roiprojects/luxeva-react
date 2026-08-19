@@ -55,3 +55,32 @@ begin new.updated_at = now(); return new; end $$;
 drop trigger if exists trg_enquiries_updated on enquiries;
 create trigger trg_enquiries_updated before update on enquiries
   for each row execute function set_updated_at();
+
+-- Admin users & sessions
+create table if not exists admin_users (
+  id            uuid primary key default gen_random_uuid(),
+  email         text not null unique,
+  password_hash text not null,
+  full_name     text not null,
+  role          text not null default 'editor',
+  is_active     boolean not null default true,
+  created_at    timestamptz not null default now()
+);
+
+create table if not exists admin_sessions (
+  id            uuid primary key default gen_random_uuid(),
+  user_id       uuid not null references admin_users(id) on delete cascade,
+  session_token text not null unique,
+  expires_at    timestamptz not null,
+  created_at    timestamptz not null default now()
+);
+
+create index if not exists idx_admin_sessions_token on admin_sessions (session_token);
+
+-- CMS content store
+create table if not exists content_documents (
+  key        text primary key,
+  data       jsonb not null default '{}'::jsonb,
+  updated_by uuid references admin_users(id) on delete set null,
+  updated_at timestamptz not null default now()
+);
