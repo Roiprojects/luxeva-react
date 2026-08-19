@@ -103,7 +103,7 @@ export const roomCategories: RoomCategory[] = [
   { title: "Modular Kitchen", image: `${IMG}/kitchen-dr-1.jpg`, href: "/services/kitchen-granite-quartz" },
   { title: "Bedroom", image: `${IMG}/bedroom-dr-1.jpg`, href: "/services/custom-beds" },
   { title: "Wardrobe", image: `${IMG}/wardrobe-1.jpg`, href: "/services/carpenter-service" },
-  { title: "Bathroom", image: `${IMG}/drive-bathroom/bathroom-9.jpeg`, href: "/services/plumbing-service" },
+  { title: "Bathroom", image: `${IMG}/drive-bathroom/bathroom-11.jpeg`, href: "/services/plumbing-service" },
   { title: "Entertainment", image: `${IMG}/ent-unit-1.jpg`, href: "/services/entertainment-unit" },
   { title: "Temple / Pooja", image: `${IMG}/temple-1.jpg`, href: "/services/temple-unit" },
   { title: "Full Home", image: `${IMG}/living-dr-3.jpg`, href: "/services/residential-home-interior" },
