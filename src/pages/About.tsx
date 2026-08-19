@@ -90,7 +90,7 @@ export default function AboutPage() {
                 <div key={l.name} className="rounded-xl border border-border bg-soft-white p-6 shadow-soft text-center">
                   {l.photo && (
                     <div className="relative mx-auto h-28 w-28 overflow-hidden rounded-full">
-                      <Image src={l.photo.src} alt={l.photo.alt} fill sizes="112px" className="object-cover" />
+                      <Image src={l.photo.src} alt={l.photo.alt} fill sizes="112px" className="object-cover object-top" />
                     </div>
                   )}
                   <h3 className="mt-4 text-xl">{l.name}</h3>
