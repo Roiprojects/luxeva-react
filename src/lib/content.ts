@@ -259,7 +259,6 @@ const services: Service[] = [
       pic("drive-bathroom/bathroom-8.jpeg", "Bathroom with designer tiles"),
       pic("drive-bathroom/bathroom-11.jpeg", "Bathroom with elegant wall tiles"),
       pic("drive-bathroom/bathroom-12.jpeg", "Modern bathroom interior"),
-      pic("drive-bathroom/bathroom-13.jpg", "Luxury bathroom with premium finishes"),
     ],
     featured: true,
     published: true,
