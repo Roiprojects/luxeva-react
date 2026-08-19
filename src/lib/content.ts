@@ -236,7 +236,7 @@ const services: Service[] = [
       pic("drive-kitchen/kitchen-8.jpeg", "L-shaped modular kitchen with backsplash"),
       pic("drive-kitchen/kitchen-9.jpeg", "Premium kitchen with integrated appliances"),
       pic("drive-kitchen/kitchen-10.jpeg", "Modern kitchen with quartz countertop"),
-      pic("drive-kitchen/kitchen-11.jpeg", "Stylish modular kitchen"),
+      pic("drive-kitchen/kitchen-13.jpeg", "Stylish modular kitchen"),
       pic("drive-kitchen/kitchen-12.jpeg", "Elegant kitchen interior"),
     ],
     featured: true,
