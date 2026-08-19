@@ -522,6 +522,9 @@ const leadership: Leader[] = [
 
 /* Accessors */
 export function getContactDetails(): ContactDetails { return contactDetails; }
+export function getContentSnapshot() {
+  return { home, about, roomCategories, services, projects, faqs, testimonials, leadership, contactDetails };
+}
 export function getServices(): Service[] { return services.filter((s) => s.published); }
 export function getFeaturedServices(): Service[] { return services.filter((s) => s.published && s.featured); }
 export function getService(slug: string): Service | undefined { return services.find((s) => s.published && s.slug === slug); }
