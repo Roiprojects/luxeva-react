@@ -12,7 +12,8 @@
     "start": "node server/index.mjs",
     "preview": "vite preview",
     "db:init": "node scripts/db-init.mjs",
-    "db:leads": "node scripts/db-leads.mjs"
+    "db:leads": "node scripts/db-leads.mjs",
+    "db:seed-admin": "node scripts/seed-admin.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",
