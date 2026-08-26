@@ -45,6 +45,12 @@ export function Carousel({ slides, interval = 5000 }: { slides: Slide[]; interva
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
     >
+      <div className="mb-3 flex items-center justify-between gap-3 px-1 sm:hidden">
+        <p className="text-sm font-medium text-ink-soft">Swipe to explore</p>
+        <span aria-live="polite" className="text-xs font-semibold uppercase tracking-[0.18em] text-muted">
+          {index + 1} / {n}
+        </span>
+      </div>
       <div
         className="relative overflow-hidden rounded-3xl shadow-card touch-pan-y"
         onPointerDown={onDown}

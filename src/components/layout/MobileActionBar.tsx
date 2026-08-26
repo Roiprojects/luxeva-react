@@ -14,31 +14,34 @@ export function MobileActionBar() {
   const wa = whatsappHref(contact.whatsapp, "Hello Luxeva Care, I'd like to enquire about interior services.");
 
   return (
-    <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-soft-white/95 backdrop-blur border-t border-border shadow-lift">
+    <div
+      className="lg:hidden fixed bottom-0 inset-x-0 z-50 bg-soft-white/95 backdrop-blur border-t border-border shadow-lift"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+    >
       <div className="grid grid-cols-3 divide-x divide-border">
         {tel ? (
-          <a href={tel} className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
+          <a href={tel} className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
             <Phone size={19} className="text-navy" />
             Call
           </a>
         ) : (
-          <Link href="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
+          <Link href="/contact" className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
             <Phone size={19} className="text-navy" />
             Call
           </Link>
         )}
         {wa ? (
-          <a href={wa} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
+          <a href={wa} target="_blank" rel="noopener noreferrer" className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
             <WhatsAppIcon size={18} className="text-[#25D366]" />
             WhatsApp
           </a>
         ) : (
-          <Link href="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
+          <Link href="/contact" className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink">
             <WhatsAppIcon size={18} className="text-[#25D366]" />
             WhatsApp
           </Link>
         )}
-        <Link href="/contact" className="flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-semibold text-ink bg-gold/15">
+        <Link href="/contact" className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 bg-gold/15 py-2.5 text-xs font-semibold text-ink">
           <CalendarCheck size={19} className="text-navy" />
           Enquire
         </Link>
