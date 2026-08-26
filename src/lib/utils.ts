@@ -16,8 +16,9 @@ export function telHref(phone?: string | null) {
 export function whatsappHref(number?: string | null, message?: string) {
   if (!number) return null;
   const digits = number.replace(/[^\d]/g, "");
-  const q = message ? `?text=${encodeURIComponent(message)}` : "";
-  return `https://wa.me/${digits}${q}`;
+  if (!digits) return null;
+  const q = message ? `&text=${encodeURIComponent(message)}` : "";
+  return `https://api.whatsapp.com/send?phone=${digits}${q}`;
 }
 
 /** Build a mailto: href, or null if unset. */

@@ -14,7 +14,7 @@ import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 export function FloatingContact() {
   const c = getContactDetails();
   const tel = telHref(c.phone);
-  const wa = whatsappHref(c.whatsapp, "Hello Luxeva Care, I'd like to enquire about interior services.");
+  const wa = whatsappHref(c.whatsapp ?? c.phone, "Hello Luxeva Care, I'd like to enquire about interior services.");
 
   return (
     <>
