@@ -21,6 +21,15 @@ export function whatsappHref(number?: string | null, message?: string) {
   return `https://api.whatsapp.com/send?phone=${digits}${q}`;
 }
 
+/** Build a native WhatsApp app href from a raw WhatsApp number, or null if unset. */
+export function whatsappAppHref(number?: string | null, message?: string) {
+  if (!number) return null;
+  const digits = number.replace(/[^\d]/g, "");
+  if (!digits) return null;
+  const q = message ? `&text=${encodeURIComponent(message)}` : "";
+  return `whatsapp://send?phone=${digits}${q}`;
+}
+
 /** Build a mailto: href, or null if unset. */
 export function mailHref(email?: string | null) {
   if (!email) return null;

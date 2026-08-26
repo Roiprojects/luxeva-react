@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { Home, LayoutGrid, ImageIcon, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getContactDetails } from "@/lib/content";
-import { telHref, whatsappHref } from "@/lib/utils";
+import { telHref, whatsappAppHref } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 const TABS = [
@@ -18,7 +18,7 @@ export function BottomNav() {
   const { pathname } = useLocation();
   const contact = getContactDetails();
   const tel = telHref(contact.phone);
-  const wa = whatsappHref(contact.whatsapp ?? contact.phone ?? "", "Hello Luxeva Care, I'd like to enquire about interior services.");
+  const wa = whatsappAppHref(contact.whatsapp ?? contact.phone ?? "", "Hello Luxeva Care, I'd like to enquire about interior services.");
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -76,8 +76,6 @@ export function BottomNav() {
         {wa ? (
           <a
             href={wa}
-            target="_blank"
-            rel="noopener noreferrer"
             className="flex-1 flex flex-col items-center justify-center gap-0.5 text-[#25D366] select-none"
           >
             <WhatsAppIcon size={22} />
