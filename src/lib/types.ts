@@ -82,6 +82,7 @@ export type Testimonial = {
 export type LeaderRole =
   | "Founder"
   | "Co-Founder / Promoter"
+  | "Co-Founder & COO"
   | "Managing Director"
   | "CEO"
   | "CFO"

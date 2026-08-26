@@ -10,10 +10,6 @@ import { FinalCta } from "@/components/sections/FinalCta";
 
 export default function AboutPage() {
   const leaders = getLeadership();
-  const coFounderPortrait = {
-    src: "/assets/stock/founder-coo.jpeg",
-    alt: "Co-Founder & COO portrait",
-  };
 
   return (
     <>
@@ -35,26 +31,6 @@ export default function AboutPage() {
           <div>
             <SectionHeading align="left" eyebrow="Our story" title="One accountable partner for your interior" intro={about.story} />
           </div>
-        </Container>
-      </section>
-
-      <section className="pb-8 md:pb-12">
-        <Container>
-          <Reveal>
-            <div className="grid overflow-hidden rounded-2xl border border-border bg-soft-white shadow-soft md:grid-cols-[20rem_1fr]">
-              <div className="relative min-h-[18rem]">
-                <Image src={coFounderPortrait.src} alt={coFounderPortrait.alt} fill sizes="(max-width:768px) 100vw, 20rem" className="object-cover object-top" />
-              </div>
-              <div className="p-8 md:p-10">
-                <p className="eyebrow mb-3">Leadership spotlight</p>
-                <h2 className="text-3xl">Co-Founder & COO</h2>
-                <p className="mt-4 text-ink-soft/85 leading-relaxed">
-                  Luxeva Care&apos;s leadership combines design direction, operational discipline and on-ground project coordination.
-                  This featured portrait highlights the co-founder and COO presence behind day-to-day delivery and execution.
-                </p>
-              </div>
-            </div>
-          </Reveal>
         </Container>
       </section>
 
@@ -109,12 +85,18 @@ export default function AboutPage() {
         <section className="py-20 md:py-24 bg-cream/50">
           <Container>
             <SectionHeading eyebrow="Leadership" title="The people behind Luxeva Care" />
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {leaders.map((l) => (
                 <div key={l.name} className="rounded-xl border border-border bg-soft-white p-6 shadow-soft text-center">
                   {l.photo && (
-                    <div className="relative mx-auto h-28 w-28 overflow-hidden rounded-full">
-                      <Image src={l.photo.src} alt={l.photo.alt} fill sizes="112px" className="object-cover object-top" />
+                    <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full ring-1 ring-border/70">
+                      <Image
+                        src={l.photo.src}
+                        alt={l.photo.alt}
+                        fill
+                        sizes="128px"
+                        className="object-cover object-[center_top_18%]"
+                      />
                     </div>
                   )}
                   <h3 className="mt-4 text-xl">{l.name}</h3>

@@ -5,6 +5,7 @@ import { readFileSync } from "node:fs";
 const privacySource = readFileSync(new URL("../src/pages/Privacy.tsx", import.meta.url), "utf8");
 const termsSource = readFileSync(new URL("../src/pages/Terms.tsx", import.meta.url), "utf8");
 const aboutSource = readFileSync(new URL("../src/pages/About.tsx", import.meta.url), "utf8");
+const contentSource = readFileSync(new URL("../src/lib/content.ts", import.meta.url), "utf8");
 
 test("privacy page uses the supplied Luxeva privacy policy instead of the draft template", () => {
   assert.equal(privacySource.includes("Draft template."), false);
@@ -23,6 +24,10 @@ test("terms page uses the supplied Luxeva website terms instead of the draft tem
 });
 
 test("about page features the provided co-founder and COO portrait", () => {
-  assert.match(aboutSource, /founder-coo\.jpeg/);
-  assert.match(aboutSource, /Co-Founder & COO/);
+  assert.match(contentSource, /founder-coo\.jpeg/);
+  assert.match(contentSource, /Co founder & COO/);
+  assert.equal(aboutSource.includes("Leadership spotlight"), false);
+  assert.match(aboutSource, /leaders\.map/);
+  assert.match(aboutSource, /lg:grid-cols-4/);
+  assert.match(aboutSource, /object-\[center_top_18%\]/);
 });

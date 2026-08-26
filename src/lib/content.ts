@@ -532,6 +532,13 @@ const leadership: Leader[] = [
     bio: "Co-founder and CFO bringing financial strategy and business acumen to drive Luxeva Care's growth and operational excellence.",
     photo: { src: `/assets/stock/founder-samiti.jpg`, alt: "CA Samiti Jain" },
     published: true
+  },
+  {
+    name: "Co founder & COO",
+    roleType: "Co-Founder & COO",
+    bio: "Co-founder and COO focused on operational execution, project coordination and ensuring delivery standards stay consistent across Luxeva Care engagements.",
+    photo: { src: `/assets/stock/founder-coo.jpeg`, alt: "Co founder & COO" },
+    published: true
   }
 ];
 
