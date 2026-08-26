@@ -23,6 +23,7 @@ import type {
 } from "./types";
 
 const IMG = "/assets/stock";
+type ContentSnapshot = ReturnType<typeof getContentSnapshot>;
 
 /* Contact — ALL NULL until verified (MISSING_CLIENT_INPUTS §A). */
 const contactDetails: ContactDetails = {
@@ -538,6 +539,29 @@ const leadership: Leader[] = [
 export function getContactDetails(): ContactDetails { return contactDetails; }
 export function getContentSnapshot() {
   return { home, about, roomCategories, services, projects, faqs, testimonials, leadership, contactDetails };
+}
+export function applyContentOverrides(documents: Partial<ContentSnapshot>) {
+  if (!documents || typeof documents !== "object") return;
+
+  const replaceArray = <T>(target: T[], next: T[] | undefined) => {
+    if (!Array.isArray(next)) return;
+    target.splice(0, target.length, ...next);
+  };
+
+  const assignObject = <T extends object>(target: T, next: Partial<T> | undefined) => {
+    if (!next || typeof next !== "object" || Array.isArray(next)) return;
+    Object.assign(target, next);
+  };
+
+  assignObject(home, documents.home);
+  assignObject(about, documents.about);
+  replaceArray(roomCategories, documents.roomCategories);
+  replaceArray(services, documents.services);
+  replaceArray(projects, documents.projects);
+  replaceArray(faqs, documents.faqs);
+  replaceArray(testimonials, documents.testimonials);
+  replaceArray(leadership, documents.leadership);
+  assignObject(contactDetails, documents.contactDetails);
 }
 export function getServices(): Service[] { return services.filter((s) => s.published); }
 export function getFeaturedServices(): Service[] { return services.filter((s) => s.published && s.featured); }

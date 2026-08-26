@@ -10,6 +10,10 @@ import { FinalCta } from "@/components/sections/FinalCta";
 
 export default function AboutPage() {
   const leaders = getLeadership();
+  const coFounderPortrait = {
+    src: "/assets/stock/founder-coo.jpeg",
+    alt: "Co-Founder & COO portrait",
+  };
 
   return (
     <>
@@ -31,6 +35,26 @@ export default function AboutPage() {
           <div>
             <SectionHeading align="left" eyebrow="Our story" title="One accountable partner for your interior" intro={about.story} />
           </div>
+        </Container>
+      </section>
+
+      <section className="pb-8 md:pb-12">
+        <Container>
+          <Reveal>
+            <div className="grid overflow-hidden rounded-2xl border border-border bg-soft-white shadow-soft md:grid-cols-[20rem_1fr]">
+              <div className="relative min-h-[18rem]">
+                <Image src={coFounderPortrait.src} alt={coFounderPortrait.alt} fill sizes="(max-width:768px) 100vw, 20rem" className="object-cover object-top" />
+              </div>
+              <div className="p-8 md:p-10">
+                <p className="eyebrow mb-3">Leadership spotlight</p>
+                <h2 className="text-3xl">Co-Founder & COO</h2>
+                <p className="mt-4 text-ink-soft/85 leading-relaxed">
+                  Luxeva Care&apos;s leadership combines design direction, operational discipline and on-ground project coordination.
+                  This featured portrait highlights the co-founder and COO presence behind day-to-day delivery and execution.
+                </p>
+              </div>
+            </div>
+          </Reveal>
         </Container>
       </section>
 
