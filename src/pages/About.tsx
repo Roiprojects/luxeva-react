@@ -10,6 +10,12 @@ import { FinalCta } from "@/components/sections/FinalCta";
 
 export default function AboutPage() {
   const leaders = getLeadership();
+  const portraitPositions: Record<string, string> = {
+    "Dr. Atul Kumar Yadav": "center 18%",
+    "Rakesh Jha": "center 14%",
+    "CA Samiti Jain": "center 16%",
+    "Co founder & COO": "center 12%",
+  };
 
   return (
     <>
@@ -89,13 +95,14 @@ export default function AboutPage() {
               {leaders.map((l) => (
                 <div key={l.name} className="rounded-xl border border-border bg-soft-white p-6 shadow-soft text-center">
                   {l.photo && (
-                    <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full ring-1 ring-border/70">
+                    <div className="relative mx-auto h-36 w-36 overflow-hidden rounded-full ring-1 ring-border/70 bg-cream/40">
                       <Image
                         src={l.photo.src}
                         alt={l.photo.alt}
                         fill
-                        sizes="128px"
-                        className="object-cover object-[center_top_18%]"
+                        sizes="144px"
+                        className="object-cover"
+                        style={{ objectPosition: portraitPositions[l.name] ?? "center 16%" }}
                       />
                     </div>
                   )}
