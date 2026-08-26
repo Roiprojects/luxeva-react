@@ -14,7 +14,7 @@ export default function AboutPage() {
     "Dr. Atul Kumar Yadav": "center 18%",
     "Rakesh Jha": "center 14%",
     "CA Samiti Jain": "center 16%",
-    "Co founder & COO": "center 12%",
+    "Anuj Kumar": "center 12%",
   };
 
   return (

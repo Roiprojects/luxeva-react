@@ -534,10 +534,10 @@ const leadership: Leader[] = [
     published: true
   },
   {
-    name: "Co founder & COO",
+    name: "Anuj Kumar",
     roleType: "Co-Founder & COO",
     bio: "Co-founder and COO focused on operational execution, project coordination and ensuring delivery standards stay consistent across Luxeva Care engagements.",
-    photo: { src: `/assets/stock/founder-coo.jpeg`, alt: "Co founder & COO" },
+    photo: { src: `/assets/stock/founder-coo.jpeg`, alt: "Anuj Kumar" },
     published: true
   }
 ];

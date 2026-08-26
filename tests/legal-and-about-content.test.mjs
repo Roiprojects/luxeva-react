@@ -26,7 +26,7 @@ test("terms page uses the supplied Luxeva website terms instead of the draft tem
 
 test("about page features the provided co-founder and COO portrait", () => {
   assert.match(contentSource, /founder-coo\.jpeg/);
-  assert.match(contentSource, /Co founder & COO/);
+  assert.match(contentSource, /Anuj Kumar/);
   assert.ok(coFounderAsset.size > 50000);
   assert.equal(aboutSource.includes("Leadership spotlight"), false);
   assert.match(aboutSource, /leaders\.map/);
