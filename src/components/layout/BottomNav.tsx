@@ -5,19 +5,19 @@ import { useLocation } from "react-router-dom";
 import { Home, LayoutGrid, ImageIcon, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getContactDetails } from "@/lib/content";
-import { whatsappHref } from "@/lib/utils";
+import { telHref, whatsappHref } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 const TABS = [
   { label: "Home",      href: "/",          icon: Home },
   { label: "Services",  href: "/services",  icon: LayoutGrid },
   { label: "Portfolio", href: "/portfolio", icon: ImageIcon },
-  { label: "Contact",   href: "/contact",   icon: Phone },
 ] as const;
 
 export function BottomNav() {
   const { pathname } = useLocation();
   const contact = getContactDetails();
+  const tel = telHref(contact.phone);
   const wa = whatsappHref(contact.whatsapp ?? contact.phone ?? "", "Hello Luxeva Care, I'd like to enquire about interior services.");
 
   const isActive = (href: string) =>
@@ -53,6 +53,24 @@ export function BottomNav() {
             </Link>
           );
         })}
+
+        {tel ? (
+          <a
+            href={tel}
+            className="flex-1 flex flex-col items-center justify-center gap-0.5 text-brand select-none"
+          >
+            <Phone size={22} strokeWidth={1.9} />
+            <span className="text-[10px] font-medium leading-none">Call</span>
+          </a>
+        ) : (
+          <Link
+            to="/contact"
+            className="flex-1 flex flex-col items-center justify-center gap-0.5 text-muted select-none"
+          >
+            <Phone size={22} strokeWidth={1.7} />
+            <span className="text-[10px] font-medium leading-none">Call</span>
+          </Link>
+        )}
 
         {/* WhatsApp tab — green brand color, official icon */}
         {wa ? (
