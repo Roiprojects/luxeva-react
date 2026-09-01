@@ -25,10 +25,10 @@ import type {
 const IMG = "/assets/stock";
 type ContentSnapshot = ReturnType<typeof getContentSnapshot>;
 
-/* Contact — ALL NULL until verified (MISSING_CLIENT_INPUTS §A). */
+/* Contact — phone and WhatsApp added. */
 const contactDetails: ContactDetails = {
-  phone: null,
-  whatsapp: null,
+  phone: "+91 77952 08640",
+  whatsapp: "+91 77952 08640",
   email: null,
   address: null,
   mapsEmbedUrl: null,
