@@ -5,7 +5,7 @@ type Props = AnchorHTMLAttributes<HTMLAnchorElement> & { href: string; children?
 
 /** next/link shim → react-router Link (external / hash / mail / tel fall back to <a>). */
 export default function Link({ href, children, ...rest }: Props) {
-  const external = /^(https?:|mailto:|tel:)/.test(href) || rest.target === "_blank";
+  const external = /^(https?:|mailto:|tel:|whatsapp:|sms:)/.test(href) || rest.target === "_blank";
   if (external || href.startsWith("#")) {
     return (
       <a href={href} {...rest}>

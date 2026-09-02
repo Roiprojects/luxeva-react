@@ -4,7 +4,7 @@ import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { Logo } from "./Logo";
 import { siteConfig, nav } from "@/lib/site";
 import { getContactDetails, getServices } from "@/lib/content";
-import { telHref, whatsappHref, mailHref } from "@/lib/utils";
+import { telHref, whatsappHref, mailHref, openWhatsApp, openPhone } from "@/lib/utils";
 
 export function Footer() {
   const contact = getContactDetails();
@@ -62,14 +62,30 @@ export function Footer() {
           <ul className="space-y-3">
             {tel && (
               <li>
-                <a href={tel} className="flex items-center gap-2.5 hover:text-gold transition-colors">
+                <a
+                  href={tel}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openPhone(contact.phone);
+                  }}
+                  className="flex items-center gap-2.5 hover:text-gold transition-colors cursor-pointer"
+                >
                   <Phone size={16} className="text-gold shrink-0" /> {contact.phone}
                 </a>
               </li>
             )}
             {wa && (
               <li>
-                <a href={wa} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 hover:text-gold transition-colors">
+                <a
+                  href={wa}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    openWhatsApp(contact.whatsapp);
+                  }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 hover:text-gold transition-colors cursor-pointer"
+                >
                   <WhatsAppIcon size={16} className="text-[#25D366] shrink-0" /> WhatsApp
                 </a>
               </li>

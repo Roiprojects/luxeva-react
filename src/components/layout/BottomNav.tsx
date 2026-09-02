@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { Home, LayoutGrid, ImageIcon, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getContactDetails } from "@/lib/content";
-import { telHref, whatsappAppHref } from "@/lib/utils";
+import { telHref, whatsappAppHref, openWhatsApp, openPhone } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 const TABS = [
@@ -18,7 +18,8 @@ export function BottomNav() {
   const { pathname } = useLocation();
   const contact = getContactDetails();
   const tel = telHref(contact.phone);
-  const wa = whatsappAppHref(contact.whatsapp ?? contact.phone ?? "", "Hello Luxeva Care, I'd like to enquire about interior services.");
+  const waMessage = "Hello Luxeva Care, I'd like to enquire about interior services.";
+  const wa = whatsappAppHref(contact.whatsapp ?? contact.phone ?? "", waMessage);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -54,22 +55,28 @@ export function BottomNav() {
           );
         })}
 
-        {/* Call button — redirects to phone app (+91 9900026502) */}
+        {/* Call button — redirects directly to phone dialer (+91 9900026502) */}
         <a
-          href={tel || "tel:+919900026502"}
-          className="flex-1 flex flex-col items-center justify-center gap-0.5 text-brand select-none"
+          href={tel}
+          onClick={(e) => {
+            e.preventDefault();
+            openPhone(contact.phone);
+          }}
+          className="flex-1 flex flex-col items-center justify-center gap-0.5 text-brand select-none cursor-pointer"
           aria-label="Call +91 9900026502"
         >
           <Phone size={22} strokeWidth={1.9} />
           <span className="text-[10px] font-medium leading-none">Call</span>
         </a>
 
-        {/* WhatsApp button — redirects to WhatsApp chat (9900026502) */}
+        {/* WhatsApp button — redirects directly to native WhatsApp app */}
         <a
-          href={wa || "https://api.whatsapp.com/send?phone=919900026502&text=Hello%20Luxeva%20Care%2C%20I%27d%20like%20to%20enquire%20about%20interior%20services."}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 flex flex-col items-center justify-center gap-0.5 text-[#25D366] select-none"
+          href={wa}
+          onClick={(e) => {
+            e.preventDefault();
+            openWhatsApp(contact.whatsapp ?? contact.phone, waMessage);
+          }}
+          className="flex-1 flex flex-col items-center justify-center gap-0.5 text-[#25D366] select-none cursor-pointer"
           aria-label="Chat on WhatsApp with 9900026502"
         >
           <WhatsAppIcon size={22} />

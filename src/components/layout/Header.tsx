@@ -15,12 +15,14 @@ import {
   ChefHat,
   ShieldCheck,
   Store,
+  Phone,
 } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/Button";
 import { nav } from "@/lib/site";
-import { cn } from "@/lib/utils";
+import { cn, telHref, whatsappAppHref, openWhatsApp, openPhone } from "@/lib/utils";
 import { getContactDetails } from "@/lib/content";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 type ServiceLink = { slug: string; title: string; category: string };
 
@@ -138,11 +140,15 @@ export function Header({ services }: { services: ServiceLink[] }) {
           </Link>
           {contact.phone ? (
             <a
-              href={`tel:${contact.phone}`}
+              href={telHref(contact.phone)}
+              onClick={(e) => {
+                e.preventDefault();
+                openPhone(contact.phone);
+              }}
               aria-label="Call us"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand/8 text-brand"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand/8 text-brand cursor-pointer"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.8 19.8 0 0 1 1.61 4.87 2 2 0 0 1 3.59 2.68h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.2a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17.7z"></path></svg>
+              <Phone size={18} />
             </a>
           ) : null}
         </div>
@@ -215,10 +221,33 @@ export function Header({ services }: { services: ServiceLink[] }) {
                     ))}
                     {contact.phone ? (
                       <a
-                        href={`tel:${contact.phone}`}
-                        className="flex min-h-12 items-center justify-between rounded-2xl bg-paper px-4 py-3 text-sm font-semibold text-ink shadow-soft"
+                        href={telHref(contact.phone)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          openPhone(contact.phone);
+                        }}
+                        className="flex min-h-12 items-center justify-between rounded-2xl bg-paper px-4 py-3 text-sm font-semibold text-ink shadow-soft cursor-pointer"
                       >
-                        <span>{contact.phone}</span>
+                        <span className="flex items-center gap-2.5">
+                          <Phone size={17} className="text-brand" />
+                          <span>{contact.phone}</span>
+                        </span>
+                        <ArrowRight size={16} />
+                      </a>
+                    ) : null}
+                    {contact.whatsapp ? (
+                      <a
+                        href={whatsappAppHref(contact.whatsapp, "Hello Luxeva Care, I'd like to enquire about interior services.")}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          openWhatsApp(contact.whatsapp, "Hello Luxeva Care, I'd like to enquire about interior services.");
+                        }}
+                        className="flex min-h-12 items-center justify-between rounded-2xl bg-paper px-4 py-3 text-sm font-semibold text-ink shadow-soft cursor-pointer"
+                      >
+                        <span className="flex items-center gap-2.5">
+                          <WhatsAppIcon size={18} className="text-[#25D366]" />
+                          <span>WhatsApp Chat</span>
+                        </span>
                         <ArrowRight size={16} />
                       </a>
                     ) : null}

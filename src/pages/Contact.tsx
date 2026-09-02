@@ -3,24 +3,50 @@ import { PageHero } from "@/components/ui/PageHero";
 import { Container } from "@/components/ui/Section";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
 import { getContactDetails } from "@/lib/content";
-import { telHref, whatsappHref, mailHref } from "@/lib/utils";
-
-
+import { telHref, whatsappHref, mailHref, openWhatsApp, openPhone } from "@/lib/utils";
 
 export default function ContactPage() {
   const contact = getContactDetails();
   const tel = telHref(contact.phone);
-  const wa = whatsappHref(contact.whatsapp, "Hello Luxeva Care, I'd like to enquire about interior services.");
+  const waMessage = "Hello Luxeva Care, I'd like to enquire about interior services.";
+  const wa = whatsappHref(contact.whatsapp, waMessage);
   const mail = mailHref(contact.email);
 
   // Build contact cards only from verified, non-null values.
   const cards = [
-    tel && { icon: Phone, label: "Call us", value: contact.phone!, href: tel, external: false },
-    wa && { icon: MessageCircle, label: "WhatsApp", value: "Chat with us", href: wa, external: true },
-    mail && { icon: Mail, label: "Email", value: contact.email!, href: mail, external: false },
-    contact.address && { icon: MapPin, label: "Visit us", value: contact.address, href: undefined, external: false },
-    contact.workingHours && { icon: Clock, label: "Working hours", value: contact.workingHours, href: undefined, external: false },
-  ].filter(Boolean) as { icon: typeof Phone; label: string; value: string; href?: string; external: boolean }[];
+    tel && {
+      icon: Phone,
+      label: "Call us",
+      value: contact.phone!,
+      href: tel,
+      external: false,
+      onClick: (e: React.MouseEvent) => {
+        e.preventDefault();
+        openPhone(contact.phone);
+      },
+    },
+    wa && {
+      icon: MessageCircle,
+      label: "WhatsApp",
+      value: "Chat with us",
+      href: wa,
+      external: true,
+      onClick: (e: React.MouseEvent) => {
+        e.preventDefault();
+        openWhatsApp(contact.whatsapp, waMessage);
+      },
+    },
+    mail && { icon: Mail, label: "Email", value: contact.email!, href: mail, external: false, onClick: undefined },
+    contact.address && { icon: MapPin, label: "Visit us", value: contact.address, href: undefined, external: false, onClick: undefined },
+    contact.workingHours && { icon: Clock, label: "Working hours", value: contact.workingHours, href: undefined, external: false, onClick: undefined },
+  ].filter(Boolean) as {
+    icon: typeof Phone;
+    label: string;
+    value: string;
+    href?: string;
+    external: boolean;
+    onClick?: (e: React.MouseEvent) => void;
+  }[];
 
   return (
     <>
@@ -56,7 +82,14 @@ export default function ContactPage() {
                     </div>
                   );
                   return c.href ? (
-                    <a key={c.label} href={c.href} target={c.external ? "_blank" : undefined} rel={c.external ? "noopener noreferrer" : undefined} className="block hover:opacity-90 transition-opacity">
+                    <a
+                      key={c.label}
+                      href={c.href}
+                      onClick={c.onClick}
+                      target={c.external ? "_blank" : undefined}
+                      rel={c.external ? "noopener noreferrer" : undefined}
+                      className="block hover:opacity-90 transition-opacity cursor-pointer"
+                    >
                       {inner}
                     </a>
                   ) : (

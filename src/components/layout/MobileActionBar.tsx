@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Phone, CalendarCheck } from "lucide-react";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { getContactDetails } from "@/lib/content";
-import { telHref, whatsappHref } from "@/lib/utils";
+import { telHref, whatsappAppHref, openWhatsApp, openPhone } from "@/lib/utils";
 
 /**
  * Sticky mobile action bar (Call · WhatsApp · Enquire).
@@ -11,7 +11,8 @@ import { telHref, whatsappHref } from "@/lib/utils";
 export function MobileActionBar() {
   const contact = getContactDetails();
   const tel = telHref(contact.phone);
-  const wa = whatsappHref(contact.whatsapp, "Hello Luxeva Care, I'd like to enquire about interior services.");
+  const waMessage = "Hello Luxeva Care, I'd like to enquire about interior services.";
+  const wa = whatsappAppHref(contact.whatsapp, waMessage);
 
   return (
     <div
@@ -20,18 +21,24 @@ export function MobileActionBar() {
     >
       <div className="grid grid-cols-3 divide-x divide-border">
         <a
-          href={tel || "tel:+919900026502"}
-          className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink"
+          href={tel}
+          onClick={(e) => {
+            e.preventDefault();
+            openPhone(contact.phone);
+          }}
+          className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink cursor-pointer"
           aria-label="Call +91 9900026502"
         >
           <Phone size={19} className="text-navy" />
           Call
         </a>
         <a
-          href={wa || "https://api.whatsapp.com/send?phone=919900026502&text=Hello%20Luxeva%20Care%2C%20I%27d%20like%20to%20enquire%20about%20interior%20services."}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink"
+          href={wa}
+          onClick={(e) => {
+            e.preventDefault();
+            openWhatsApp(contact.whatsapp, waMessage);
+          }}
+          className="flex min-h-[3.5rem] flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium text-ink cursor-pointer"
           aria-label="Chat on WhatsApp with 9900026502"
         >
           <WhatsAppIcon size={18} className="text-[#25D366]" />

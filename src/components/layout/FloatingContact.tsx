@@ -2,14 +2,13 @@ import Link from "next/link";
 import { Phone } from "lucide-react";
 import type { ReactNode } from "react";
 import { getContactDetails } from "@/lib/content";
-import { telHref, whatsappHref } from "@/lib/utils";
+import { telHref, whatsappHref, openWhatsApp, openPhone } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 
 /**
  * Floating WhatsApp + Call buttons.
  * Desktop: left edge column.
- * Mobile: single WhatsApp button above the bottom nav bar (right side).
  */
 export function FloatingContact() {
   const c = getContactDetails();
@@ -21,19 +20,31 @@ export function FloatingContact() {
       {/* Desktop: left column with both buttons */}
       <div className="hidden lg:flex fixed left-5 bottom-6 z-40 flex-col gap-3">
         <FloatBtn
-          href={wa ?? "/contact"}
-          external={!!wa}
+          href={wa}
+          external
+          onClick={(e) => {
+            e.preventDefault();
+            openWhatsApp(c.whatsapp ?? c.phone, "Hello Luxeva Care, I'd like to enquire about interior services.");
+          }}
           label="Chat on WhatsApp"
           className="bg-[#25D366] hover:bg-[#1ebe5b]"
           ringClassName="bg-[#25D366]"
         >
           <WhatsAppIcon size={24} />
         </FloatBtn>
-        <FloatBtn href={tel ?? "/contact"} label="Call us" className="bg-brand hover:bg-brand-dark">
+        <FloatBtn
+          href={tel}
+          external
+          onClick={(e) => {
+            e.preventDefault();
+            openPhone(c.phone);
+          }}
+          label="Call +91 9900026502"
+          className="bg-brand hover:bg-brand-dark"
+        >
           <Phone size={20} />
         </FloatBtn>
       </div>
-
     </>
   );
 }
@@ -41,6 +52,7 @@ export function FloatingContact() {
 function FloatBtn({
   href,
   external,
+  onClick,
   label,
   className,
   ringClassName,
@@ -48,13 +60,14 @@ function FloatBtn({
 }: {
   href: string;
   external?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
   label: string;
   className?: string;
   ringClassName?: string;
   children: ReactNode;
 }) {
   const inner = (
-    <span className="group relative flex">
+    <span className="group relative flex cursor-pointer">
       {ringClassName && (
         <span aria-hidden className={cn("absolute inset-0 rounded-full opacity-40 motion-safe:animate-ping", ringClassName)} />
       )}
@@ -74,11 +87,17 @@ function FloatBtn({
   );
 
   return external ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+    <a
+      href={href}
+      target={href.startsWith("tel:") ? undefined : "_blank"}
+      rel="noopener noreferrer"
+      aria-label={label}
+      onClick={onClick}
+    >
       {inner}
     </a>
   ) : (
-    <Link href={href} aria-label={label}>
+    <Link href={href} aria-label={label} onClick={onClick}>
       {inner}
     </Link>
   );
