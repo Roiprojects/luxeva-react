@@ -54,42 +54,27 @@ export function BottomNav() {
           );
         })}
 
-        {tel ? (
-          <a
-            href={tel}
-            className="flex-1 flex flex-col items-center justify-center gap-0.5 text-brand select-none"
-          >
-            <Phone size={22} strokeWidth={1.9} />
-            <span className="text-[10px] font-medium leading-none">Call</span>
-          </a>
-        ) : (
-          <Link
-            to="/contact"
-            className="flex-1 flex flex-col items-center justify-center gap-0.5 text-muted select-none"
-          >
-            <Phone size={22} strokeWidth={1.7} />
-            <span className="text-[10px] font-medium leading-none">Call</span>
-          </Link>
-        )}
+        {/* Call button — redirects to phone app (+91 9900026502) */}
+        <a
+          href={tel || "tel:+919900026502"}
+          className="flex-1 flex flex-col items-center justify-center gap-0.5 text-brand select-none"
+          aria-label="Call +91 9900026502"
+        >
+          <Phone size={22} strokeWidth={1.9} />
+          <span className="text-[10px] font-medium leading-none">Call</span>
+        </a>
 
-        {/* WhatsApp tab — green brand color, official icon */}
-        {wa ? (
-          <a
-            href={wa}
-            className="flex-1 flex flex-col items-center justify-center gap-0.5 text-[#25D366] select-none"
-          >
-            <WhatsAppIcon size={22} />
-            <span className="text-[10px] font-medium leading-none">WhatsApp</span>
-          </a>
-        ) : (
-          <Link
-            to="/contact"
-            className="flex-1 flex flex-col items-center justify-center gap-0.5 text-[#25D366] select-none"
-          >
-            <WhatsAppIcon size={22} />
-            <span className="text-[10px] font-medium leading-none">WhatsApp</span>
-          </Link>
-        )}
+        {/* WhatsApp button — redirects to WhatsApp chat (9900026502) */}
+        <a
+          href={wa || "https://api.whatsapp.com/send?phone=919900026502&text=Hello%20Luxeva%20Care%2C%20I%27d%20like%20to%20enquire%20about%20interior%20services."}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 flex flex-col items-center justify-center gap-0.5 text-[#25D366] select-none"
+          aria-label="Chat on WhatsApp with 9900026502"
+        >
+          <WhatsAppIcon size={22} />
+          <span className="text-[10px] font-medium leading-none">WhatsApp</span>
+        </a>
       </div>
     </nav>
   );

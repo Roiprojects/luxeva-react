@@ -359,3 +359,5 @@ if (existsSync(dist)) {
 
 const port = process.env.PORT || 3001;
 app.listen(port, () => console.log(`Luxeva API on :${port}  (db: ${pool ? "on" : "off"})`));
+
+export { app };

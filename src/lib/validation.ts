@@ -26,15 +26,30 @@ export const TIMELINES = [
   "Just exploring",
 ] as const;
 
+export const SERVICE_INTERESTS = [
+  "Residential Home Interior",
+  "Design & Space Planning",
+  "Carpentry & Wardrobes",
+  "Modular Kitchen & Countertops",
+  "Tiles & Bathroom Work",
+  "False Ceiling & POP",
+  "Electrical Works",
+  "Plumbing Services",
+  "Custom Beds & Bedrooms",
+  "Entertainment Unit",
+  "Temple / Pooja Unit",
+  "Commercial & Showroom Interior",
+] as const;
+
 /** Shared enquiry schema — used by the client form and the server action. */
 export const enquirySchema = z.object({
   name: z.string().trim().min(2, "Please enter your name").max(100),
   phone: z
     .string()
     .trim()
-    .min(7, "Please enter a valid phone number")
+    .min(10, "Please enter a valid 10-digit phone number")
     .max(20)
-    .regex(/^[+\d][\d\s-]{6,}$/, "Please enter a valid phone number"),
+    .regex(/\d{10}/, "Please enter a valid 10-digit phone number"),
   email: z
     .union([z.string().trim().email("Please enter a valid email"), z.literal("")])
     .optional(),

@@ -25,11 +25,11 @@ import type {
 const IMG = "/assets/stock";
 type ContentSnapshot = ReturnType<typeof getContentSnapshot>;
 
-/* Contact — phone and WhatsApp added. */
+/* Contact — phone, WhatsApp and email. */
 const contactDetails: ContactDetails = {
-  phone: "+91 77952 08640",
-  whatsapp: "+91 77952 08640",
-  email: null,
+  phone: "+91 9900026502",
+  whatsapp: "+91 9900026502",
+  email: "atul.kumar@luxevacare.com",
   address: null,
   mapsEmbedUrl: null,
   workingHours: null,
@@ -547,6 +547,24 @@ export function getContactDetails(): ContactDetails { return contactDetails; }
 export function getContentSnapshot() {
   return { home, about, roomCategories, services, projects, faqs, testimonials, leadership, contactDetails };
 }
+const repairRoomImages = (rooms: RoomCategory[]) =>
+  rooms.map((room) => {
+    const imageByTitle: Record<string, string> = {
+      "Living Room": `${IMG}/drive-living/living-5.jpg`,
+      "Modular Kitchen": `${IMG}/kitchen-dr-1.jpg`,
+      Bedroom: `${IMG}/bedroom-dr-1.jpg`,
+      Wardrobe: `${IMG}/wardrobe-1.jpg`,
+      Bathroom: `${IMG}/drive-bathroom/bathroom-11.jpeg`,
+      Entertainment: `${IMG}/ent-unit-1.jpg`,
+      "Temple / Pooja": `${IMG}/temple-1.jpg`,
+      "Full Home": `${IMG}/living-dr-3.jpg`,
+    };
+    if (room.title === "Wardrobe" && !imageByTitle[room.title]) {
+      return { ...room, image: `${IMG}/wardrobe-1.jpg` };
+    }
+    return imageByTitle[room.title] ? { ...room, image: imageByTitle[room.title] } : room;
+  });
+
 export function applyContentOverrides(documents: Partial<ContentSnapshot>) {
   if (!documents || typeof documents !== "object") return;
 
@@ -562,9 +580,27 @@ export function applyContentOverrides(documents: Partial<ContentSnapshot>) {
 
   assignObject(home, documents.home);
   assignObject(about, documents.about);
-  replaceArray(roomCategories, documents.roomCategories);
-  replaceArray(services, documents.services);
-  replaceArray(projects, documents.projects);
+  if (documents.roomCategories) {
+    replaceArray(roomCategories, repairRoomImages(documents.roomCategories));
+  }
+  if (documents.services) {
+    replaceArray(services, documents.services);
+    const kitchen = services.find((s) => s.slug === "kitchen-granite-quartz");
+    if (kitchen && kitchen.heroImage?.src?.includes("img-")) {
+      kitchen.heroImage = pic("drive-kitchen/kitchen-1.jpeg", "Modern modular kitchen with sleek cabinetry");
+    }
+    const ceiling = services.find((s) => s.slug === "false-ceiling-pop");
+    if (ceiling && ceiling.heroImage?.src?.includes("img-")) {
+      ceiling.heroImage = pic("drive-false-ceil/false-ceil-1.jpeg", "Stunning wavy false ceiling with integrated LED lighting");
+    }
+  }
+  if (documents.projects) {
+    replaceArray(projects, documents.projects);
+    const smartProject = projects.find((p) => p.slug === "smart-modern-home");
+    if (smartProject && smartProject.cover?.src?.includes("img-")) {
+      smartProject.cover = pic("ent-unit-6.jpg", "Smart home entertainment feature wall");
+    }
+  }
   replaceArray(faqs, documents.faqs);
   replaceArray(testimonials, documents.testimonials);
   replaceArray(leadership, documents.leadership);
