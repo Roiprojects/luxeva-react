@@ -157,14 +157,7 @@ const services: Service[] = [
       "Professional consultation to plan layouts, furniture placement, storage and lighting so your space works harder and feels calmer. We analyse the site, take measurements and propose a concept and material direction aligned to your budget.",
     benefits: ["Site analysis & measurement", "Layout & furniture planning", "Storage & lighting strategy", "Material & budget guidance", "Design concept direction"],
     heroImage: pic("drive-living/living-11.jpg", "Beautifully planned interior living space"),
-    gallery: [
-      pic("drive-living/living-14.jpg", "Open-plan spatial layout and furniture arrangement"),
-      pic("interior-minimal.jpg", "Clean architectural space planning and zoned living areas"),
-      pic("drive-living/living-3.jpg", "Integrated lighting strategy and smart space planning"),
-      pic("drive-living/living-13.jpg", "Ergonomic study and compact home-office space layout"),
-      pic("drive-living/living-6.jpg", "Spacious open living circulation and furniture placement"),
-      pic("drive-living/living-7.jpg", "Harmonious material selection and cohesive room planning"),
-    ],
+    gallery: [pic("drive-living/living-1.jpg", "Well-planned living room layout with seating"), pic("drive-living/living-5.jpg", "Balanced furniture placement in a modern living space"), pic("drive-bedroom/bedroom-1.jpg", "Thoughtfully laid out bedroom with storage"), pic("drive-kitchen/kitchen-1.jpeg", "Efficient modular kitchen layout")],
     featured: true,
     published: true,
   },
@@ -187,6 +180,7 @@ const services: Service[] = [
     longDescription: "Electrical planning and execution for interior projects — wiring, switchboard setup, lighting circuits and safe, tidy installations coordinated with the overall interior.",
     benefits: ["Wiring & switchboards", "Lighting circuits", "Concealed, tidy runs", "Coordinated with interiors", "Safe execution"],
     heroImage: pic("drive-false-ceil/false-ceil-2.jpeg", "Layered interior lighting and false ceiling"),
+    gallery: [pic("drive-false-ceil/false-ceil-2.jpeg", "Layered ceiling lighting design"), pic("drive-false-ceil/false-ceil-3.jpeg", "Cove ceiling with warm accent lighting"), pic("drive-false-ceil/false-ceil-4.jpeg", "Modern POP ceiling design"), pic("drive-false-ceil/false-ceil-5.jpeg", "False ceiling with recessed lights"), pic("drive-false-ceil/false-ceil-6.jpeg", "Bedroom false ceiling detail"), pic("drive-false-ceil/false-ceil-7.jpeg", "Living room false ceiling")],
     published: true,
   },
   {
@@ -209,6 +203,12 @@ const services: Service[] = [
     longDescription: "Bring convenience and control to your home with smart lighting, controls and automation, planned into the interior from the start for a clean, integrated result.",
     benefits: ["Smart lighting & scenes", "Centralised controls", "Planned into the interior", "Convenience & efficiency"],
     heroImage: pic("drive-living/living-3.jpg", "Smart home interior with automated lighting and controls"),
+    gallery: [
+      pic("drive-living/living-3.jpg", "Smart home interior with automated lighting"),
+      pic("kitchen-chimney.jpg", "Modern kitchen with smart chimney"),
+      pic("smart-lock.jpg", "Keyless smart door lock"),
+      pic("plumbing-tap.jpg", "Automated sensor fixtures"),
+    ],
     featured: true,
     published: true,
   },
@@ -224,6 +224,7 @@ const services: Service[] = [
       pic("drive-bathroom/bathroom-9.jpeg", "Bathroom plumbing installation"),
       pic("drive-bathroom/bathroom-10.jpeg", "Sink and tap fitting"),
       pic("drive-bathroom/bathroom-1.jpeg", "Modern bathroom with quality fixtures"),
+      pic("drive-bathroom/bathroom-13.jpg", "Luxurious bathroom with premium fixtures"),
     ],
     published: true,
   },
@@ -280,6 +281,12 @@ const services: Service[] = [
     longDescription: "Invisible grills provide safety for balconies and windows while preserving your view and the look of your facade — a discreet, modern alternative to conventional grills.",
     benefits: ["Unobstructed views", "Balcony & window safety", "Weather-resistant", "Clean, modern look"],
     heroImage: pic("invisible-grills.jpg", "Home with glass balcony railings and full-height windows"),
+    gallery: [
+      pic("invisible-grills.jpg", "Balcony with invisible glass grill"),
+      pic("facade-windows.jpg", "Modern balcony and window facade"),
+      pic("living-dr-2.jpg", "Living room with balcony view"),
+      pic("drive-living/living-14.jpg", "Apartment balcony with interior view"),
+    ],
     published: true,
   },
   {
@@ -290,6 +297,7 @@ const services: Service[] = [
     longDescription: "Custom metal fabrication for railings, frames, partitions and safety elements, made to measure and finished to suit your interior.",
     benefits: ["Railings & frames", "Partitions", "Made to measure", "Durable finishes"],
     heroImage: pic("fabrication-weld.jpg", "Metal fabrication welding work"),
+    gallery: [pic("fabrication-weld.jpg", "Metal welding and fabrication work"), pic("drive-false-ceil/false-ceil-1.jpeg", "Custom metal framing for false ceiling"), pic("drive-living/living-12.jpg", "Metal railing fixtures in living room"), pic("facade-windows.jpg", "Metal framework for window facade")],
     published: true,
   },
   {
@@ -300,6 +308,7 @@ const services: Service[] = [
     longDescription: "Modern keyless security with digital lock supply and installation for main doors and interiors — convenient access with dependable security.",
     benefits: ["Keyless entry", "Modern security", "Supply & installation", "Convenient access"],
     heroImage: pic("smart-lock.jpg", "Smart digital door lock controlled from a phone app"),
+    gallery: [pic("smart-lock.jpg", "Smart digital door lock"), pic("drive-living/living-3.jpg", "Smart home with automated lighting"), pic("invisible-grills.jpg", "Modern home with security features"), pic("facade-windows.jpg", "Contemporary home entrance with smart fittings")],
     published: true,
   },
   {
@@ -322,6 +331,7 @@ const services: Service[] = [
     longDescription: "Custom sofas sized and styled for your living space — comfortable, durable and finished in fabrics that suit your interior and lifestyle.",
     benefits: ["Sized to your space", "Comfort-first build", "Fabric selection", "Durable frames"],
     heroImage: pic("drive-living/living-12.jpg", "Elegant sofa and living room interior"),
+    gallery: [pic("drive-living/living-12.jpg", "Elegant sofa set in living room"), pic("drive-living/living-5.jpg", "Modern sofa and living room"), pic("drive-living/living-9.jpg", "Contemporary sofa design"), pic("living-dr-4.jpg", "Premium sofa and seating arrangement")],
     published: true,
   },
   {
@@ -332,6 +342,7 @@ const services: Service[] = [
     longDescription: "Custom dining tables and units designed to seat your family comfortably and complement the surrounding interior.",
     benefits: ["Custom sizing", "Matched to interior", "Durable materials", "Seating planned around you"],
     heroImage: pic("dining.jpg", "Elegant dining table with place settings"),
+    gallery: [pic("dining.jpg", "Elegant dining table setting"), pic("drive-living/living-8.jpg", "Dining area in open-plan interior"), pic("drive-kitchen/kitchen-5.jpeg", "Kitchen-dining integrated space"), pic("living-dr-3.jpg", "Dining area in modern interior")],
     published: true,
   },
   {
@@ -342,6 +353,7 @@ const services: Service[] = [
     longDescription: "UPVC windows and partitions that improve insulation, reduce noise and give a clean, low-maintenance finish, installed precisely as part of your interior.",
     benefits: ["Thermal & sound insulation", "Low maintenance", "Precise installation", "Clean modern look"],
     heroImage: pic("facade-windows.jpg", "Modern building facade with windows and partitions"),
+    gallery: [pic("facade-windows.jpg", "Modern UPVC window installation"), pic("invisible-grills.jpg", "Window facade with safety grills"), pic("drive-living/living-2.jpg", "Windows with balcony grill detail"), pic("living-dr-2.jpg", "Facade with windows and interior view")],
     published: true,
   },
   {
@@ -352,7 +364,7 @@ const services: Service[] = [
     longDescription: "Custom entertainment units with media consoles, storage, floating shelves, display cabinets and LED back-panels — a focal point for your living room.",
     benefits: ["Media console & storage", "Floating shelves", "LED back panel", "Display cabinets"],
     heroImage: pic("drive-ent-unit/ent-unit-1.jpeg", "Modern TV unit with marble panel, fluted sides and display shelving"),
-    gallery: [pic("drive-ent-unit/ent-unit-2.jpeg", "Entertainment wall with LED backlit shelves"), pic("drive-ent-unit/ent-unit-3.jpeg", "Contemporary media unit with storage"), pic("drive-ent-unit/ent-unit-4.jpeg", "Floating entertainment unit design")],
+    gallery: [pic("drive-ent-unit/ent-unit-2.jpeg", "Entertainment wall with LED backlit shelves"), pic("drive-ent-unit/ent-unit-3.jpeg", "Contemporary media unit with storage"), pic("drive-ent-unit/ent-unit-4.jpeg", "Floating entertainment unit design"), pic("drive-living/living-9.jpg", "Living room with media unit and TV console")],
     featured: true,
     published: true,
   },
@@ -364,6 +376,7 @@ const services: Service[] = [
     longDescription: "Home-office and study setups for students and professionals — study tables, work desks, wall shelves, storage and ergonomic, well-lit layouts.",
     benefits: ["Study & work desks", "Wall shelves & storage", "Ergonomic layout", "Task lighting"],
     heroImage: pic("drive-living/living-13.jpg", "Modern study and home office interior"),
+    gallery: [pic("drive-living/living-13.jpg", "Modern study desk with shelving"), pic("office-desk.jpg", "Clean home office setup"), pic("drive-bedroom/bedroom-1.jpg", "Study corner in bedroom"), pic("living-dr-8.jpg", "Home office with gallery wall")],
     published: true,
   },
   {
@@ -374,6 +387,7 @@ const services: Service[] = [
     longDescription: "Custom office furniture for homes and commercial workspaces — workstations, executive desks, storage cabinets, meeting tables and reception units, built to fit your space and organised for how your team works.",
     benefits: ["Workstations & desks", "Storage & filing units", "Meeting & reception units", "Ergonomic layouts", "Durable commercial finishes"],
     heroImage: pic("office-desk.jpg", "Modern office desk and workstation setup"),
+    gallery: [pic("office-desk.jpg", "Modern office workstation and desk setup"), pic("drive-living/living-13.jpg", "Home office study desk setup"), pic("drive-bedroom/bedroom-1.jpg", "Clean desk and storage in bedroom office"), pic("commercial-office.jpg", "Commercial office interior with desks")],
     published: true,
   },
   {
@@ -404,6 +418,7 @@ const services: Service[] = [
     longDescription: "Wall design and wallpaper installation for bedrooms, living rooms, kids' rooms and commercial spaces — textured, luxury and custom wall coverings, professionally fitted.",
     benefits: ["Bedroom & living room", "Textured & luxury coverings", "Kids' room designs", "Professional installation"],
     heroImage: pic("bedroom-dr-4.jpg", "Feature wall with textured finish and accent lighting"),
+    gallery: [pic("bedroom-dr-4.jpg", "Textured feature wall with accent lighting"), pic("drive-living/living-9.jpg", "Contemporary feature wall in living room"), pic("drive-bedroom/bedroom-3.jpg", "Bedroom wallpaper feature wall"), pic("indian-living-2.jpg", "Luxury wallpaper in living room")],
     published: true,
   },
   {
@@ -413,14 +428,8 @@ const services: Service[] = [
     shortDescription: "Complete showroom and commercial interior design and execution.",
     longDescription: "Complete showroom interior design and execution for retail businesses — layout planning, product display units, billing counters, lighting, branding walls, customer-flow planning and premium finishing.",
     benefits: ["Layout & customer flow", "Display units & counters", "Branding wall", "Lighting & finishing"],
-    heroImage: pic("commercial-showroom-1.jpg", "Luxury boutique showroom with illuminated display counters and customer flow layout"),
-    gallery: [
-      pic("commercial-showroom-1.jpg", "Bespoke glass display counters and curated customer flow"),
-      pic("commercial-showroom-2.jpg", "Feature branding wall with 3D backlit lettering and marble billing reception counter"),
-      pic("commercial-showroom-3.jpg", "Perimeter display shelves, central display table and cove lighting finishing"),
-      pic("commercial-office.jpg", "Modern commercial executive office with glass partitions"),
-      pic("office-desk.jpg", "Commercial workspace and workstation layout"),
-    ],
+    heroImage: pic("commercial-showroom-1.jpg", "Premium commercial showroom interior with polished surfaces"),
+    gallery: [pic("commercial-showroom-2.jpg", "Spacious commercial showroom layout with display units"), pic("commercial-showroom-3.jpg", "Modern showroom with premium finishes and lighting"), pic("drive-living/living-10.jpg", "Retail display with premium interior"), pic("commercial-office.jpg", "Commercial space with reception and layout")],
     featured: true,
     published: true,
   },
