@@ -16,6 +16,7 @@ import Portfolio from "@/pages/Portfolio";
 import ProjectDetail from "@/pages/ProjectDetail";
 import Testimonials from "@/pages/Testimonials";
 import FAQ from "@/pages/FAQ";
+import Team from "@/pages/Team";
 import Contact from "@/pages/Contact";
 import Privacy from "@/pages/Privacy";
 import Terms from "@/pages/Terms";
@@ -84,6 +85,7 @@ export default function App() {
                 <Route path="/portfolio/:slug" element={<ProjectDetail />} />
                 <Route path="/testimonials" element={<Testimonials />} />
                 <Route path="/faq" element={<FAQ />} />
+                <Route path="/team" element={<Team />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy-policy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />
