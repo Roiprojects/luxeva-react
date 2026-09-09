@@ -506,6 +506,7 @@ const services: Service[] = [
       pic("drive-office/office-3.jpeg", "Executive office desk with integrated filing and storage"),
       pic("drive-office/office-4.jpeg", "Collaborative workspace meeting table and ergonomic chairs"),
       pic("drive-office/office-5.jpeg", "Clean professional corporate office interior setup"),
+      pic("drive-office/office-6.jpeg", "Modern office workstation with storage"),
     ],
     published: true,
   },
