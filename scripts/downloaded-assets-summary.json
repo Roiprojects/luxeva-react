@@ -1,0 +1,328 @@
+{
+  "plumbing": [
+    {
+      "filename": "plumbing-1.jpeg",
+      "size": 81580,
+      "originalName": "Plumbing services.jpeg"
+    },
+    {
+      "filename": "plumbing-2.jpeg",
+      "size": 21087,
+      "originalName": "2.jpeg"
+    },
+    {
+      "filename": "plumbing-3.jpeg",
+      "size": 33676,
+      "originalName": "3.jpeg"
+    },
+    {
+      "filename": "plumbing-4.jpeg",
+      "size": 117246,
+      "originalName": "4.jpeg"
+    },
+    {
+      "filename": "plumbing-5.jpeg",
+      "size": 19005,
+      "originalName": "5.jpeg"
+    },
+    {
+      "filename": "plumbing-6.jpeg",
+      "size": 205436,
+      "originalName": "6.jpeg"
+    }
+  ],
+  "invisible-grills": [
+    {
+      "filename": "invisible-grills-1.jpeg",
+      "size": 214512,
+      "originalName": "1.jpeg"
+    },
+    {
+      "filename": "invisible-grills-2.jpeg",
+      "size": 190590,
+      "originalName": "2.jpeg"
+    },
+    {
+      "filename": "invisible-grills-3.jpeg",
+      "size": 153649,
+      "originalName": "3.jpeg"
+    },
+    {
+      "filename": "invisible-grills-4.jpeg",
+      "size": 133511,
+      "originalName": "4.jpeg"
+    },
+    {
+      "filename": "invisible-grills-5.jpeg",
+      "size": 29898,
+      "originalName": "5.jpeg"
+    },
+    {
+      "filename": "invisible-grills-6.jpeg",
+      "size": 74495,
+      "originalName": "6.jpeg"
+    },
+    {
+      "filename": "invisible-grills-7.png",
+      "size": 1977485,
+      "originalName": "7.png"
+    }
+  ],
+  "fabrication": [
+    {
+      "filename": "fabrication-1.jpeg",
+      "size": 205596,
+      "originalName": "1.jpeg"
+    },
+    {
+      "filename": "fabrication-2.jpeg",
+      "size": 81240,
+      "originalName": "2.jpeg"
+    },
+    {
+      "filename": "fabrication-3.jpeg",
+      "size": 88328,
+      "originalName": "3.jpeg"
+    },
+    {
+      "filename": "fabrication-4.jpeg",
+      "size": 236879,
+      "originalName": "4.jpeg"
+    },
+    {
+      "filename": "fabrication-5.jpeg",
+      "size": 225818,
+      "originalName": "5.jpeg"
+    },
+    {
+      "filename": "fabrication-6.jpeg",
+      "size": 126003,
+      "originalName": "6.jpeg"
+    },
+    {
+      "filename": "fabrication-7.jpeg",
+      "size": 94634,
+      "originalName": "7.jpeg"
+    }
+  ],
+  "digital-locks": [
+    {
+      "filename": "digital-locks-1.jpeg",
+      "size": 189527,
+      "originalName": "1.jpeg"
+    },
+    {
+      "filename": "digital-locks-2.jpeg",
+      "size": 33770,
+      "originalName": "2.jpeg"
+    },
+    {
+      "filename": "digital-locks-3.jpeg",
+      "size": 130495,
+      "originalName": "3.jpeg"
+    },
+    {
+      "filename": "digital-locks-4.jpeg",
+      "size": 111838,
+      "originalName": "4.jpeg"
+    },
+    {
+      "filename": "digital-locks-5.jpeg",
+      "size": 15019,
+      "originalName": "5.jpeg"
+    },
+    {
+      "filename": "digital-locks-6.jpeg",
+      "size": 110424,
+      "originalName": "6.jpeg"
+    },
+    {
+      "filename": "digital-locks-7.jpeg",
+      "size": 150045,
+      "originalName": "7.jpeg"
+    }
+  ],
+  "sofa": [
+    {
+      "filename": "sofa-1.jpeg",
+      "size": 155626,
+      "originalName": "1.jpeg"
+    },
+    {
+      "filename": "sofa-2.jpeg",
+      "size": 435182,
+      "originalName": "2.jpeg"
+    },
+    {
+      "filename": "sofa-3.jpeg",
+      "size": 111709,
+      "originalName": "3.jpeg"
+    },
+    {
+      "filename": "sofa-4.jpeg",
+      "size": 85813,
+      "originalName": "4.jpeg"
+    },
+    {
+      "filename": "sofa-5.jpeg",
+      "size": 100584,
+      "originalName": "5.jpeg"
+    },
+    {
+      "filename": "sofa-6.jpeg",
+      "size": 65159,
+      "originalName": "6.jpeg"
+    }
+  ],
+  "wallpaper": [
+    {
+      "filename": "wallpaper-1.jpeg",
+      "size": 465568,
+      "originalName": "1.jpeg"
+    },
+    {
+      "filename": "wallpaper-2.jpeg",
+      "size": 225507,
+      "originalName": "2.jpeg"
+    },
+    {
+      "filename": "wallpaper-3.jpeg",
+      "size": 77501,
+      "originalName": "3.jpeg"
+    },
+    {
+      "filename": "wallpaper-4.jpeg",
+      "size": 533039,
+      "originalName": "4.jpeg"
+    },
+    {
+      "filename": "wallpaper-5.jpeg",
+      "size": 503901,
+      "originalName": "5.jpeg"
+    },
+    {
+      "filename": "wallpaper-6.jpeg",
+      "size": 445477,
+      "originalName": "6.jpeg"
+    },
+    {
+      "filename": "wallpaper-7.jpeg",
+      "size": 217073,
+      "originalName": "7.jpeg"
+    },
+    {
+      "filename": "wallpaper-8.jpeg",
+      "size": 369891,
+      "originalName": "8.jpeg"
+    },
+    {
+      "filename": "wallpaper-9.jpeg",
+      "size": 142079,
+      "originalName": "9.jpeg"
+    },
+    {
+      "filename": "wallpaper-10.jpeg",
+      "size": 576425,
+      "originalName": "10.jpeg"
+    },
+    {
+      "filename": "wallpaper-11.jpeg",
+      "size": 528559,
+      "originalName": "11.jpeg"
+    }
+  ],
+  "commercial-showroom": [
+    {
+      "filename": "commercial-showroom-1.jpeg",
+      "size": 286893,
+      "originalName": "2.jpeg"
+    },
+    {
+      "filename": "commercial-showroom-2.jpeg",
+      "size": 317151,
+      "originalName": "3.jpeg"
+    },
+    {
+      "filename": "commercial-showroom-3.jpeg",
+      "size": 486987,
+      "originalName": "4.jpeg"
+    },
+    {
+      "filename": "commercial-showroom-4.jpeg",
+      "size": 389044,
+      "originalName": "5.jpeg"
+    },
+    {
+      "filename": "commercial-showroom-5.jpeg",
+      "size": 75368,
+      "originalName": "6.jpeg"
+    },
+    {
+      "filename": "commercial-showroom-6.jpeg",
+      "size": 179051,
+      "originalName": "7.jpeg"
+    },
+    {
+      "filename": "commercial-showroom-7.jpeg",
+      "size": 231430,
+      "originalName": "8.jpeg"
+    },
+    {
+      "filename": "commercial-showroom-8.jpeg",
+      "size": 98160,
+      "originalName": "Commercial &amp; Showroom Interior.jpeg"
+    }
+  ],
+  "home-automation": [
+    {
+      "filename": "automation-1.jpeg",
+      "size": 197529,
+      "originalName": "1 (1).jpeg"
+    },
+    {
+      "filename": "automation-2.jpeg",
+      "size": 106295,
+      "originalName": "1.jpeg"
+    },
+    {
+      "filename": "automation-3.jpeg",
+      "size": 163987,
+      "originalName": "2 (1).jpeg"
+    },
+    {
+      "filename": "automation-4.jpeg",
+      "size": 167608,
+      "originalName": "2.jpeg"
+    },
+    {
+      "filename": "automation-5.jpeg",
+      "size": 124909,
+      "originalName": "3.jpeg"
+    },
+    {
+      "filename": "automation-6.jpeg",
+      "size": 123041,
+      "originalName": "4.jpeg"
+    },
+    {
+      "filename": "automation-7.jpeg",
+      "size": 43449,
+      "originalName": "5.jpeg"
+    },
+    {
+      "filename": "automation-8.jpeg",
+      "size": 140895,
+      "originalName": "6.jpeg"
+    },
+    {
+      "filename": "automation-9.jpeg",
+      "size": 136560,
+      "originalName": "7.jpeg"
+    },
+    {
+      "filename": "automation-10.jpeg",
+      "size": 91987,
+      "originalName": "bOuKl72W_UC9UElSdbwkKSi2ubU6esBVb0fOEhSMLrFMsbjRdMYtn_wSboljBkTDIhjjobJFNSutVl8bEyK8naudJSeZTwIrDV8GRgFpmYYbiYb24v6W5bGVsMG4ZRf9qr4OwudF00Hh6IxzNsv_dh2x9nAveJwYlOc-6j8KZW2R-lwW2B2bCKrzXe2OU-KD.jpeg"
+    }
+  ]
+}
