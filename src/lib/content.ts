@@ -494,6 +494,22 @@ const services: Service[] = [
     published: true,
   },
   {
+    slug: "office-setup",
+    title: "Office Setup",
+    category: "Custom Furniture",
+    shortDescription: "Complete office interior setup with workstations, desks and storage.",
+    longDescription: "Complete office interior setup for homes and commercial spaces — workstations, study desks, storage cabinets, shelving and ergonomic layouts designed for productivity and organisation.",
+    benefits: ["Workstations & study desks", "Storage & filing units", "Wall shelves & organisers", "Ergonomic layouts", "Complete office setup"],
+    heroImage: pic("drive-office-setup/office-setup-1.jpeg", "Complete office setup with workstations and storage"),
+    gallery: [
+      pic("drive-office-setup/office-setup-2.jpeg", "Modern home office desk with shelving"),
+      pic("drive-office-setup/office-setup-3.jpeg", "Ergonomic workstation with storage"),
+      pic("drive-office-setup/office-setup-4.jpeg", "Compact office setup with desk and shelves"),
+      pic("drive-office-setup/office-setup-5.jpeg", "Professional office interior with full setup"),
+    ],
+    published: true,
+  },
+  {
     slug: "office-furniture",
     title: "Office Furniture",
     category: "Custom Furniture",
