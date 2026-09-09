@@ -98,8 +98,8 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
-    /* Prevent overscroll bounce (app-like) */
-    overscroll-behavior: none;
+    /* Prevent overscroll bounce (app-like) while still allowing page scroll */
+    overscroll-behavior-y: contain;
   }
 
   body {
