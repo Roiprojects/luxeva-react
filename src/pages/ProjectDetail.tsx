@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 import { Container } from "@/components/ui/Section";
 import { PageHero, breadcrumbLd } from "@/components/ui/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
+import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import { getProject, getProjects } from "@/lib/content";
 import { siteConfig } from "@/lib/site";
 import { usePageTitle } from "@/lib/seo";
@@ -26,6 +28,14 @@ export default function ProjectDetailPage() {
     { label: project.title },
   ];
 
+  // Build the flat image list for the lightbox (cover first, then gallery)
+  const lightboxImages = [
+    { src: project.cover.src, alt: project.cover.alt },
+    ...project.gallery.map((g) => ({ src: g.src, alt: g.alt })),
+  ];
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+
   // Only include verified facts in the meta list.
   const meta: { label: string; value: string }[] = [];
   if (project.style) meta.push({ label: "Style", value: project.style });
@@ -43,10 +53,13 @@ export default function ProjectDetailPage() {
         <Container className="grid lg:grid-cols-[1.5fr_1fr] gap-12 items-start">
           <div>
             <Reveal className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-card">
-              <Image src={project.cover.src} alt={project.cover.alt} fill priority sizes="(max-width:1024px) 100vw, 62vw" className="object-cover" />
-              {project.cover.isRender && (
-                <span className="absolute top-4 left-4 rounded-full bg-ink/70 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wide text-soft-white">Design visualisation</span>
-              )}
+              <button onClick={() => { setLightboxIndex(0); setLightboxOpen(true); }} className="block w-full h-full cursor-pointer">
+                <Image src={project.cover.src} alt={project.cover.alt} fill priority sizes="(max-width:1024px) 100vw, 62vw" className="object-cover" />
+                {project.cover.isRender && (
+                  <span className="absolute top-4 left-4 rounded-full bg-ink/70 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wide text-soft-white">Design visualisation</span>
+                )}
+                <span className="sr-only">Click to enlarge image</span>
+              </button>
             </Reveal>
             <p className="mt-8 text-lg text-ink-soft/85 leading-relaxed">{project.description}</p>
 
@@ -93,9 +106,12 @@ export default function ProjectDetailPage() {
         <section className="pb-16">
           <Container>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {project.gallery.map((g) => (
+              {project.gallery.map((g, i) => (
                 <div key={g.src} className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-soft">
-                  <Image src={g.src} alt={g.alt} fill sizes="(max-width:768px) 100vw, 32vw" className="object-cover" />
+                  <button onClick={() => { setLightboxIndex(i + 1); setLightboxOpen(true); }} className="block w-full h-full cursor-pointer">
+                    <Image src={g.src} alt={g.alt} fill sizes="(max-width:768px) 100vw, 32vw" className="object-cover" />
+                    <span className="sr-only">Click to enlarge image</span>
+                  </button>
                   {g.isRender && <span className="absolute top-2 left-2 rounded-full bg-ink/70 px-2 py-0.5 text-[0.6rem] uppercase tracking-wide text-soft-white">Render</span>}
                 </div>
               ))}
@@ -134,6 +150,13 @@ export default function ProjectDetailPage() {
           </Container>
         </section>
       )}
+
+      <ImageLightbox
+        images={lightboxImages}
+        open={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        initialIndex={lightboxIndex}
+      />
     </>
   );
 }

@@ -2,11 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "react-router-dom";
 import { Check, ArrowRight } from "lucide-react";
+import { useState } from "react";
 import { Container } from "@/components/ui/Section";
 import { PageHero, breadcrumbLd } from "@/components/ui/PageHero";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
+import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import { getService, getServices } from "@/lib/content";
 import { siteConfig } from "@/lib/site";
 import { usePageTitle } from "@/lib/seo";
@@ -28,6 +30,14 @@ export default function ServiceDetailPage() {
     { label: "Services", href: "/services" },
     { label: service.title },
   ];
+
+  // Build the flat image list for the lightbox (hero first, then gallery)
+  const lightboxImages = [
+    ...(service.heroImage ? [{ src: service.heroImage.src, alt: service.heroImage.alt }] : []),
+    ...(service.gallery?.map((g) => ({ src: g.src, alt: g.alt })) ?? []),
+  ];
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const serviceLd = {
     "@context": "https://schema.org",
@@ -52,10 +62,13 @@ export default function ServiceDetailPage() {
           <div>
             {service.heroImage && (
               <Reveal className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-card mb-8">
-                <Image src={service.heroImage.src} alt={service.heroImage.alt} fill priority sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
-                {service.heroImage.isRender && (
-                  <span className="absolute top-4 left-4 rounded-full bg-ink/70 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wide text-soft-white">Design visualisation</span>
-                )}
+                <button onClick={() => { setLightboxIndex(0); setLightboxOpen(true); }} className="block w-full h-full cursor-pointer">
+                  <Image src={service.heroImage.src} alt={service.heroImage.alt} fill priority sizes="(max-width:1024px) 100vw, 60vw" className="object-cover" />
+                  {service.heroImage.isRender && (
+                    <span className="absolute top-4 left-4 rounded-full bg-ink/70 px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-wide text-soft-white">Design visualisation</span>
+                  )}
+                  <span className="sr-only">Click to enlarge image</span>
+                </button>
               </Reveal>
             )}
             <h2 className="text-2xl md:text-3xl">Overview</h2>
@@ -95,9 +108,12 @@ export default function ServiceDetailPage() {
               <>
                 <h3 className="mt-10 text-xl">Gallery</h3>
                 <div className="mt-4 grid grid-cols-2 gap-4">
-                  {service.gallery.map((g) => (
+                  {service.gallery.map((g, i) => (
                     <div key={g.src} className="relative aspect-[4/3] rounded-xl overflow-hidden shadow-soft">
-                      <Image src={g.src} alt={g.alt} fill sizes="(max-width:768px) 50vw, 30vw" className="object-cover" />
+                      <button onClick={() => { setLightboxIndex(i + 1); setLightboxOpen(true); }} className="block w-full h-full cursor-pointer">
+                        <Image src={g.src} alt={g.alt} fill sizes="(max-width:768px) 50vw, 30vw" className="object-cover" />
+                        <span className="sr-only">Click to enlarge image</span>
+                      </button>
                       {g.isRender && <span className="absolute top-2 left-2 rounded-full bg-ink/70 px-2 py-0.5 text-[0.6rem] uppercase tracking-wide text-soft-white">Render</span>}
                     </div>
                   ))}
@@ -155,6 +171,13 @@ export default function ServiceDetailPage() {
           </Container>
         </section>
       )}
+
+      <ImageLightbox
+        images={lightboxImages}
+        open={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        initialIndex={lightboxIndex}
+      />
     </>
   );
 }

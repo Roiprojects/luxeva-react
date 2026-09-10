@@ -267,6 +267,11 @@
   .kenburns { animation: kenburns 22s ease-out both; }
   .animate-rise { animation: rise 0.9s var(--ease-lux) both; }
   .animate-fade { animation: fadein 1s ease both; }
+  .animate-slide-in-right { animation: slide-in-right 0.3s ease both; }
+  .animate-slide-in-left { animation: slide-in-left 0.3s ease both; }
+  .animate-fade-in { animation: fadein 0.2s ease both; }
+  .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
 
   @media (prefers-reduced-motion: reduce) {
     .marquee__track, .animate-float, .animate-float-slow, .kenburns, .animate-rise, .animate-fade { animation: none !important; }
@@ -278,6 +283,8 @@
 @keyframes kenburns { from { transform: scale(1.12); } to { transform: scale(1); } }
 @keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slide-in-right { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+@keyframes slide-in-left { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: none; } }
 @keyframes mobile-backdrop-enter { from { opacity: 0; } to { opacity: 1; } }
 @keyframes mobile-drawer-enter { from { transform: translateX(100%); } to { transform: translateX(0); } }
 
